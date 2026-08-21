@@ -3,178 +3,131 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Dhanula's personal portfolio website.">
-  <title>Dhanula | Personal Portfolio</title>
+  <meta name="description" content="Dhanula's personal digital world — memories, education, skills, projects, travels, creativity and future goals.">
+  <title>Dhanula | My Digital World</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="cursor-glow"></div>
+<header class="topbar">
+  <a class="brand" href="#home"><span>DR</span><b>Dhanula</b></a>
+  <button class="menu-btn" aria-label="Open menu">☰</button>
+  <nav id="nav">
+    <a href="#home">Home</a><a href="#about">About</a><a href="#gallery">Photos</a>
+    <a href="#videos">Videos</a><a href="#education">Education</a><a href="#skills">Skills</a>
+    <a href="#projects">Projects</a><a href="#memories">Memories</a><a href="#contact">Contact</a>
+  </nav>
+  <button id="themeBtn" class="icon-btn" aria-label="Toggle theme">☾</button>
+</header>
 
-  <header class="site-header">
-    <a class="logo" href="#home">D<span>.</span></a>
-    <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-    <nav class="nav" aria-label="Main navigation">
-      <a class="active" href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
-      <button class="theme-toggle" aria-label="Toggle theme">☼</button>
-    </nav>
-  </header>
+<main>
+<section id="home" class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content reveal">
+    <p class="eyebrow">WELCOME TO MY DIGITAL WORLD</p>
+    <h1>I'm <span>Dhanula.</span><br>And this is my story.</h1>
+    <p class="lead">A personal space for my photos, videos, education, skills, projects, memories, dreams and everything that makes me who I am.</p>
+    <div class="actions"><a class="btn primary" href="#about">Explore My World</a><a class="btn ghost" href="#gallery">View Memories</a></div>
+    <div class="quick-stats"><div><b>∞</b><small>Memories</small></div><div><b>∞</b><small>Ideas</small></div><div><b>∞</b><small>Dreams</small></div></div>
+  </div>
+</section>
 
-  <main>
-    <section id="home" class="hero section">
-      <div class="hero-bg"></div>
-      <div class="hero-content reveal">
-        <p class="eyebrow">WELCOME TO MY PORTFOLIO</p>
-        <h1>Hi, I'm <span>Dhanula</span>.</h1>
-        <h2>I build things for the <span class="typing"></span><span class="caret">|</span></h2>
-        <p class="hero-text">
-          A student and technology enthusiast exploring programming, web development,
-          and creative digital experiences.
-        </p>
-        <div class="hero-actions">
-          <a class="btn btn-primary" href="#projects">View My Work <span>↗</span></a>
-          <a class="btn btn-ghost" href="#contact">Let's Connect</a>
-        </div>
-        <div class="social-row">
-          <a href="#" aria-label="GitHub">GH</a>
-          <a href="#" aria-label="LinkedIn">LI</a>
-          <a href="#" aria-label="Instagram">IG</a>
-        </div>
-      </div>
+<section id="about" class="section">
+  <div class="section-head"><p class="eyebrow">01 · ABOUT ME</p><h2>More than a profile.</h2><p>This website is my digital home — a place where my past, present and future can live together.</p></div>
+  <div class="about-grid">
+    <div class="profile-card"><div class="avatar">DR</div><h3>Dhanula Rajakaruna</h3><p>Student · Creator · Learner · Dreamer</p><div class="chips"><span>Sri Lanka</span><span>Technology</span><span>Creative</span></div></div>
+    <div class="text-card"><h3>My Story</h3><p>I’m building this space to document the things I learn, create, experience and remember. It will grow with me over time.</p><div class="info-grid"><div><small>Currently</small><b>Learning & building</b></div><div><small>Interests</small><b>Tech · Media · Business</b></div><div><small>Languages</small><b>English · Sinhala · Chinese</b></div><div><small>Mindset</small><b>Learn · Create · Improve</b></div></div></div>
+  </div>
+</section>
 
-      <div class="hero-card reveal delay-1">
-        <div class="orbit orbit-one"></div>
-        <div class="orbit orbit-two"></div>
-        <div class="profile-placeholder">
-          <div class="profile-initial">D</div>
-        </div>
-        <div class="floating-tag tag-one">💻 Code</div>
-        <div class="floating-tag tag-two">🚀 Create</div>
-        <div class="floating-tag tag-three">✦ Learn</div>
-      </div>
+<section id="story" class="section alt"><div class="section-head"><p class="eyebrow">02 · MY STORY</p><h2>A timeline of my journey.</h2></div>
+  <div class="timeline">
+    <article><span>01</span><div><small>THE BEGINNING</small><h3>Childhood & School</h3><p>Add your childhood memories, school life and important early moments here.</p></div></article>
+    <article><span>02</span><div><small>LEARNING</small><h3>Higher Education</h3><p>Add your courses, subjects, certificates and the skills you developed.</p></div></article>
+    <article><span>03</span><div><small>NOW</small><h3>Building My Future</h3><p>Document your current studies, projects, business ideas and creative work.</p></div></article>
+    <article><span>04</span><div><small>NEXT</small><h3>The Future</h3><p>Write about the person you want to become and the things you want to achieve.</p></div></article>
+  </div>
+</section>
 
-      <a class="scroll-cue" href="#about">
-        <span>Scroll to explore</span>
-        <b>↓</b>
-      </a>
-    </section>
+<section id="gallery" class="section"><div class="section-head"><p class="eyebrow">03 · PHOTOS</p><h2>My visual memories.</h2><p>Replace these demo cards with your own photos later.</p></div>
+  <div class="filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="memory">Memories</button><button class="filter" data-filter="travel">Travel</button><button class="filter" data-filter="creative">Creative</button></div>
+  <div class="gallery">
+    <div class="photo-card memory" data-title="A special memory"><div class="photo-placeholder p1">YOUR PHOTO</div><b>A special memory</b><small>Add a date & story</small></div>
+    <div class="photo-card travel" data-title="Travel"><div class="photo-placeholder p2">TRAVEL PHOTO</div><b>Places I visited</b><small>Add location & date</small></div>
+    <div class="photo-card creative" data-title="Creative work"><div class="photo-placeholder p3">CREATIVE PHOTO</div><b>Creative moments</b><small>Photography · Design</small></div>
+    <div class="photo-card memory" data-title="Friends & family"><div class="photo-placeholder p4">MEMORY</div><b>People & memories</b><small>The moments that matter</small></div>
+    <div class="photo-card travel" data-title="Adventure"><div class="photo-placeholder p5">ADVENTURE</div><b>Adventure</b><small>Stories from the road</small></div>
+    <div class="photo-card creative" data-title="My world"><div class="photo-placeholder p6">MY WORLD</div><b>My world</b><small>More coming soon</small></div>
+  </div>
+</section>
 
-    <section id="about" class="section about">
-      <div class="section-heading reveal">
-        <p class="eyebrow">01 — ABOUT</p>
-        <h2>A little bit <span>about me.</span></h2>
-      </div>
-      <div class="about-grid">
-        <div class="about-copy reveal">
-          <p class="lead">
-            I'm passionate about turning ideas into useful, clean, and memorable digital experiences.
-          </p>
-          <p>
-            I enjoy learning how technology works, building projects from scratch,
-            and improving my skills through practical work. This website is my
-            small corner of the internet where I can share what I'm learning and creating.
-          </p>
-          <a class="text-link" href="#contact">Let's talk <span>→</span></a>
-        </div>
-        <div class="stats reveal delay-1">
-          <div class="stat-card"><strong>01</strong><span>Curious<br>Mind</span></div>
-          <div class="stat-card"><strong>02</strong><span>Creative<br>Builder</span></div>
-          <div class="stat-card"><strong>03</strong><span>Always<br>Learning</span></div>
-          <div class="stat-card"><strong>∞</strong><span>Ideas to<br>Explore</span></div>
-        </div>
-      </div>
-    </section>
+<section id="videos" class="section alt"><div class="section-head"><p class="eyebrow">04 · VIDEOS & MUSIC</p><h2>Moments in motion.</h2></div>
+  <div class="media-grid"><div class="media-card"><div class="video-placeholder">▶</div><h3>My Videos</h3><p>Travel, college, memories, creative videos and future uploads.</p><button class="small-btn">Add YouTube link</button></div>
+  <div class="media-card"><div class="music-placeholder">♫</div><h3>My Music</h3><p>Favorite songs, playlists, music projects and songs connected to memories.</p><button class="small-btn">Add playlist</button></div></div>
+</section>
 
-    <section id="skills" class="section skills">
-      <div class="section-heading reveal">
-        <p class="eyebrow">02 — SKILLS</p>
-        <h2>Tools I love <span>working with.</span></h2>
-      </div>
-      <div class="skills-grid">
-        <div class="skill-card reveal"><div class="skill-icon">Py</div><h3>Python</h3><p>Programming & problem solving</p></div>
-        <div class="skill-card reveal delay-1"><div class="skill-icon">{"<>"}</div><h3>HTML</h3><p>Semantic web structure</p></div>
-        <div class="skill-card reveal delay-2"><div class="skill-icon">#</div><h3>CSS</h3><p>Responsive visual design</p></div>
-        <div class="skill-card reveal"><div class="skill-icon">JS</div><h3>JavaScript</h3><p>Interactive web experiences</p></div>
-        <div class="skill-card reveal delay-1"><div class="skill-icon">SQL</div><h3>SQL</h3><p>Working with data & databases</p></div>
-        <div class="skill-card reveal delay-2"><div class="skill-icon">Git</div><h3>GitHub</h3><p>Version control & deployment</p></div>
-      </div>
-    </section>
+<section id="education" class="section"><div class="section-head"><p class="eyebrow">05 · EDUCATION</p><h2>What I'm learning.</h2></div>
+  <div class="cards three"><article class="card"><span class="card-icon">🎓</span><h3>Academic Journey</h3><p>School, higher education and current studies.</p></article><article class="card"><span class="card-icon">📚</span><h3>Courses</h3><p>Add online courses, workshops and certifications.</p></article><article class="card"><span class="card-icon">🧠</span><h3>What I Learned</h3><p>Programming, mathematics, communication and life lessons.</p></article></div>
+</section>
 
-    <section id="projects" class="section projects">
-      <div class="section-heading reveal">
-        <p class="eyebrow">03 — PROJECTS</p>
-        <h2>Things I've <span>been building.</span></h2>
-      </div>
-      <div class="projects-grid">
-        <article class="project-card featured reveal">
-          <div class="project-number">01</div>
-          <div class="project-content">
-            <p class="project-type">WEB PROJECT</p>
-            <h3>Personal Portfolio</h3>
-            <p>A modern responsive portfolio designed to showcase skills, projects, and future work.</p>
-            <div class="chips"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
-            <a href="#contact" class="project-link">View project <span>↗</span></a>
-          </div>
-        </article>
-        <article class="project-card reveal delay-1">
-          <div class="project-number">02</div>
-          <div class="project-content">
-            <p class="project-type">SOFTWARE PROJECT</p>
-            <h3>Data & Analysis</h3>
-            <p>A practical project focused on processing, analysing, and presenting structured data.</p>
-            <div class="chips"><span>Python</span><span>CSV</span><span>Data</span></div>
-            <a href="#contact" class="project-link">View project <span>↗</span></a>
-          </div>
-        </article>
-        <article class="project-card reveal delay-2">
-          <div class="project-number">03</div>
-          <div class="project-content">
-            <p class="project-type">FUTURE PROJECT</p>
-            <h3>Something New</h3>
-            <p>This space is ready for the next idea, experiment, or project you want to showcase.</p>
-            <div class="chips"><span>Ideas</span><span>Build</span><span>Launch</span></div>
-            <a href="#contact" class="project-link">Coming soon <span>→</span></a>
-          </div>
-        </article>
-      </div>
-    </section>
+<section id="skills" class="section alt"><div class="section-head"><p class="eyebrow">06 · SKILLS</p><h2>Things I can build.</h2></div>
+  <div class="skills"><div><b>Python</b><span><i style="width:75%"></i></span></div><div><b>HTML / CSS</b><span><i style="width:80%"></i></span></div><div><b>JavaScript</b><span><i style="width:55%"></i></span></div><div><b>SQL / Databases</b><span><i style="width:65%"></i></span></div><div><b>Photo Editing</b><span><i style="width:80%"></i></span></div><div><b>Video / Creative</b><span><i style="width:70%"></i></span></div></div>
+</section>
 
-    <section class="section quote-section">
-      <div class="quote reveal">
-        <span class="quote-mark">“</span>
-        <p>Learn. Build. Improve. Repeat.</p>
-        <small>— My approach to technology</small>
-      </div>
-    </section>
+<section id="projects" class="section"><div class="section-head"><p class="eyebrow">07 · PROJECTS</p><h2>Ideas turned into reality.</h2></div>
+  <div class="cards three"><article class="card project"><span class="tag">TECH</span><h3>Personal Digital World</h3><p>This website — a living archive of my journey.</p><span class="tech">HTML · CSS · JS</span></article><article class="card project"><span class="tag">PYTHON</span><h3>Data & Programming</h3><p>Add your coursework, Python systems and data projects.</p><span class="tech">Python · CSV · Tkinter</span></article><article class="card project"><span class="tag">BUSINESS</span><h3>Business Ideas</h3><p>Add your stores, brands, product ideas and future startups.</p><span class="tech">Business · Marketing</span></article></div>
+</section>
 
-    <section id="contact" class="section contact">
-      <div class="contact-box reveal">
-        <div>
-          <p class="eyebrow">04 — CONTACT</p>
-          <h2>Have an idea?<br><span>Let's build it.</span></h2>
-          <p>I'm always interested in learning, collaborating, and creating something useful.</p>
-        </div>
-        <div class="contact-actions">
-          <a class="btn btn-primary" href="mailto:your-email@example.com">Email Me <span>↗</span></a>
-          <a class="contact-line" href="https://github.com/dhanula9999" target="_blank" rel="noopener">github.com/dhanula9999</a>
-        </div>
-      </div>
-    </section>
-  </main>
+<section id="achievements" class="section alt"><div class="section-head"><p class="eyebrow">08 · ACHIEVEMENTS</p><h2>Milestones I'm proud of.</h2></div>
+  <div class="achievement-grid"><div><strong>01</strong><h3>Certificates</h3><p>Add your qualifications.</p></div><div><strong>02</strong><h3>Academic</h3><p>Add exams and achievements.</p></div><div><strong>03</strong><h3>Personal</h3><p>Add milestones that matter to you.</p></div><div><strong>04</strong><h3>Future Wins</h3><p>Leave space for what's next.</p></div></div>
+</section>
 
-  <footer>
-    <p>© <span id="year"></span> Dhanula. Built with curiosity & code.</p>
-    <a href="#home">Back to top ↑</a>
-  </footer>
+<section id="travel" class="section"><div class="section-head"><p class="eyebrow">09 · TRAVEL</p><h2>Places, people & stories.</h2></div>
+  <div class="travel-map"><div class="map-dot d1">Sri Lanka</div><div class="map-dot d2">Anuradhapura</div><div class="map-dot d3">Nuwara Eliya</div><div class="map-dot d4">Matara</div><p>🗺️ Add more destinations as you travel.</p></div>
+</section>
 
-  <script src="script.js"></script>
+<section id="memories" class="section alt"><div class="section-head"><p class="eyebrow">10 · MEMORIES</p><h2>Keep the moments alive.</h2></div>
+  <div class="memory-wall"><article><span>❤️</span><h3>Best Memories</h3><p>Write the story behind your favorite moments.</p></article><article><span>👨‍👩‍👦</span><h3>Family</h3><p>Special moments with the people closest to you.</p></article><article><span>👥</span><h3>Friends</h3><p>Stories, jokes and unforgettable days.</p></article><article><span>📅</span><h3>Memory Calendar</h3><p>Connect important memories to dates.</p></article></div>
+</section>
+
+<section id="blog" class="section"><div class="section-head"><p class="eyebrow">11 · JOURNAL</p><h2>Thoughts & lessons.</h2></div>
+  <div class="cards three"><article class="card"><small>JOURNAL</small><h3>What I'm learning now</h3><p>Start writing your first post here.</p></article><article class="card"><small>TRAVEL</small><h3>A day I'll remember</h3><p>Turn a memory into a story.</p></article><article class="card"><small>LIFE</small><h3>Lessons along the way</h3><p>Share something future-you will enjoy reading.</p></article></div>
+</section>
+
+<section id="ideas" class="section alt"><div class="section-head"><p class="eyebrow">12 · MY IDEAS</p><h2>Things I want to create.</h2></div>
+  <div class="idea-board"><div><b>💡 App Ideas</b><p>Future applications and useful tools.</p></div><div><b>🚀 Startup Ideas</b><p>Business concepts and plans.</p></div><div><b>🎨 Creative Ideas</b><p>Photography, video, music and design.</p></div><div><b>🌍 Big Dreams</b><p>Ideas that could become something bigger.</p></div></div>
+</section>
+
+<section id="goals" class="section"><div class="section-head"><p class="eyebrow">13 · GOALS</p><h2>Progress, not perfection.</h2></div>
+  <div class="goals"><div><label>Education <b>70%</b></label><span><i style="width:70%"></i></span></div><div><label>Programming <b>60%</b></label><span><i style="width:60%"></i></span></div><div><label>Creative Work <b>75%</b></label><span><i style="width:75%"></i></span></div><div><label>Future Projects <b>35%</b></label><span><i style="width:35%"></i></span></div></div>
+</section>
+
+<section id="favorites" class="section alt"><div class="section-head"><p class="eyebrow">14 · FAVORITES</p><h2>A few things I love.</h2></div>
+  <div class="favorite-grid"><span>🎵 Music</span><span>🎬 Movies</span><span>📷 Photography</span><span>💻 Technology</span><span>✈️ Travel</span><span>☕ Quiet moments</span><span>📚 Learning</span><span>🎮 Games</span></div>
+</section>
+
+<section id="business" class="section"><div class="section-head"><p class="eyebrow">15 · BUSINESS</p><h2>My entrepreneurial side.</h2></div>
+  <div class="business-card"><div class="business-logo">VS</div><div><small>MY BRAND</small><h3>Vela Store</h3><p>Use this space for your products, brand story, social links and future business projects.</p><a href="#contact" class="small-btn">Connect</a></div></div>
+</section>
+
+<section id="future" class="section alt"><div class="section-head"><p class="eyebrow">16 · THE FUTURE</p><h2>Where I'm going.</h2></div>
+  <div class="future-grid"><div><b>01</b><h3>Career</h3><p>Build a career I'm proud of.</p></div><div><b>02</b><h3>Creation</h3><p>Build useful technology and creative work.</p></div><div><b>03</b><h3>Travel</h3><p>See more of the world.</p></div><div><b>04</b><h3>Legacy</h3><p>Create things worth remembering.</p></div></div>
+</section>
+
+<section id="bucket" class="section"><div class="section-head"><p class="eyebrow">17 · BUCKET LIST</p><h2>Dreams waiting to happen.</h2></div>
+  <div class="bucket"><label><input type="checkbox"> Build a successful personal brand</label><label><input type="checkbox"> Visit my dream country</label><label><input type="checkbox"> Launch a major project</label><label><input type="checkbox"> Learn another language</label><label><input type="checkbox"> Create something people remember</label><label><input type="checkbox"> Keep adding to this website</label></div>
+</section>
+
+<section id="contact" class="section contact"><div class="section-head"><p class="eyebrow">18 · CONTACT</p><h2>Let's connect.</h2><p>Replace these links with your real social profiles and contact details.</p></div>
+  <div class="contact-grid"><a href="#" class="contact-card">📧 <b>Email</b><small>Add email</small></a><a href="#" class="contact-card">💬 <b>WhatsApp</b><small>Add link</small></a><a href="#" class="contact-card">▶️ <b>YouTube</b><small>Add channel</small></a><a href="#" class="contact-card">💻 <b>GitHub</b><small>Add profile</small></a></div>
+</section>
+</main>
+
+<footer><div><b>Dhanula.</b><p>My Digital World · My Story · My Future</p></div><p>© <span id="year"></span> Dhanula. Built with ❤️</p></footer>
+<div id="searchPanel" class="search-panel"><input id="searchInput" placeholder="Search my world..."><div id="searchResults"></div></div>
+<button id="searchBtn" class="search-fab" aria-label="Search">⌕</button>
+<script src="script.js"></script>
 </body>
 </html>
