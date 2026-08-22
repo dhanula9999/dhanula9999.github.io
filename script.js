@@ -1,45 +1,110 @@
 const photoInput = document.getElementById("photoInput");
-const galleryContainer = document.getElementById("galleryContainer");
+const gallery = document.getElementById("gallery");
 
+
+// Load saved photos when website opens
+window.addEventListener("load", loadPhotos);
+
+
+// Upload photos
 photoInput.addEventListener("change", function () {
 
-    const files = this.files;
+    const files = Array.from(photoInput.files);
 
-    for (let file of files) {
+    files.forEach(file => {
 
         if (!file.type.startsWith("image/")) {
-            continue;
+            return;
         }
 
         const reader = new FileReader();
 
         reader.onload = function (event) {
 
-            const photoCard = document.createElement("div");
+            const photoData = event.target.result;
 
-            photoCard.className = "photo-card";
+            savePhoto(photoData);
 
-            photoCard.innerHTML = `
-                <img src="${event.target.result}" alt="My Photo">
-
-                <button class="delete-btn">
-                    Delete
-                </button>
-            `;
-
-            photoCard
-                .querySelector(".delete-btn")
-                .addEventListener("click", function () {
-
-                    photoCard.remove();
-
-                });
-
-            galleryContainer.appendChild(photoCard);
+            displayPhoto(photoData);
         };
 
         reader.readAsDataURL(file);
-    }
+    });
 
     photoInput.value = "";
 });
+
+
+// Save photo in browser storage
+function savePhoto(photoData) {
+
+    let photos = JSON.parse(localStorage.getItem("myPhotos")) || [];
+
+    photos.push(photoData);
+
+    localStorage.setItem("myPhotos", JSON.stringify(photos));
+}
+
+
+// Load photos
+function loadPhotos() {
+
+    let photos = JSON.parse(localStorage.getItem("myPhotos")) || [];
+
+    photos.forEach(photo => {
+        displayPhoto(photo);
+    });
+}
+
+
+// Display photo
+function displayPhoto(photoData) {
+
+    const card = document.createElement("div");
+
+    card.className = "photo-card";
+
+    const image = document.createElement("img");
+
+    image.src = photoData;
+
+    image.alt = "My Photo";
+
+
+    // Delete button
+    const deleteButton = document.createElement("button");
+
+    deleteButton.className = "delete-button";
+
+    deleteButton.innerHTML = "×";
+
+    deleteButton.title = "Delete photo";
+
+
+    deleteButton.addEventListener("click", function(event) {
+
+        event.stopPropagation();
+
+        deletePhoto(photoData);
+
+        card.remove();
+    });
+
+
+    card.appendChild(image);
+
+    card.appendChild(deleteButton);
+
+    gallery.appendChild(card);
+}
+
+
+// Delete photo
+function deletePhoto(photoData) {
+
+    let photos = JSON.parse(localStorage.getItem("myPhotos")) || [];
+
+    photos = photos.filter(photo => photo !== photoData);
+
+    localStorage.setItem("myPhotos", JSON.stringify(photos));
+}
