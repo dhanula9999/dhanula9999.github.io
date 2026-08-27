@@ -23,6 +23,7 @@
             <nav>
                 <a href="#home">Home</a>
                 <a href="#about">About Me</a>
+                <a href="#stories">Stories</a>
                 <a href="#photos">My Photos</a>
             </nav>
 
@@ -115,7 +116,122 @@
     </section>
 
 
+    <!-- ================= STORIES ================= -->
+
+    <section id="stories" class="stories">
+
+        <div class="section-container">
+
+            <p class="section-label">
+                MY MOMENTS
+            </p>
+
+            <h2>
+                My Stories
+            </h2>
+
+            <p class="section-description">
+                Tap a story to view my moments.
+            </p>
+
+
+            <div class="story-list">
+
+                <!-- STORY 1 -->
+                <div class="story-item" onclick="openStory(0)">
+
+                    <div class="story-circle">
+
+                        <img
+                            src="stories/story1.jpg"
+                            alt="Story 1"
+                        >
+
+                    </div>
+
+                    <p>
+                        Story 1
+                    </p>
+
+                </div>
+
+
+                <!-- STORY 2 -->
+                <div class="story-item" onclick="openStory(1)">
+
+                    <div class="story-circle">
+
+                        <img
+                            src="stories/story2.jpg"
+                            alt="Story 2"
+                        >
+
+                    </div>
+
+                    <p>
+                        Story 2
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= STORY VIEWER ================= -->
+
+    <div id="storyViewer" class="story-viewer">
+
+        <!-- TOP PROGRESS BARS -->
+
+        <div id="storyProgress" class="story-progress">
+        </div>
+
+
+        <!-- CLOSE BUTTON -->
+
+        <button
+            class="story-close"
+            onclick="closeStory()"
+        >
+            &times;
+        </button>
+
+
+        <!-- STORY IMAGE -->
+
+        <img
+            id="storyImage"
+            class="story-image"
+            src=""
+            alt="Story"
+        >
+
+
+        <!-- LEFT / RIGHT CONTROLS -->
+
+        <button
+            class="story-prev"
+            onclick="previousStory()"
+        >
+            &#10094;
+        </button>
+
+        <button
+            class="story-next"
+            onclick="nextStory()"
+        >
+            &#10095;
+        </button>
+
+    </div>
+
+
     <!-- ================= PHOTOS ================= -->
+
     <section id="photos" class="photos">
 
         <div class="section-container">
@@ -139,6 +255,7 @@
 
 
                 <!-- PHOTO 1 -->
+
                 <div class="photo-card">
 
                     <div class="photo-image">
@@ -167,6 +284,7 @@
 
 
                 <!-- PHOTO 2 -->
+
                 <div class="photo-card">
 
                     <div class="photo-image">
@@ -195,6 +313,7 @@
 
 
                 <!-- PHOTO 3 -->
+
                 <div class="photo-card">
 
                     <div class="photo-image">
@@ -223,6 +342,7 @@
 
 
                 <!-- PHOTO 4 -->
+
                 <div class="photo-card">
 
                     <div class="photo-image">
@@ -251,6 +371,7 @@
 
 
                 <!-- PHOTO 5 -->
+
                 <div class="photo-card">
 
                     <div class="photo-image">
@@ -279,6 +400,7 @@
 
 
                 <!-- PHOTO 6 -->
+
                 <div class="photo-card">
 
                     <div class="photo-image">
@@ -317,11 +439,17 @@
 
     <div id="imageModal" class="image-modal">
 
-        <span class="close-button" onclick="closeImage()">
+        <span
+            class="close-button"
+            onclick="closeImage()"
+        >
             &times;
         </span>
 
-        <img id="fullImage" class="full-image">
+        <img
+            id="fullImage"
+            class="full-image"
+        >
 
     </div>
 
