@@ -12,9 +12,13 @@ const stories = {
     },
     "2025": {
         title: "2025",
-        photos: [] // 2025 සඳහා පසුව පින්තූර එකතු කළ හැක
+        photos: []
     }
 };
+
+let currentYear = "2026";
+let currentPhotoIndex = 0;
+let autoSlideTimer = null;
 
 
 /* =====================================================
@@ -62,14 +66,69 @@ function handleImageError(img) {
 
 
 /* =====================================================
-   SELECT STORY BY YEAR (Show all images for that year)
+   DISPLAY CURRENT PHOTO
+===================================================== */
+
+function displayCurrentPhoto() {
+    const story = stories[currentYear];
+    const memoryGrid = document.getElementById("memoryGrid");
+    memoryGrid.innerHTML = "";
+
+    if (!story || story.photos.length === 0) {
+        memoryGrid.innerHTML = `<p style="text-align: center; color: #777; width: 100%;">No memories added for ${currentYear} yet.</p>`;
+        return;
+    }
+
+    if (currentPhotoIndex >= story.photos.length) {
+        currentPhotoIndex = 0;
+    } else if (currentPhotoIndex < 0) {
+        currentPhotoIndex = story.photos.length - 1;
+    }
+
+    const photo = story.photos[currentPhotoIndex];
+    const card = document.createElement("div");
+    card.className = "memory-card";
+    card.innerHTML = `
+        <img src="${photo.image}" alt="${story.title}" loading="lazy" onerror="handleImageError(this)" onclick="openImage('${photo.image}')">
+    `;
+    memoryGrid.appendChild(card);
+}
+
+
+/* =====================================================
+   NEXT & PREVIOUS BUTTON FUNCTIONS
+===================================================== */
+
+function nextPhoto() {
+    const story = stories[currentYear];
+    if (story && story.photos.length > 0) {
+        currentPhotoIndex = (currentPhotoIndex + 1) % story.photos.length;
+        displayCurrentPhoto();
+        resetAutoSlide();
+    }
+}
+
+function prevPhoto() {
+    const story = stories[currentYear];
+    if (story && story.photos.length > 0) {
+        currentPhotoIndex = (currentPhotoIndex - 1 + story.photos.length) % story.photos.length;
+        displayCurrentPhoto();
+        resetAutoSlide();
+    }
+}
+
+
+/* =====================================================
+   SELECT STORY BY YEAR
 ===================================================== */
 
 function selectStory(year) {
     const story = stories[year];
     if (!story) return;
 
-    // Highlights වල Active state එක මාරු කිරීම
+    currentYear = year;
+    currentPhotoIndex = 0;
+
     const highlights = document.querySelectorAll(".story-highlight");
     highlights.forEach(function(item) {
         item.classList.remove("active");
@@ -80,7 +139,6 @@ function selectStory(year) {
         selected.classList.add("active");
     }
 
-    // Header එක Update කිරීම
     const selectedTitle = document.getElementById("selectedTitle");
     selectedTitle.textContent = story.title;
 
@@ -88,23 +146,28 @@ function selectStory(year) {
     const total = story.photos.length;
     memoryCount.textContent = total + (total === 1 ? " memory" : " memories");
 
-    // එම Year එකට අදාළ සියලුම Photos එකවර Grid එකේ පෙන්වීම
-    const memoryGrid = document.getElementById("memoryGrid");
-    memoryGrid.innerHTML = "";
+    displayCurrentPhoto();
+    resetAutoSlide();
+}
 
-    if (total === 0) {
-        memoryGrid.innerHTML = `<p style="grid-column: 1/-1; color: #777;">No memories added for ${year} yet.</p>`;
-        return;
-    }
 
-    story.photos.forEach(function(photo) {
-        const card = document.createElement("div");
-        card.className = "memory-card";
-        card.innerHTML = `
-            <img src="${photo.image}" alt="${story.title}" loading="lazy" onerror="handleImageError(this)" onclick="openImage('${photo.image}')">
-        `;
-        memoryGrid.appendChild(card);
-    });
+/* =====================================================
+   AUTO SWITCH IMAGES (Every 6 Seconds)
+===================================================== */
+
+function startAutoSlide() {
+    autoSlideTimer = setInterval(function() {
+        const story = stories[currentYear];
+        if (story && story.photos.length > 1) {
+            currentPhotoIndex = (currentPhotoIndex + 1) % story.photos.length;
+            displayCurrentPhoto();
+        }
+    }, 6000); // 6000ms = 6 seconds
+}
+
+function resetAutoSlide() {
+    clearInterval(autoSlideTimer);
+    startAutoSlide();
 }
 
 
@@ -118,7 +181,7 @@ function showNewStoryMessage() {
 
 
 /* =====================================================
-   IMAGE VIEWER (FULLSCREEN)
+   IMAGE VIEWER
 ===================================================== */
 
 function openImage(imageSource) {
@@ -131,7 +194,7 @@ function openImage(imageSource) {
 
 
 /* =====================================================
-   CLOSE IMAGE VIEWER
+   CLOSE IMAGE
 ===================================================== */
 
 function closeImage() {
@@ -155,7 +218,7 @@ document.getElementById("imageModal").addEventListener("click", function(event) 
 
 
 /* =====================================================
-   ESC KEY TO CLOSE
+   ESC KEY
 ===================================================== */
 
 document.addEventListener("keydown", function(event) {
@@ -187,7 +250,8 @@ function initMobileNav() {
 ===================================================== */
 
 document.addEventListener("DOMContentLoaded", function() {
-    selectStory("2026"); // මුලින්ම 2026 Stories පෙන්වයි
+    selectStory("2026");
     initMobileNav();
     initSmoothScroll();
+    startAutoSlide();
 });
