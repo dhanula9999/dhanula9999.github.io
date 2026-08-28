@@ -204,7 +204,7 @@ function startAutoSlide() {
             currentPhotoIndex = (currentPhotoIndex + 1) % images.length;
             renderStory();
         }
-    }, 6000);
+    }, 5000); // 5 Seconds (5000ms)
 }
 
 function resetAutoSlide() {
