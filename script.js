@@ -1,21 +1,22 @@
 /* =====================================================
-   STORY DATA (Strictly using stories/ folder images)
+   STORY DATA BY YEAR (All current story photos in 2026)
 ===================================================== */
 
 const stories = {
-    story1: {
-        title: "Story 1",
+    "2026": {
+        title: "2026",
         photos: [
-            { image: "stories/story1.jpg" }
-        ]
-    },
-    story2: {
-        title: "Story 2",
-        photos: [
+            { image: "stories/story1.jpg" },
             { image: "stories/story2.jpg" }
         ]
+    },
+    "2025": {
+        title: "2025",
+        photos: []
     }
 };
+
+let autoSlideTimer = null;
 
 
 /* =====================================================
@@ -63,11 +64,11 @@ function handleImageError(img) {
 
 
 /* =====================================================
-   SELECT STORY (Text Removed - Images Only)
+   SELECT STORY BY YEAR
 ===================================================== */
 
-function selectStory(storyName) {
-    const story = stories[storyName];
+function selectStory(year) {
+    const story = stories[year];
     if (!story) return;
 
     const highlights = document.querySelectorAll(".story-highlight");
@@ -75,7 +76,7 @@ function selectStory(storyName) {
         item.classList.remove("active");
     });
 
-    const selected = document.querySelector(`.story-highlight[data-story="${storyName}"]`);
+    const selected = document.querySelector(`.story-highlight[data-story="${year}"]`);
     if (selected) {
         selected.classList.add("active");
     }
@@ -90,7 +91,6 @@ function selectStory(storyName) {
     const memoryGrid = document.getElementById("memoryGrid");
     memoryGrid.innerHTML = "";
 
-    // Image only card (No text)
     story.photos.forEach(function(photo) {
         const card = document.createElement("div");
         card.className = "memory-card";
@@ -99,6 +99,21 @@ function selectStory(storyName) {
         `;
         memoryGrid.appendChild(card);
     });
+}
+
+
+/* =====================================================
+   AUTO SWITCH STORIES (Every 7 Seconds)
+===================================================== */
+
+function startAutoSlide() {
+    const years = Object.keys(stories);
+    let currentIndex = 0;
+
+    autoSlideTimer = setInterval(function() {
+        currentIndex = (currentIndex + 1) % years.length;
+        selectStory(years[currentIndex]);
+    }, 7000); // 7000ms = 7 seconds
 }
 
 
@@ -177,11 +192,12 @@ function initMobileNav() {
 
 
 /* =====================================================
-   LOAD FIRST STORY
+   INITIALIZATION
 ===================================================== */
 
 document.addEventListener("DOMContentLoaded", function() {
-    selectStory("story1");
+    selectStory("2026");
     initMobileNav();
     initSmoothScroll();
+    startAutoSlide();
 });
