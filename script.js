@@ -1,34 +1,18 @@
 /* =====================================================
-   STORY DATA
+   STORY DATA (Strictly using stories/ folder images)
 ===================================================== */
 
 const stories = {
-    china: {
-        title: "China",
+    story1: {
+        title: "Story 1",
         photos: [
-            { image: "stories/story1.jpg", title: "China", description: "A beautiful night in China." },
-            { image: "stories/story2.jpg", title: "China Memory", description: "Another special moment." }
+            { image: "stories/story1.jpg", title: "Story 1", description: "Memory from story 1." }
         ]
     },
-    nature: {
-        title: "Nature",
+    story2: {
+        title: "Story 2",
         photos: [
-            { image: "stories/story2.jpg", title: "Nature", description: "A peaceful moment surrounded by nature." },
-            { image: "images/photo2.jpg", title: "Beautiful Nature", description: "A beautiful place to remember." }
-        ]
-    },
-    travel: {
-        title: "Travel",
-        photos: [
-            { image: "images/photo3.jpg", title: "Travel", description: "Exploring a new place." },
-            { image: "images/photo4.jpg", title: "Travel Memory", description: "A special moment from my journey." }
-        ]
-    },
-    friends: {
-        title: "Friends",
-        photos: [
-            { image: "images/photo5.jpg", title: "Friends", description: "Good times with friends." },
-            { image: "images/photo6.jpg", title: "Good Times", description: "A memory worth keeping." }
+            { image: "stories/story2.jpg", title: "Story 2", description: "Memory from story 2." }
         ]
     }
 };
@@ -50,7 +34,6 @@ function initSmoothScroll() {
 
             const targetSection = document.querySelector(targetId);
             if (targetSection) {
-                // Close mobile menu if open
                 const mainNav = document.getElementById('mainNav');
                 const navToggle = document.getElementById('navToggle');
                 if (mainNav && mainNav.classList.contains('active')) {
@@ -58,7 +41,6 @@ function initSmoothScroll() {
                     if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
                 }
 
-                // Smooth scroll to section
                 targetSection.scrollIntoView({
                     behavior: 'smooth',
                     block: 'start'
@@ -202,7 +184,7 @@ function initMobileNav() {
 ===================================================== */
 
 document.addEventListener("DOMContentLoaded", function() {
-    selectStory("china");
+    selectStory("story1");
     initMobileNav();
     initSmoothScroll();
 });
