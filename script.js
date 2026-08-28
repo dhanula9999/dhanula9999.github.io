@@ -58,11 +58,12 @@ const photoAlbums = [
     },
     { title: "Photo 21", cover: "photo21.jpg", images: ["photo21.jpg"] },
     { title: "Photo 23", cover: "photo23.jpg", images: ["photo23.jpg"] },
-    // photo24 සිට photo27 දක්වා පින්තූර අවසානයට ඇතුළත් කරන ලදී:
     { title: "Photo 24", cover: "photo24.jpg", images: ["photo24.jpg"] },
     { title: "Photo 25", cover: "photo25.jpg", images: ["photo25.jpg"] },
     { title: "Photo 26", cover: "photo26.jpg", images: ["photo26.jpg"] },
-    { title: "Photo 27", cover: "photo27.jpg", images: ["photo27.jpg"] }
+    { title: "Photo 27", cover: "photo27.jpg", images: ["photo27.jpg"] },
+    // photo28.jpg මෙතැනින් ඇතුළත් කරන ලදී:
+    { title: "Photo 28", cover: "photo28.jpg", images: ["photo28.jpg"] }
 ];
 
 function loadPhotos() {
