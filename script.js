@@ -1,355 +1,547 @@
-/* =========================================================
+/* =====================================================
    SUPABASE CONFIGURATION
-========================================================= */
+===================================================== */
 
 /*
-   IMPORTANT:
+    IMPORTANT:
 
-   Replace these two values with your Supabase project
-   information.
-
-   Supabase Dashboard
-   → Project Settings
-   → API
+    Replace these two values with your Supabase project
+    URL and anon/public key.
 */
 
-const SUPABASE_URL =
-    "YOUR_SUPABASE_PROJECT_URL";
+const SUPABASE_URL = "YOUR_SUPABASE_PROJECT_URL";
 
-const SUPABASE_ANON_KEY =
-    "YOUR_SUPABASE_ANON_KEY";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
 
 
-/* =========================================================
-   STORAGE CONFIGURATION
-========================================================= */
+/* =====================================================
+   SUPABASE CLIENT
+===================================================== */
 
-const BUCKET_NAME = "photos";
+let supabaseClient = null;
 
+try {
 
-/*
-   Public URL generator
-*/
+    if (
+        typeof window.supabase !== "undefined" &&
+        SUPABASE_URL !== "YOUR_SUPABASE_PROJECT_URL" &&
+        SUPABASE_ANON_KEY !== "YOUR_SUPABASE_ANON_KEY"
+    ) {
 
-function getPublicUrl(path) {
+        supabaseClient = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
 
-    return (
-        SUPABASE_URL +
-        "/storage/v1/object/public/" +
-        BUCKET_NAME +
-        "/" +
-        path
+    }
+
+} catch (error) {
+
+    console.error(
+        "Supabase initialization error:",
+        error
     );
 
 }
 
 
-/* =========================================================
-   MOBILE NAVIGATION
-========================================================= */
+/* =====================================================
+   GLOBAL VARIABLES
+===================================================== */
 
-const navToggle =
-    document.getElementById("navToggle");
+const PHOTO_BUCKET = "photos";
 
-const mainNav =
-    document.getElementById("mainNav");
+let allPhotos = [];
 
-
-if (navToggle) {
-
-    navToggle.addEventListener("click", () => {
-
-        const isOpen =
-            mainNav.classList.toggle("open");
-
-        navToggle.setAttribute(
-            "aria-expanded",
-            isOpen
-        );
-
-    });
-
-}
-
-
-/* Close mobile menu after clicking */
-
-document.querySelectorAll(".nav-link")
-    .forEach(link => {
-
-        link.addEventListener("click", () => {
-
-            mainNav.classList.remove("open");
-
-            navToggle.setAttribute(
-                "aria-expanded",
-                "false"
-            );
-
-        });
-
-    });
-
-
-/* =========================================================
-   IMAGE ERROR
-========================================================= */
-
-function handleImageError(image) {
-
-    image.style.display = "none";
-
-}
-
-
-/* =========================================================
-   GALLERY
-========================================================= */
-
-/*
-   Add your Supabase photo filenames here.
-
-   Example:
-
-   photos/
-      photo1.jpg
-      photo2.jpg
-      photo3.jpg
-      photo4.jpg
-      photo5.jpg
-      photo6.jpg
-*/
-
-const galleryPhotos = [
-
-    "images/photo1.jpg",
-    "images/photo2.jpg",
-    "images/photo3.jpg",
-    "images/photo4.jpg",
-    "images/photo5.jpg",
-    "images/photo6.jpg"
-
-];
-
-
-function loadGallery() {
-
-    const gallery =
-        document.getElementById("gallery");
-
-    gallery.innerHTML = "";
-
-
-    galleryPhotos.forEach((path, index) => {
-
-        const url =
-            getPublicUrl(path);
-
-
-        const card =
-            document.createElement("div");
-
-        card.className =
-            "photo-card";
-
-
-        card.innerHTML = `
-
-            <div class="photo-image">
-
-                <img
-                    src="${url}"
-                    alt="Dhanula photo ${index + 1}"
-                    loading="lazy"
-                    onclick="openImage('${url}')"
-                    onerror="this.closest('.photo-card').style.display='none'"
-                >
-
-            </div>
-
-        `;
-
-
-        gallery.appendChild(card);
-
-    });
-
-
-    if (gallery.children.length === 0) {
-
-        gallery.innerHTML = `
-            <div class="loading">
-                No photos available.
-            </div>
-        `;
-
-    }
-
-}
-
-
-/* =========================================================
-   STORIES DATA
-========================================================= */
-
-
-/*
-   Supabase Storage structure:
-
-   photos/
-   │
-   ├── images/
-   │   ├── photo1.jpg
-   │   ├── photo2.jpg
-   │   ├── photo3.jpg
-   │   ├── photo4.jpg
-   │   ├── photo5.jpg
-   │   └── photo6.jpg
-   │
-   └── stories/
-       ├── story1.jpg
-       └── story2.jpg
-
-
-   For 2026 memories:
-
-   stories/2026/
-
-   For 2025 memories:
-
-   stories/2025/
-*/
-
-
-const stories = {
-
-    "2026": [
-
-        "stories/2026/photo1.jpg",
-        "stories/2026/photo2.jpg"
-
-    ],
-
-    "2025": [
-
-        "stories/2025/photo1.jpg",
-        "stories/2025/photo2.jpg"
-
-    ]
-
-};
-
-
-/* =========================================================
-   STORY COVER IMAGES
-========================================================= */
-
-const storyCovers = {
-
-    "2026":
-        "stories/story1.jpg",
-
-    "2025":
-        "stories/story2.jpg"
-
-};
-
-
-function loadStoryCovers() {
-
-    const cover2026 =
-        document.getElementById(
-            "storyImage2026"
-        );
-
-    const cover2025 =
-        document.getElementById(
-            "storyImage2025"
-        );
-
-
-    if (cover2026) {
-
-        cover2026.src =
-            getPublicUrl(
-                storyCovers["2026"]
-            );
-
-    }
-
-
-    if (cover2025) {
-
-        cover2025.src =
-            getPublicUrl(
-                storyCovers["2025"]
-            );
-
-    }
-
-}
-
-
-/* =========================================================
-   STORY SLIDER
-========================================================= */
-
-let selectedYear = "2026";
+let currentStory = "2026";
 
 let currentPhotoIndex = 0;
 
 
-function selectStory(year) {
+/* =====================================================
+   DOM READY
+===================================================== */
 
-    if (!stories[year]) {
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
 
+        setupNavigation();
+
+        setupModalEvents();
+
+        loadPhotos();
+
+        selectStory("2026");
+
+    }
+);
+
+
+/* =====================================================
+   MOBILE NAVIGATION
+===================================================== */
+
+function setupNavigation() {
+
+    const navToggle =
+        document.getElementById("navToggle");
+
+    const mainNav =
+        document.getElementById("mainNav");
+
+    if (!navToggle || !mainNav) {
         return;
-
     }
 
+    navToggle.addEventListener(
+        "click",
+        function () {
 
-    selectedYear = year;
+            const isOpen =
+                mainNav.classList.toggle("open");
 
-    currentPhotoIndex = 0;
+            navToggle.setAttribute(
+                "aria-expanded",
+                isOpen ? "true" : "false"
+            );
 
-
-    document.querySelectorAll(
-        ".story-highlight"
-    ).forEach(item => {
-
-        item.classList.remove("active");
-
-    });
-
-
-    const selected =
-        document.querySelector(
-            `[data-story="${year}"]`
-        );
+        }
+    );
 
 
-    if (selected) {
+    const links =
+        mainNav.querySelectorAll(".nav-link");
 
-        selected.classList.add("active");
+    links.forEach(
+        function (link) {
 
-    }
+            link.addEventListener(
+                "click",
+                function () {
 
+                    mainNav.classList.remove("open");
 
-    document.getElementById(
-        "selectedTitle"
-    ).textContent = year;
+                    navToggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
 
+                }
+            );
 
-    renderStoryPhotos();
+        }
+    );
 
 }
 
 
-/* =========================================================
-   RENDER STORY PHOTOS
-========================================================= */
+/* =====================================================
+   LOAD PHOTOS FROM SUPABASE
+===================================================== */
 
-function renderStoryPhotos() {
+async function loadPhotos() {
+
+    const loading =
+        document.getElementById("galleryLoading");
+
+    const gallery =
+        document.getElementById("gallery");
+
+    const empty =
+        document.getElementById("galleryEmpty");
+
+    const errorBox =
+        document.getElementById("galleryError");
+
+    const errorText =
+        document.getElementById("galleryErrorText");
+
+
+    if (loading) {
+        loading.style.display = "flex";
+    }
+
+    if (gallery) {
+        gallery.innerHTML = "";
+    }
+
+    if (empty) {
+        empty.style.display = "none";
+    }
+
+    if (errorBox) {
+        errorBox.style.display = "none";
+    }
+
+
+    /* Check configuration */
+
+    if (!supabaseClient) {
+
+        if (loading) {
+            loading.style.display = "none";
+        }
+
+        if (errorBox) {
+
+            errorBox.style.display = "block";
+
+            if (errorText) {
+
+                errorText.textContent =
+                    "Supabase is not configured. Add your Supabase URL and anon key to script.js.";
+
+            }
+
+        }
+
+        console.error(
+            "Supabase is not configured."
+        );
+
+        return;
+    }
+
+
+    try {
+
+        /*
+            Get files from the root of the
+            "photos" bucket.
+        */
+
+        const {
+            data,
+            error
+        } = await supabaseClient
+            .storage
+            .from(PHOTO_BUCKET)
+            .list(
+                "",
+                {
+                    limit: 1000,
+
+                    offset: 0,
+
+                    sortBy: {
+                        column: "created_at",
+
+                        order: "desc"
+                    }
+                }
+            );
+
+
+        if (error) {
+            throw error;
+        }
+
+
+        /*
+            Only display image files.
+        */
+
+        allPhotos =
+            (data || []).filter(
+                function (file) {
+
+                    if (!file.name) {
+                        return false;
+                    }
+
+                    /*
+                        Ignore folders.
+                    */
+
+                    if (
+                        file.id === null &&
+                        file.metadata === null
+                    ) {
+                        return false;
+                    }
+
+                    const extension =
+                        file.name
+                            .split(".")
+                            .pop()
+                            .toLowerCase();
+
+                    return [
+                        "jpg",
+                        "jpeg",
+                        "png",
+                        "webp",
+                        "gif",
+                        "avif"
+                    ].includes(extension);
+
+                }
+            );
+
+
+        if (loading) {
+            loading.style.display = "none";
+        }
+
+
+        /* No photos */
+
+        if (allPhotos.length === 0) {
+
+            if (empty) {
+                empty.style.display = "block";
+            }
+
+            return;
+        }
+
+
+        /*
+            Display photos
+        */
+
+        displayGallery(allPhotos);
+
+
+    } catch (error) {
+
+        console.error(
+            "Error loading Supabase photos:",
+            error
+        );
+
+
+        if (loading) {
+            loading.style.display = "none";
+        }
+
+        if (errorBox) {
+
+            errorBox.style.display = "block";
+
+            if (errorText) {
+
+                errorText.textContent =
+                    "Could not load photos. Please check your Supabase bucket and policies.";
+
+            }
+
+        }
+
+    }
+
+}
+
+
+/* =====================================================
+   DISPLAY GALLERY
+===================================================== */
+
+function displayGallery(files) {
+
+    const gallery =
+        document.getElementById("gallery");
+
+    if (!gallery) {
+        return;
+    }
+
+    gallery.innerHTML = "";
+
+
+    files.forEach(
+        function (file) {
+
+            const publicUrl =
+                getPublicImageUrl(file.name);
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "photo-card";
+
+
+            const imageContainer =
+                document.createElement("div");
+
+            imageContainer.className =
+                "photo-image";
+
+
+            const image =
+                document.createElement("img");
+
+            image.src =
+                publicUrl;
+
+            image.alt =
+                cleanFileName(file.name);
+
+            image.loading =
+                "lazy";
+
+
+            image.onerror =
+                function () {
+
+                    handleImageError(image);
+
+                };
+
+
+            image.onclick =
+                function () {
+
+                    openImage(publicUrl);
+
+                };
+
+
+            imageContainer.appendChild(
+                image
+            );
+
+
+            card.appendChild(
+                imageContainer
+            );
+
+
+            gallery.appendChild(
+                card
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   GET PUBLIC IMAGE URL
+===================================================== */
+
+function getPublicImageUrl(fileName) {
+
+    const {
+        data
+    } = supabaseClient
+        .storage
+        .from(PHOTO_BUCKET)
+        .getPublicUrl(fileName);
+
+    return data.publicUrl;
+
+}
+
+
+/* =====================================================
+   CLEAN FILE NAME
+===================================================== */
+
+function cleanFileName(fileName) {
+
+    return fileName
+        .replace(/\.[^/.]+$/, "")
+        .replace(/[-_]/g, " ")
+        .replace(/\b\w/g, function (letter) {
+            return letter.toUpperCase();
+        });
+
+}
+
+
+/* =====================================================
+   STORIES
+===================================================== */
+
+function selectStory(year) {
+
+    currentStory = year;
+
+    currentPhotoIndex = 0;
+
+
+    /* Update active story */
+
+    const storyItems =
+        document.querySelectorAll(
+            ".story-highlight[data-story]"
+        );
+
+    storyItems.forEach(
+        function (item) {
+
+            item.classList.remove("active");
+
+            if (
+                item.dataset.story === year
+            ) {
+
+                item.classList.add("active");
+
+            }
+
+        }
+    );
+
+
+    const title =
+        document.getElementById(
+            "selectedTitle"
+        );
+
+    if (title) {
+        title.textContent = year;
+    }
+
+
+    /*
+        Currently the stories use the local
+        story images from the stories folder.
+
+        You can later move these into Supabase.
+    */
+
+    const storyPhotos = getStoryPhotos(year);
+
+    displayStoryPhotos(storyPhotos);
+
+}
+
+
+/* =====================================================
+   STORY PHOTO DATA
+===================================================== */
+
+function getStoryPhotos(year) {
+
+    const stories = {
+
+        "2026": [
+            "stories/story1.jpg",
+            "stories/story1.jpg"
+        ],
+
+        "2025": [
+            "stories/story2.jpg",
+            "stories/story2.jpg"
+        ]
+
+    };
+
+    return stories[year] || [];
+
+}
+
+
+/* =====================================================
+   DISPLAY STORY PHOTOS
+===================================================== */
+
+function displayStoryPhotos(photos) {
 
     const grid =
         document.getElementById(
@@ -362,66 +554,29 @@ function renderStoryPhotos() {
         );
 
 
-    const photos =
-        stories[selectedYear] || [];
-
-
-    if (photos.length === 0) {
-
-        grid.innerHTML = `
-            <div class="loading">
-                No memories available for ${selectedYear}.
-            </div>
-        `;
-
-        count.textContent =
-            "0 memories";
-
+    if (!grid) {
         return;
-
-    }
-
-
-    count.textContent =
-        photos.length === 1
-            ? "1 memory"
-            : `${photos.length} memories`;
-
-
-    /*
-       Show current photo and next photo
-       on desktop.
-    */
-
-    const visiblePhotos = [];
-
-
-    for (
-        let i = 0;
-        i < Math.min(2, photos.length);
-        i++
-    ) {
-
-        const index =
-            (currentPhotoIndex + i)
-            % photos.length;
-
-        visiblePhotos.push(
-            photos[index]
-        );
-
     }
 
 
     grid.innerHTML = "";
 
 
-    visiblePhotos.forEach(
-        (path, index) => {
+    if (count) {
 
-            const url =
-                getPublicUrl(path);
+        count.textContent =
+            photos.length +
+            (
+                photos.length === 1
+                    ? " memory"
+                    : " memories"
+            );
 
+    }
+
+
+    photos.forEach(
+        function (photo) {
 
             const card =
                 document.createElement("div");
@@ -430,20 +585,44 @@ function renderStoryPhotos() {
                 "memory-card";
 
 
-            card.innerHTML = `
+            const image =
+                document.createElement("img");
 
-                <img
-                    src="${url}"
-                    alt="${selectedYear} memory ${index + 1}"
-                    loading="lazy"
-                    onclick="openImage('${url}')"
-                    onerror="this.parentElement.style.display='none'"
-                >
+            image.src =
+                photo;
 
-            `;
+            image.alt =
+                currentStory +
+                " memory";
+
+            image.loading =
+                "lazy";
 
 
-            grid.appendChild(card);
+            image.onerror =
+                function () {
+
+                    handleImageError(image);
+
+                };
+
+
+            image.onclick =
+                function () {
+
+                    openImage(photo);
+
+                };
+
+
+            card.appendChild(
+                image
+            );
+
+
+            grid.appendChild(
+                card
+            );
 
         }
     );
@@ -451,80 +630,100 @@ function renderStoryPhotos() {
 }
 
 
-/* =========================================================
-   NEXT PHOTO
-========================================================= */
-
-function nextPhoto() {
-
-    const photos =
-        stories[selectedYear] || [];
-
-
-    if (photos.length <= 1) {
-
-        return;
-
-    }
-
-
-    currentPhotoIndex =
-        (currentPhotoIndex + 1)
-        % photos.length;
-
-
-    renderStoryPhotos();
-
-}
-
-
-/* =========================================================
+/* =====================================================
    PREVIOUS PHOTO
-========================================================= */
+===================================================== */
 
 function prevPhoto() {
 
     const photos =
-        stories[selectedYear] || [];
+        getStoryPhotos(currentStory);
 
-
-    if (photos.length <= 1) {
-
+    if (photos.length === 0) {
         return;
+    }
+
+    currentPhotoIndex--;
+
+    if (currentPhotoIndex < 0) {
+
+        currentPhotoIndex =
+            photos.length - 1;
 
     }
 
-
-    currentPhotoIndex =
-        (
-            currentPhotoIndex -
-            1 +
-            photos.length
-        )
-        % photos.length;
-
-
-    renderStoryPhotos();
-
-}
-
-
-/* =========================================================
-   NEW STORY
-========================================================= */
-
-function showNewStoryMessage() {
-
-    alert(
-        "New stories will be added soon ❤️"
+    showCurrentStoryPhoto(
+        photos
     );
 
 }
 
 
-/* =========================================================
+/* =====================================================
+   NEXT PHOTO
+===================================================== */
+
+function nextPhoto() {
+
+    const photos =
+        getStoryPhotos(currentStory);
+
+    if (photos.length === 0) {
+        return;
+    }
+
+    currentPhotoIndex++;
+
+    if (
+        currentPhotoIndex >=
+        photos.length
+    ) {
+
+        currentPhotoIndex = 0;
+
+    }
+
+    showCurrentStoryPhoto(
+        photos
+    );
+
+}
+
+
+/* =====================================================
+   SHOW CURRENT STORY PHOTO
+===================================================== */
+
+function showCurrentStoryPhoto(photos) {
+
+    const photo =
+        photos[currentPhotoIndex];
+
+    if (photo) {
+
+        openImage(photo);
+
+    }
+
+}
+
+
+/* =====================================================
+   NEW STORY MESSAGE
+===================================================== */
+
+function showNewStoryMessage() {
+
+    alert(
+        "You can add a new story year here later."
+    );
+
+}
+
+
+/* =====================================================
    IMAGE MODAL
-========================================================= */
+===================================================== */
 
 function openImage(src) {
 
@@ -533,15 +732,25 @@ function openImage(src) {
             "imageModal"
         );
 
-    const image =
+    const fullImage =
         document.getElementById(
             "fullImage"
         );
 
 
-    image.src = src;
+    if (!modal || !fullImage) {
+        return;
+    }
 
-    modal.classList.add("show");
+
+    fullImage.src =
+        src;
+
+
+    modal.classList.add(
+        "show"
+    );
+
 
     document.body.style.overflow =
         "hidden";
@@ -549,9 +758,9 @@ function openImage(src) {
 }
 
 
-/* =========================================================
+/* =====================================================
    CLOSE IMAGE
-========================================================= */
+===================================================== */
 
 function closeImage() {
 
@@ -560,70 +769,115 @@ function closeImage() {
             "imageModal"
         );
 
-    const image =
+    const fullImage =
         document.getElementById(
             "fullImage"
         );
 
 
-    modal.classList.remove("show");
+    if (!modal) {
+        return;
+    }
 
-    image.src = "";
+
+    modal.classList.remove(
+        "show"
+    );
+
 
     document.body.style.overflow =
         "";
 
+
+    if (fullImage) {
+        fullImage.src = "";
+    }
+
 }
 
 
-/* Click outside image */
+/* =====================================================
+   MODAL EVENTS
+===================================================== */
 
-document
-    .getElementById("imageModal")
-    .addEventListener("click", function (event) {
+function setupModalEvents() {
 
-        if (
-            event.target === this
-        ) {
+    const modal =
+        document.getElementById(
+            "imageModal"
+        );
 
-            closeImage();
+
+    if (!modal) {
+        return;
+    }
+
+
+    modal.addEventListener(
+        "click",
+        function (event) {
+
+            if (
+                event.target === modal
+            ) {
+
+                closeImage();
+
+            }
 
         }
+    );
 
-    });
 
+    document.addEventListener(
+        "keydown",
+        function (event) {
 
-/* ESC key */
+            if (
+                event.key === "Escape"
+            ) {
 
-document.addEventListener(
-    "keydown",
-    function (event) {
+                closeImage();
 
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeImage();
+            }
 
         }
+    );
 
+}
+
+
+/* =====================================================
+   IMAGE ERROR
+===================================================== */
+
+function handleImageError(image) {
+
+    if (!image) {
+        return;
     }
-);
+
+    image.style.display =
+        "none";
+
+}
 
 
-/* =========================================================
-   INITIALIZE WEBSITE
-========================================================= */
+/* =====================================================
+   REFRESH PHOTOS
+===================================================== */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+function refreshPhotos() {
 
-        loadGallery();
+    loadPhotos();
 
-        loadStoryCovers();
+}
 
-        selectStory("2026");
 
-    }
+/* =====================================================
+   CONSOLE MESSAGE
+===================================================== */
+
+console.log(
+    "Dhanula website loaded successfully."
 );
