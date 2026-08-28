@@ -3,99 +3,81 @@
 ===================================================== */
 
 const stories = {
-
     china: {
-
         title: "China",
-
         photos: [
-
-            {
-                image: "images/china1.jpg",
-                title: "China",
-                description: "A beautiful night in China."
-            },
-
-            {
-                image: "images/china2.jpg",
-                title: "China Memory",
-                description: "Another special moment."
-            }
-
+            { image: "stories/story1.jpg", title: "China", description: "A beautiful night in China." },
+            { image: "stories/story2.jpg", title: "China Memory", description: "Another special moment." }
         ]
-
     },
-
-
     nature: {
-
         title: "Nature",
-
         photos: [
-
-            {
-                image: "images/nature1.jpg",
-                title: "Nature",
-                description: "A peaceful moment surrounded by nature."
-            },
-
-            {
-                image: "images/nature2.jpg",
-                title: "Beautiful Nature",
-                description: "A beautiful place to remember."
-            }
-
+            { image: "stories/story2.jpg", title: "Nature", description: "A peaceful moment surrounded by nature." },
+            { image: "images/photo2.jpg", title: "Beautiful Nature", description: "A beautiful place to remember." }
         ]
-
     },
-
-
     travel: {
-
         title: "Travel",
-
         photos: [
-
-            {
-                image: "images/travel1.jpg",
-                title: "Travel",
-                description: "Exploring a new place."
-            },
-
-            {
-                image: "images/travel2.jpg",
-                title: "Travel Memory",
-                description: "A special moment from my journey."
-            }
-
+            { image: "images/photo3.jpg", title: "Travel", description: "Exploring a new place." },
+            { image: "images/photo4.jpg", title: "Travel Memory", description: "A special moment from my journey." }
         ]
-
     },
-
-
     friends: {
-
         title: "Friends",
-
         photos: [
-
-            {
-                image: "images/friends1.jpg",
-                title: "Friends",
-                description: "Good times with friends."
-            },
-
-            {
-                image: "images/friends2.jpg",
-                title: "Good Times",
-                description: "A memory worth keeping."
-            }
-
+            { image: "images/photo5.jpg", title: "Friends", description: "Good times with friends." },
+            { image: "images/photo6.jpg", title: "Good Times", description: "A memory worth keeping." }
         ]
-
     }
-
 };
+
+
+/* =====================================================
+   SMOOTH SCROLL - NO NEW TAB
+===================================================== */
+
+function initSmoothScroll() {
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const targetId = this.getAttribute('href');
+            if (!targetId || !targetId.startsWith('#')) return;
+
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                // Close mobile menu if open
+                const mainNav = document.getElementById('mainNav');
+                const navToggle = document.getElementById('navToggle');
+                if (mainNav && mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+                }
+
+                // Smooth scroll to section
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+}
+
+
+/* =====================================================
+   IMAGE ERROR HANDLER
+===================================================== */
+
+function handleImageError(img) {
+    img.onerror = null;
+    img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTBlMGUwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4=';
+    img.style.objectFit = 'contain';
+}
 
 
 /* =====================================================
@@ -103,123 +85,41 @@ const stories = {
 ===================================================== */
 
 function selectStory(storyName) {
-
     const story = stories[storyName];
+    if (!story) return;
 
-    if (!story) {
-        return;
-    }
-
-
-    /* ------------------------------
-       Change active highlight
-    ------------------------------ */
-
-    const highlights =
-        document.querySelectorAll(".story-highlight");
-
-
+    const highlights = document.querySelectorAll(".story-highlight");
     highlights.forEach(function(item) {
-
         item.classList.remove("active");
-
     });
 
-
-    const selected =
-        document.querySelector(
-            `.story-highlight[data-story="${storyName}"]`
-        );
-
-
+    const selected = document.querySelector(`.story-highlight[data-story="${storyName}"]`);
     if (selected) {
-
         selected.classList.add("active");
-
     }
 
+    const selectedTitle = document.getElementById("selectedTitle");
+    selectedTitle.textContent = story.title;
 
-    /* ------------------------------
-       Change title
-    ------------------------------ */
+    const memoryCount = document.getElementById("memoryCount");
+    const total = story.photos.length;
+    memoryCount.textContent = total + (total === 1 ? " memory" : " memories");
 
-    const selectedTitle =
-        document.getElementById("selectedTitle");
-
-
-    selectedTitle.textContent =
-        story.title;
-
-
-    /* ------------------------------
-       Change memory count
-    ------------------------------ */
-
-    const memoryCount =
-        document.getElementById("memoryCount");
-
-
-    const total =
-        story.photos.length;
-
-
-    memoryCount.textContent =
-        total +
-        (total === 1 ? " memory" : " memories");
-
-
-    /* ------------------------------
-       Get grid
-    ------------------------------ */
-
-    const memoryGrid =
-        document.getElementById("memoryGrid");
-
-
+    const memoryGrid = document.getElementById("memoryGrid");
     memoryGrid.innerHTML = "";
 
-
-    /* ------------------------------
-       Create cards
-    ------------------------------ */
-
     story.photos.forEach(function(photo) {
-
-        const card =
-            document.createElement("div");
-
-
-        card.className =
-            "memory-card";
-
-
+        const card = document.createElement("div");
+        card.className = "memory-card";
         card.innerHTML = `
-
-            <img
-                src="${photo.image}"
-                alt="${photo.title}"
-                onclick="openImage('${photo.image}')"
-            >
-
+            <img src="${photo.image}" alt="${photo.title}" loading="lazy" onerror="handleImageError(this)" onclick="openImage('${photo.image}')">
             <div class="memory-info">
-
-                <h4>
-                    ${photo.title}
-                </h4>
-
-                <p>
-                    ${photo.description}
-                </p>
-
+                <h4>${photo.title}</h4>
+                <p>${photo.description}</p>
             </div>
-
         `;
-
-
         memoryGrid.appendChild(card);
-
     });
-
 }
 
 
@@ -228,11 +128,7 @@ function selectStory(storyName) {
 ===================================================== */
 
 function showNewStoryMessage() {
-
-    alert(
-        "You can create a new Story Highlight here later."
-    );
-
+    console.log("New Story feature coming soon!");
 }
 
 
@@ -241,26 +137,11 @@ function showNewStoryMessage() {
 ===================================================== */
 
 function openImage(imageSource) {
-
-    const modal =
-        document.getElementById("imageModal");
-
-
-    const fullImage =
-        document.getElementById("fullImage");
-
-
-    fullImage.src =
-        imageSource;
-
-
-    modal.style.display =
-        "flex";
-
-
-    document.body.style.overflow =
-        "hidden";
-
+    const modal = document.getElementById("imageModal");
+    const fullImage = document.getElementById("fullImage");
+    fullImage.src = imageSource;
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
 }
 
 
@@ -269,26 +150,11 @@ function openImage(imageSource) {
 ===================================================== */
 
 function closeImage() {
-
-    const modal =
-        document.getElementById("imageModal");
-
-
-    const fullImage =
-        document.getElementById("fullImage");
-
-
-    modal.style.display =
-        "none";
-
-
-    fullImage.src =
-        "";
-
-
-    document.body.style.overflow =
-        "";
-
+    const modal = document.getElementById("imageModal");
+    const fullImage = document.getElementById("fullImage");
+    modal.style.display = "none";
+    fullImage.src = "";
+    document.body.style.overflow = "";
 }
 
 
@@ -296,50 +162,47 @@ function closeImage() {
    CLOSE WHEN CLICKING OUTSIDE IMAGE
 ===================================================== */
 
-document
-    .getElementById("imageModal")
-    .addEventListener("click", function(event) {
-
-        if (
-            event.target === this
-        ) {
-
-            closeImage();
-
-        }
-
-    });
+document.getElementById("imageModal").addEventListener("click", function(event) {
+    if (event.target === this) {
+        closeImage();
+    }
+});
 
 
 /* =====================================================
    ESC KEY
 ===================================================== */
 
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeImage();
-
-        }
-
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeImage();
     }
-);
+});
+
+
+/* =====================================================
+   HAMBURGER MENU TOGGLE
+===================================================== */
+
+function initMobileNav() {
+    const navToggle = document.getElementById("navToggle");
+    const mainNav = document.getElementById("mainNav");
+
+    if (!navToggle || !mainNav) return;
+
+    navToggle.addEventListener("click", function() {
+        const isOpen = mainNav.classList.toggle("active");
+        navToggle.setAttribute("aria-expanded", isOpen);
+    });
+}
 
 
 /* =====================================================
    LOAD FIRST STORY
 ===================================================== */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function() {
-
-        selectStory("china");
-
-    }
-);
+document.addEventListener("DOMContentLoaded", function() {
+    selectStory("china");
+    initMobileNav();
+    initSmoothScroll();
+});
