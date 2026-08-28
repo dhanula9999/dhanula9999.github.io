@@ -38,14 +38,15 @@ if (themeToggleBtn) {
    PHOTOS SECTION (INDIVIDUAL & ALBUM COLLECTIONS)
 ===================================================== */
 
-// 6 වන පින්තූරය ලෙස photo22.jpg යොදා ඇත
+// කිසිදු පින්තූරයක් ඉවත් නොකර photo22.jpg 6 වන ස්ථානයට ඇතුළත් කර ඇත
 const photoAlbums = [
     { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
     { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
     { title: "Photo 3", cover: "photo3.jpg", images: ["photo3.jpg"] },
     { title: "Photo 4", cover: "photo4.jpg", images: ["photo4.jpg"] },
     { title: "Photo 5", cover: "photo5.jpg", images: ["photo5.jpg"] },
-    { title: "Photo 22", cover: "photo22.jpg", images: ["photo22.jpg"] }, // 6 වන පින්තූරය
+    { title: "Photo 22", cover: "photo22.jpg", images: ["photo22.jpg"] }, // 6 වන ස්ථානයට photo22
+    { title: "Photo 6", cover: "photo6.jpg", images: ["photo6.jpg"] },   // 7 වන ස්ථානයට photo6
     {
         title: "Special Album",
         cover: "photo7.jpg",
