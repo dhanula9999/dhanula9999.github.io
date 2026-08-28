@@ -65,27 +65,28 @@
     </div>
 </section>
 
-<!-- STORIES -->
+<!-- STORIES BY YEAR -->
 <section id="stories" class="stories">
     <div class="stories-container">
         <div class="stories-heading">
             <p class="section-label">MY JOURNEY</p>
             <h2>Stories</h2>
-            <p>Memories, moments and experiences from my journey.</p>
+            <p>Memories, moments and experiences organized by year.</p>
         </div>
 
+        <!-- Year Highlights -->
         <div class="story-highlights" id="storyHighlights">
-            <div class="story-highlight active" data-story="story1" onclick="selectStory('story1')">
+            <div class="story-highlight active" data-story="2026" onclick="selectStory('2026')">
                 <div class="story-circle">
-                    <img src="stories/story1.jpg" alt="Story 1" loading="lazy" onerror="handleImageError(this)">
+                    <img src="stories/story1.jpg" alt="2026" loading="lazy" onerror="handleImageError(this)">
                 </div>
-                <span>Story 1</span>
+                <span>2026</span>
             </div>
-            <div class="story-highlight" data-story="story2" onclick="selectStory('story2')">
+            <div class="story-highlight" data-story="2025" onclick="selectStory('2025')">
                 <div class="story-circle">
-                    <img src="stories/story2.jpg" alt="Story 2" loading="lazy" onerror="handleImageError(this)">
+                    <img src="stories/story2.jpg" alt="2025" loading="lazy" onerror="handleImageError(this)">
                 </div>
-                <span>Story 2</span>
+                <span>2025</span>
             </div>
             <div class="story-highlight new-story" onclick="showNewStoryMessage()">
                 <div class="story-circle new-circle">
@@ -98,17 +99,17 @@
         <div class="selected-memory">
             <div class="selected-header">
                 <div>
-                    <small>SELECTED MEMORY</small>
-                    <h3 id="selectedTitle">Story 1</h3>
+                    <small>SELECTED YEAR</small>
+                    <h3 id="selectedTitle">2026</h3>
                 </div>
-                <div class="memory-count" id="memoryCount">1 memory</div>
+                <div class="memory-count" id="memoryCount">2 memories</div>
             </div>
             <div class="memory-grid" id="memoryGrid"></div>
         </div>
     </div>
 </section>
 
-<!-- MY PHOTOS (Images Only - No Text) -->
+<!-- MY PHOTOS -->
 <section id="photos" class="photos">
     <div class="section-container">
         <p class="section-label">MY MEMORIES</p>
