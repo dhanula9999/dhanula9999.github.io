@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,7 +12,8 @@
 
 <body>
 
-    <!-- ================= NAVIGATION ================= -->
+    <!-- ================= NAVBAR ================= -->
+
     <header class="navbar">
 
         <div class="nav-container">
@@ -33,6 +35,7 @@
 
 
     <!-- ================= HOME ================= -->
+
     <section id="home" class="home">
 
         <div class="home-content">
@@ -51,8 +54,8 @@
                 photos, interests and experiences.
             </p>
 
-            <a href="#about" class="button">
-                Explore More
+            <a href="#stories" class="button">
+                Explore My Journey
             </a>
 
         </div>
@@ -61,6 +64,7 @@
 
 
     <!-- ================= ABOUT ================= -->
+
     <section id="about" class="about">
 
         <div class="section-container">
@@ -83,26 +87,44 @@
                 my favourite memories and experiences.
             </p>
 
+
             <div class="about-boxes">
 
                 <div class="about-box">
-                    <h3>🎓 Education</h3>
+                    <div class="about-icon">🎓</div>
+
+                    <h3>
+                        Education
+                    </h3>
+
                     <p>
                         Studying Artificial Intelligence
                         and exploring the world of technology.
                     </p>
                 </div>
 
+
                 <div class="about-box">
-                    <h3>💻 Technology</h3>
+                    <div class="about-icon">💻</div>
+
+                    <h3>
+                        Technology
+                    </h3>
+
                     <p>
                         Interested in programming, AI,
                         websites and new technologies.
                     </p>
                 </div>
 
+
                 <div class="about-box">
-                    <h3>🌍 Interests</h3>
+                    <div class="about-icon">🌍</div>
+
+                    <h3>
+                        Interests
+                    </h3>
+
                     <p>
                         Travelling, photography, movies,
                         music and discovering new places.
@@ -118,60 +140,58 @@
 
     <!-- ================= STORIES ================= -->
 
-    <section id="stories" class="stories">
+    <section id="stories" class="stories-section">
 
         <div class="section-container">
 
             <p class="section-label">
-                MY MOMENTS
+                MY JOURNEY
             </p>
 
             <h2>
-                My Stories
+                Stories
             </h2>
 
             <p class="section-description">
-                Tap a story to view my moments.
+                Memories, moments and experiences from my journey.
             </p>
 
 
-            <div class="story-list">
+            <!-- STORY HIGHLIGHTS -->
 
-                <!-- STORY 1 -->
-                <div class="story-item" onclick="openStory(0)">
+            <div class="story-highlights" id="storyHighlights">
 
-                    <div class="story-circle">
+                <!-- JavaScript will create the story circles here -->
 
-                        <img
-                            src="stories/story1.jpg"
-                            alt="Story 1"
-                        >
+            </div>
 
+
+            <!-- SELECTED STORY SECTION -->
+
+            <div class="selected-story" id="selectedStory">
+
+                <div class="selected-story-header">
+
+                    <div>
+                        <p class="selected-label">
+                            SELECTED MEMORY
+                        </p>
+
+                        <h3 id="selectedStoryTitle">
+                            My Stories
+                        </h3>
                     </div>
 
-                    <p>
-                        Story 1
-                    </p>
+                    <span id="storyCount">
+                        0 memories
+                    </span>
 
                 </div>
 
 
-                <!-- STORY 2 -->
-                <div class="story-item" onclick="openStory(1)">
-
-                    <div class="story-circle">
-
-                        <img
-                            src="stories/story2.jpg"
-                            alt="Story 2"
-                        >
-
-                    </div>
-
-                    <p>
-                        Story 2
-                    </p>
-
+                <div
+                    class="story-grid"
+                    id="storyGrid">
                 </div>
 
             </div>
@@ -179,55 +199,6 @@
         </div>
 
     </section>
-
-
-    <!-- ================= STORY VIEWER ================= -->
-
-    <div id="storyViewer" class="story-viewer">
-
-        <!-- TOP PROGRESS BARS -->
-
-        <div id="storyProgress" class="story-progress">
-        </div>
-
-
-        <!-- CLOSE BUTTON -->
-
-        <button
-            class="story-close"
-            onclick="closeStory()"
-        >
-            &times;
-        </button>
-
-
-        <!-- STORY IMAGE -->
-
-        <img
-            id="storyImage"
-            class="story-image"
-            src=""
-            alt="Story"
-        >
-
-
-        <!-- LEFT / RIGHT CONTROLS -->
-
-        <button
-            class="story-prev"
-            onclick="previousStory()"
-        >
-            &#10094;
-        </button>
-
-        <button
-            class="story-next"
-            onclick="nextStory()"
-        >
-            &#10095;
-        </button>
-
-    </div>
 
 
     <!-- ================= PHOTOS ================= -->
@@ -245,11 +216,9 @@
             </h2>
 
             <p class="section-description">
-                Click on a photo to view it in full size.
+                A collection of my favourite photos.
             </p>
 
-
-            <!-- PHOTO GALLERY -->
 
             <div class="gallery">
 
@@ -427,7 +396,6 @@
 
                 </div>
 
-
             </div>
 
         </div>
@@ -435,21 +403,103 @@
     </section>
 
 
-    <!-- ================= IMAGE FULL SCREEN ================= -->
+    <!-- ================= FULL IMAGE MODAL ================= -->
 
-    <div id="imageModal" class="image-modal">
+    <div
+        id="imageModal"
+        class="image-modal"
+        onclick="closeImageOutside(event)"
+    >
 
-        <span
+        <button
             class="close-button"
-            onclick="closeImage()"
-        >
+            onclick="closeImage()">
             &times;
-        </span>
+        </button>
 
         <img
             id="fullImage"
             class="full-image"
+            alt="Full size image"
         >
+
+    </div>
+
+
+    <!-- ================= STORY VIEWER ================= -->
+
+    <div
+        id="storyViewer"
+        class="story-viewer"
+    >
+
+        <div class="story-viewer-background"></div>
+
+
+        <!-- TOP PROGRESS -->
+
+        <div
+            class="story-progress"
+            id="storyProgress">
+        </div>
+
+
+        <!-- CLOSE -->
+
+        <button
+            class="story-close"
+            onclick="closeStoryViewer()">
+            &times;
+        </button>
+
+
+        <!-- STORY TITLE -->
+
+        <div class="story-viewer-title">
+
+            <span id="viewerTitle">
+                My Story
+            </span>
+
+        </div>
+
+
+        <!-- STORY IMAGE -->
+
+        <img
+            id="viewerImage"
+            class="viewer-image"
+            alt="Story"
+        >
+
+
+        <!-- PREVIOUS -->
+
+        <button
+            class="story-nav story-prev"
+            onclick="previousStory()">
+            ‹
+        </button>
+
+
+        <!-- NEXT -->
+
+        <button
+            class="story-nav story-next"
+            onclick="nextStory()">
+            ›
+        </button>
+
+
+        <!-- BOTTOM -->
+
+        <div class="story-bottom">
+
+            <span id="viewerCounter">
+                1 / 1
+            </span>
+
+        </div>
 
     </div>
 
@@ -478,4 +528,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>
