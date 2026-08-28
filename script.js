@@ -38,6 +38,7 @@ if (themeToggleBtn) {
    PHOTOS SECTION (INDIVIDUAL & ALBUM COLLECTIONS)
 ===================================================== */
 
+// photo1 - photo6 දක්වා තනි පින්තූර, photo7 - photo20 Album එකක්, photo21 වෙනම තනි පින්තූරයක් ලෙස
 const photoAlbums = [
     { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
     { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
@@ -52,9 +53,10 @@ const photoAlbums = [
             "photo7.jpg",  "photo8.jpg",  "photo9.jpg",  "photo10.jpg",
             "photo11.jpg", "photo12.jpg", "photo13.jpg", "photo14.jpg",
             "photo15.jpg", "photo16.jpg", "photo17.jpg", "photo18.jpg",
-            "photo19.jpg", "photo20.jpg", "photo21.jpg"
+            "photo19.jpg", "photo20.jpg"
         ]
-    }
+    },
+    { title: "Photo 21", cover: "photo21.jpg", images: ["photo21.jpg"] }
 ];
 
 function loadPhotos() {
@@ -78,6 +80,7 @@ function loadPhotos() {
         img.alt = album.title;
         img.loading = "lazy";
 
+        // Album එකක 1ට වැඩි පින්තූර තිබේ නම් (+ Count) badge එක පෙන්වීම
         if (album.images.length > 1) {
             const badge = document.createElement("div");
             badge.className = "album-badge";
@@ -85,6 +88,7 @@ function loadPhotos() {
             imageContainer.appendChild(badge);
         }
 
+        // Cover image click කළ විට Modal Slider එක open වීම
         img.onclick = function () {
             const albumUrls = album.images.map(f => getPhotoUrl(f));
             openImageSlider(albumUrls, 0);
@@ -221,7 +225,7 @@ function startAutoSlide() {
             currentPhotoIndex = (currentPhotoIndex + 1) % images.length;
             renderStory();
         }
-    }, 5000);
+    }, 5000); // 5 Seconds
 }
 
 function resetAutoSlide() {
@@ -274,7 +278,7 @@ function closeStoryGallery() {
 }
 
 /* =====================================================
-   LIGHTBOX IMAGE SLIDER
+   LIGHTBOX IMAGE SLIDER (WITH IMAGE ERROR HANDLING)
 ===================================================== */
 
 let currentSliderList = [];
@@ -294,6 +298,11 @@ function updateModalImage() {
     const fullImage = document.getElementById("fullImage");
     fullImage.style.display = "block";
     fullImage.src = currentSliderList[currentSliderIndex];
+
+    // Image එක Supabase හි නැතිනම් (Error වුවහොත්) Blank Icon එකක් සඟවා පාලනය කිරීම
+    fullImage.onerror = function() {
+        console.warn("Image load error for: " + this.src);
+    };
 }
 
 function nextModalImage() {
