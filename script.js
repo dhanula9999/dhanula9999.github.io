@@ -5,16 +5,13 @@
 
 const SUPABASE_URL = "https://widutbgygnamjlkaovrk.supabase.co";
 
-// Photos bucket URL
 function getPhotoUrl(fileName) {
     return `${SUPABASE_URL}/storage/v1/object/public/photos/${fileName}`;
 }
 
-// Stories bucket URL
 function getStoryUrl(fileName) {
     return `${SUPABASE_URL}/storage/v1/object/public/stories/${fileName}`;
 }
-
 
 /* =====================================================
    DARK / LIGHT MODE SYSTEM
@@ -22,7 +19,6 @@ function getStoryUrl(fileName) {
 
 const themeToggleBtn = document.getElementById('themeToggle');
 
-// Load theme from localStorage or system preference
 const savedTheme = localStorage.getItem('theme') || 
     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
@@ -38,9 +34,8 @@ if (themeToggleBtn) {
     });
 }
 
-
 /* =====================================================
-   PHOTOS SECTION (Photos Bucket)
+   PHOTOS SECTION
 ===================================================== */
 
 const photos = [
@@ -61,7 +56,7 @@ function loadPhotos() {
     loading.style.display = "block";
     errorBox.style.display = "none";
 
-    photos.forEach((fileName) => {
+    photos.forEach((fileName, index) => {
         const card = document.createElement("div");
         card.className = "photo-card";
 
@@ -74,7 +69,8 @@ function loadPhotos() {
         img.loading = "lazy";
 
         img.onclick = function () {
-            openImage(this.src);
+            const photoUrls = photos.map(f => getPhotoUrl(f));
+            openImageSlider(photoUrls, index);
         };
 
         img.onerror = function () {
@@ -96,9 +92,8 @@ function loadPhotos() {
     }, 1500);
 }
 
-
 /* =====================================================
-   STORIES SECTION (Stories Bucket - All 7 in 2026)
+   STORIES SECTION
 ===================================================== */
 
 const storyData = {
@@ -171,7 +166,8 @@ function renderStory() {
         img.loading = "lazy";
 
         img.onclick = function () {
-            openImage(this.src);
+            const storyUrls = images.map(f => getStoryUrl(f));
+            openImageSlider(storyUrls, index);
         };
 
         img.onerror = function () {
@@ -201,11 +197,6 @@ function prevPhoto() {
     resetAutoSlide();
 }
 
-
-/* =====================================================
-   AUTO SLIDE
-===================================================== */
-
 function startAutoSlide() {
     autoSlideTimer = setInterval(() => {
         const images = storyData[currentYear] || [];
@@ -221,43 +212,90 @@ function resetAutoSlide() {
     startAutoSlide();
 }
 
-
 /* =====================================================
-   CONTACT FORM HANDLER
+   VIEW ALL STORIES GALLERY MODAL
 ===================================================== */
 
-function handleContactSubmit(event) {
-    event.preventDefault();
-    alert("Thank you for your message! I will get back to you soon.");
-    event.target.reset();
-}
+function openStoryGallery() {
+    const modal = document.getElementById("storyGalleryModal");
+    const grid = document.getElementById("storyGalleryGrid");
+    const title = document.getElementById("galleryModalTitle");
+    const images = storyData[currentYear] || [];
 
+    title.textContent = `${currentYear} - All Memories`;
+    grid.innerHTML = "";
 
-/* =====================================================
-   UTILITIES & MODALS
-===================================================== */
+    if (images.length === 0) {
+        grid.innerHTML = `<p style="color:var(--text-secondary); text-align:center; grid-column:1/-1;">No memories found.</p>`;
+    } else {
+        images.forEach((fileName, index) => {
+            const thumb = document.createElement("div");
+            thumb.className = "gallery-thumb";
 
-function showNewStoryMessage() {
-    alert("You can add a new year and its photos to the Stories section.");
-}
+            const img = document.createElement("img");
+            img.src = getStoryUrl(fileName);
+            img.alt = `${currentYear} memory ${index + 1}`;
 
-function imageError(image) {
-    image.style.display = "none";
-}
+            thumb.onclick = function () {
+                const storyUrls = images.map(f => getStoryUrl(f));
+                openImageSlider(storyUrls, index);
+            };
 
-function openImage(src) {
-    const modal = document.getElementById("imageModal");
-    const fullImage = document.getElementById("fullImage");
+            thumb.appendChild(img);
+            grid.appendChild(thumb);
+        });
+    }
 
-    fullImage.src = src;
     modal.classList.add("show");
     document.body.style.overflow = "hidden";
+}
+
+function closeStoryGallery() {
+    const modal = document.getElementById("storyGalleryModal");
+    modal.classList.remove("show");
+    document.body.style.overflow = "";
+}
+
+/* =====================================================
+   LIGHTBOX IMAGE SLIDER
+===================================================== */
+
+let currentSliderList = [];
+let currentSliderIndex = 0;
+
+function openImageSlider(imageList, startIndex) {
+    currentSliderList = imageList;
+    currentSliderIndex = startIndex;
+
+    const modal = document.getElementById("imageModal");
+    updateModalImage();
+    modal.classList.add("show");
+    document.body.style.overflow = "hidden";
+}
+
+function updateModalImage() {
+    const fullImage = document.getElementById("fullImage");
+    fullImage.src = currentSliderList[currentSliderIndex];
+}
+
+function nextModalImage() {
+    if (currentSliderList.length === 0) return;
+    currentSliderIndex = (currentSliderIndex + 1) % currentSliderList.length;
+    updateModalImage();
+}
+
+function prevModalImage() {
+    if (currentSliderList.length === 0) return;
+    currentSliderIndex = (currentSliderIndex - 1 + currentSliderList.length) % currentSliderList.length;
+    updateModalImage();
 }
 
 function closeImage() {
     const modal = document.getElementById("imageModal");
     modal.classList.remove("show");
-    document.body.style.overflow = "";
+    if (!document.getElementById("storyGalleryModal").classList.contains("show")) {
+        document.body.style.overflow = "";
+    }
 }
 
 document.getElementById("imageModal").addEventListener("click", function(event) {
@@ -269,13 +307,31 @@ document.getElementById("imageModal").addEventListener("click", function(event) 
 document.addEventListener("keydown", function(event) {
     if (event.key === "Escape") {
         closeImage();
+        closeStoryGallery();
+    } else if (event.key === "ArrowRight") {
+        nextModalImage();
+    } else if (event.key === "ArrowLeft") {
+        prevModalImage();
     }
 });
 
-
 /* =====================================================
-   MOBILE NAVIGATION
+   OTHER HANDLERS & INITIALIZATION
 ===================================================== */
+
+function handleContactSubmit(event) {
+    event.preventDefault();
+    alert("Thank you for your message! I will get back to you soon.");
+    event.target.reset();
+}
+
+function showNewStoryMessage() {
+    alert("You can add a new year and its photos to the Stories section.");
+}
+
+function imageError(image) {
+    image.style.display = "none";
+}
 
 const navToggle = document.getElementById("navToggle");
 const mainNav = document.getElementById("mainNav");
@@ -291,11 +347,6 @@ if (navToggle && mainNav) {
         });
     });
 }
-
-
-/* =====================================================
-   INITIALIZATION
-===================================================== */
 
 document.addEventListener("DOMContentLoaded", function() {
     loadPhotos();
