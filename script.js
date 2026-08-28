@@ -78,16 +78,14 @@ function loadPhotos() {
    STORIES SECTION (Stories Bucket)
 ===================================================== */
 
-// Supabase "stories" bucket එකේ ඇති ෆයිල් නාමයන් මෙහි ඇතුළත් කරන්න
+// Stories 3 ම 2026 යටතේ මෙසේ ඇතුළත් කර ඇත
 const storyData = {
     "2026": [
         "story1.jpg",
-        "story2.jpg"
+        "story2.jpg",
+        "story3.jpg"
     ],
-    "2025": [
-        "story3.jpg",
-        "story4.jpg"
-    ]
+    "2025": []
 };
 
 let currentYear = "2026";
