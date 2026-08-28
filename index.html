@@ -35,6 +35,7 @@
             <a href="#about">About Me</a>
             <a href="#stories">Stories</a>
             <a href="#photos">My Photos</a>
+            <a href="#contact">Contact</a>
         </nav>
     </div>
 </header>
@@ -141,6 +142,50 @@
             <h3>Unable to load photos</h3>
             <p>Please check your Supabase Storage files.</p>
             <button onclick="loadPhotos()">Try Again</button>
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section id="contact" class="contact">
+    <div class="section-container">
+        <p class="section-label">GET IN TOUCH</p>
+        <h2>Contact Me</h2>
+        <p class="section-description">Feel free to reach out for collaborations, opportunities, or just a friendly chat!</p>
+
+        <div class="contact-wrapper">
+            <!-- Left Info Box -->
+            <div class="contact-info">
+                <div class="info-item">
+                    <span class="info-icon">📧</span>
+                    <div>
+                        <h4>Email</h4>
+                        <p>dhanula@example.com</p>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <span class="info-icon">📍</span>
+                    <div>
+                        <h4>Location</h4>
+                        <p>Sri Lanka</p>
+                    </div>
+                </div>
+                
+                <!-- Social Links -->
+                <div class="social-links">
+                    <a href="https://github.com/dhanula9999" target="_blank">GitHub</a>
+                    <a href="#" target="_blank">LinkedIn</a>
+                    <a href="#" target="_blank">Instagram</a>
+                </div>
+            </div>
+
+            <!-- Right Form Box -->
+            <form class="contact-form" onsubmit="handleContactSubmit(event)">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea rows="5" placeholder="Your Message" required></textarea>
+                <button type="submit" class="button">Send Message</button>
+            </form>
         </div>
     </div>
 </section>
