@@ -3,59 +3,41 @@
 ===================================================== */
 
 const SUPABASE_URL =
-    "https://widutbgygnamjlkovrk.supabase.co";
+    "https://widtubgygnamjikaovrk.supabase.co";
 
-const SUPABASE_ANON_KEY =
+const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_QY_pFOydY7OqkBFMU5IHDg_DhODs7l3";
 
 
-/* =====================================================
-   SUPABASE CLIENT
-===================================================== */
+/* Create Supabase client */
 
-let supabaseClient = null;
-
-try {
-
-    if (
-        typeof window.supabase !== "undefined"
-    ) {
-
-        supabaseClient =
-            window.supabase.createClient(
-                SUPABASE_URL,
-                SUPABASE_ANON_KEY
-            );
-
-    }
-
-} catch (error) {
-
-    console.error(
-        "Supabase initialization error:",
-        error
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
     );
 
-}
+
+/* Bucket name */
+
+const BUCKET_NAME = "photos";
 
 
 /* =====================================================
-   SETTINGS
+   GLOBAL VARIABLES
 ===================================================== */
-
-const PHOTO_BUCKET = "photos";
 
 let allPhotos = [];
 
-let storyYears = [];
-
-let currentStory = null;
-
-let currentStoryPhotos = [];
+let selectedYear = "2026";
 
 let currentPhotoIndex = 0;
 
-let currentGalleryIndex = 0;
+let currentMemoryPhotos = [];
+
+let modalPhotos = [];
+
+let modalIndex = 0;
 
 
 /* =====================================================
@@ -64,17 +46,13 @@ let currentGalleryIndex = 0;
 
 document.addEventListener(
     "DOMContentLoaded",
-    function () {
+    () => {
 
         setupNavigation();
 
-        setupModalEvents();
-
-        setupStoryButtons();
+        setupKeyboardControls();
 
         loadPhotos();
-
-        loadStories();
 
     }
 );
@@ -87,53 +65,40 @@ document.addEventListener(
 function setupNavigation() {
 
     const navToggle =
-        document.getElementById(
-            "navToggle"
-        );
+        document.getElementById("navToggle");
 
     const mainNav =
-        document.getElementById(
-            "mainNav"
-        );
+        document.getElementById("mainNav");
 
     if (!navToggle || !mainNav) {
         return;
     }
 
-
     navToggle.addEventListener(
         "click",
-        function () {
+        () => {
 
             const isOpen =
-                mainNav.classList.toggle(
-                    "open"
-                );
+                mainNav.classList.toggle("open");
 
             navToggle.setAttribute(
                 "aria-expanded",
-                isOpen ? "true" : "false"
+                isOpen
             );
 
         }
     );
 
 
-    const links =
-        mainNav.querySelectorAll(
-            ".nav-link"
-        );
-
-    links.forEach(
-        function (link) {
+    document
+        .querySelectorAll("#mainNav .nav-link")
+        .forEach(link => {
 
             link.addEventListener(
                 "click",
-                function () {
+                () => {
 
-                    mainNav.classList.remove(
-                        "open"
-                    );
+                    mainNav.classList.remove("open");
 
                     navToggle.setAttribute(
                         "aria-expanded",
@@ -143,49 +108,36 @@ function setupNavigation() {
                 }
             );
 
-        }
-    );
+        });
 
 }
 
 
 /* =====================================================
-   LOAD GALLERY PHOTOS
+   LOAD PHOTOS FROM SUPABASE
 ===================================================== */
 
 async function loadPhotos() {
 
-    const loading =
-        document.getElementById(
-            "galleryLoading"
-        );
-
     const gallery =
-        document.getElementById(
-            "gallery"
-        );
-
-    const empty =
-        document.getElementById(
-            "galleryEmpty"
-        );
+        document.getElementById("gallery");
 
     const errorBox =
-        document.getElementById(
-            "galleryError"
-        );
+        document.getElementById("photoError");
 
+    const errorText =
+        document.getElementById("photoErrorText");
 
-    if (loading) {
-        loading.style.display = "flex";
-    }
 
     if (gallery) {
-        gallery.innerHTML = "";
-    }
 
-    if (empty) {
-        empty.style.display = "none";
+        gallery.innerHTML = `
+            <div class="loading-gallery">
+                <div class="loader"></div>
+                <p>Loading photos...</p>
+            </div>
+        `;
+
     }
 
     if (errorBox) {
@@ -193,115 +145,153 @@ async function loadPhotos() {
     }
 
 
-    if (!supabaseClient) {
-
-        showGalleryError(
-            "Supabase could not be initialized."
-        );
-
-        return;
-    }
-
-
     try {
 
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .storage
-            .from(PHOTO_BUCKET)
-            .list(
-                "",
-                {
-                    limit: 1000,
-                    offset: 0,
+        console.log(
+            "Connecting to Supabase..."
+        );
 
+
+        /*
+         * Get file list from photos bucket
+         */
+
+        const { data, error } =
+            await supabaseClient
+                .storage
+                .from(BUCKET_NAME)
+                .list("", {
+                    limit: 100,
+                    offset: 0,
                     sortBy: {
-                        column: "created_at",
-                        order: "desc"
+                        column: "name",
+                        order: "asc"
                     }
-                }
-            );
+                });
 
 
         if (error) {
+
+            console.error(
+                "Supabase Storage error:",
+                error
+            );
+
             throw error;
+
+        }
+
+
+        console.log(
+            "Supabase files:",
+            data
+        );
+
+
+        if (!data || data.length === 0) {
+
+            allPhotos = [];
+
+            renderEmptyGallery();
+
+            return;
+
         }
 
 
         /*
-            Only root-level image files.
+         * Only image files
+         */
 
-            Folders such as "stories"
-            are ignored here.
-        */
+        const imageFiles =
+            data.filter(file => {
+
+                const name =
+                    file.name.toLowerCase();
+
+                return (
+                    name.endsWith(".jpg") ||
+                    name.endsWith(".jpeg") ||
+                    name.endsWith(".png") ||
+                    name.endsWith(".webp") ||
+                    name.endsWith(".gif")
+                );
+
+            });
+
+
+        /*
+         * Convert files into public URLs
+         */
 
         allPhotos =
-            (data || []).filter(
-                function (file) {
+            imageFiles.map(
+                file => {
 
-                    if (!file.name) {
-                        return false;
-                    }
-
-
-                    /*
-                        Ignore folders.
-                    */
-
-                    if (
-                        file.id === null &&
-                        file.metadata === null
-                    ) {
-
-                        return false;
-
-                    }
+                    const { data: publicData } =
+                        supabaseClient
+                            .storage
+                            .from(BUCKET_NAME)
+                            .getPublicUrl(
+                                file.name
+                            );
 
 
-                    return isImageFile(
-                        file.name
-                    );
+                    return {
+
+                        name: file.name,
+
+                        url:
+                            publicData.publicUrl
+
+                    };
 
                 }
             );
 
 
-        if (loading) {
-            loading.style.display = "none";
-        }
-
-
-        if (
-            allPhotos.length === 0
-        ) {
-
-            if (empty) {
-                empty.style.display = "block";
-            }
-
-            return;
-        }
-
-
-        displayGallery(
+        console.log(
+            "Loaded images:",
             allPhotos
         );
+
+
+        renderGallery();
+
+        setupStoryImages();
+
+        updateStory();
 
     }
 
     catch (error) {
 
         console.error(
-            "Supabase photo error:",
+            "Failed to load photos:",
             error
         );
 
-        showGalleryError(
-            error.message ||
-            "Could not load photos."
-        );
+
+        if (gallery) {
+            gallery.innerHTML = "";
+        }
+
+
+        if (errorBox) {
+
+            errorBox.style.display =
+                "block";
+
+        }
+
+
+        if (errorText) {
+
+            errorText.textContent =
+                error.message ||
+                "Failed to fetch photos.";
+
+        }
 
     }
 
@@ -309,111 +299,66 @@ async function loadPhotos() {
 
 
 /* =====================================================
-   CHECK IMAGE
+   RENDER GALLERY
 ===================================================== */
 
-function isImageFile(
-    fileName
-) {
-
-    const extension =
-        fileName
-            .split(".")
-            .pop()
-            .toLowerCase();
-
-    return [
-        "jpg",
-        "jpeg",
-        "png",
-        "webp",
-        "gif",
-        "avif"
-    ].includes(extension);
-
-}
-
-
-/* =====================================================
-   DISPLAY GALLERY
-===================================================== */
-
-function displayGallery(
-    files
-) {
+function renderGallery() {
 
     const gallery =
-        document.getElementById(
-            "gallery"
-        );
+        document.getElementById("gallery");
 
     if (!gallery) {
         return;
     }
 
 
+    if (allPhotos.length === 0) {
+
+        renderEmptyGallery();
+
+        return;
+
+    }
+
+
     gallery.innerHTML = "";
 
 
-    files.forEach(
-        function (file, index) {
-
-            const url =
-                getPublicImageUrl(
-                    file.name
-                );
-
+    allPhotos.forEach(
+        (photo, index) => {
 
             const card =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             card.className =
                 "photo-card";
 
 
-            const container =
-                document.createElement(
-                    "div"
-                );
+            card.innerHTML = `
 
-            container.className =
-                "photo-image";
+                <div class="photo-image">
+
+                    <img
+                        src="${escapeAttribute(photo.url)}"
+                        alt="${escapeAttribute(photo.name)}"
+                        loading="lazy"
+                    >
+
+                </div>
+
+            `;
 
 
             const image =
-                document.createElement(
-                    "img"
-                );
-
-            image.src = url;
-
-            image.alt =
-                cleanFileName(
-                    file.name
-                );
-
-            image.loading = "lazy";
-
-
-            image.onerror =
-                function () {
-
-                    image.style.display =
-                        "none";
-
-                };
+                card.querySelector("img");
 
 
             image.addEventListener(
                 "click",
-                function () {
+                () => {
 
-                    currentGalleryIndex =
-                        index;
-
-                    openGalleryImage(
+                    openImage(
+                        photo.url,
                         index
                     );
 
@@ -421,17 +366,18 @@ function displayGallery(
             );
 
 
-            container.appendChild(
-                image
+            image.addEventListener(
+                "error",
+                () => {
+
+                    image.style.opacity =
+                        "0.3";
+
+                }
             );
 
-            card.appendChild(
-                container
-            );
 
-            gallery.appendChild(
-                card
-            );
+            gallery.appendChild(card);
 
         }
     );
@@ -440,405 +386,85 @@ function displayGallery(
 
 
 /* =====================================================
-   PUBLIC IMAGE URL
+   EMPTY GALLERY
 ===================================================== */
 
-function getPublicImageUrl(
-    filePath
-) {
+function renderEmptyGallery() {
 
-    const {
-        data
-    } = supabaseClient
-        .storage
-        .from(PHOTO_BUCKET)
-        .getPublicUrl(
-            filePath
-        );
+    const gallery =
+        document.getElementById("gallery");
 
-    return data.publicUrl;
-
-}
-
-
-/* =====================================================
-   CLEAN FILE NAME
-===================================================== */
-
-function cleanFileName(
-    fileName
-) {
-
-    return fileName
-        .replace(
-            /\.[^/.]+$/,
-            ""
-        )
-        .replace(
-            /[-_]/g,
-            " "
-        )
-        .replace(
-            /\b\w/g,
-            function (letter) {
-                return letter.toUpperCase();
-            }
-        );
-
-}
-
-
-/* =====================================================
-   LOAD STORIES
-===================================================== */
-
-async function loadStories() {
-
-    const container =
-        document.getElementById(
-            "storyHighlights"
-        );
-
-    if (!container) {
+    if (!gallery) {
         return;
     }
 
+    gallery.innerHTML = `
 
-    try {
+        <div class="loading-gallery">
 
-        /*
-            First find the "stories" folder.
-        */
+            <h3>
+                No photos yet
+            </h3>
 
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .storage
-            .from(PHOTO_BUCKET)
-            .list(
-                "stories",
-                {
-                    limit: 100
-                }
-            );
-
-
-        if (error) {
-            throw error;
-        }
-
-
-        /*
-            Find folders such as:
-
-            2026
-            2025
-            2024
-        */
-
-        storyYears =
-            (data || [])
-                .filter(
-                    function (item) {
-
-                        return (
-                            item.id === null &&
-                            item.metadata === null &&
-                            /^\d{4}$/.test(
-                                item.name
-                            )
-                        );
-
-                    }
-                )
-                .map(
-                    function (item) {
-                        return item.name;
-                    }
-                )
-                .sort(
-                    function (a, b) {
-                        return b - a;
-                    }
-                );
-
-
-        container.innerHTML = "";
-
-
-        /*
-            No stories.
-        */
-
-        if (
-            storyYears.length === 0
-        ) {
-
-            container.innerHTML = `
-                <div class="story-loading">
-                    No stories available yet.
-                </div>
-            `;
-
-            return;
-        }
-
-
-        /*
-            Create year buttons.
-        */
-
-        for (
-            const year of storyYears
-        ) {
-
-            const yearData =
-                await getStoryYearPreview(
-                    year
-                );
-
-            createStoryButton(
-                year,
-                yearData
-            );
-
-        }
-
-
-        /*
-            New button.
-        */
-
-        const newStory =
-            document.createElement(
-                "div"
-            );
-
-        newStory.className =
-            "story-highlight new-story";
-
-
-        newStory.innerHTML = `
-            <div class="story-circle new-circle">
-                <span class="plus">+</span>
-            </div>
-            <span>New</span>
-        `;
-
-
-        newStory.addEventListener(
-            "click",
-            function () {
-
-                alert(
-                    "Create a new year folder inside Supabase: photos/stories/YEAR"
-                );
-
-            }
-        );
-
-
-        container.appendChild(
-            newStory
-        );
-
-
-        /*
-            Automatically select
-            latest year.
-        */
-
-        selectStory(
-            storyYears[0]
-        );
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Stories error:",
-            error
-        );
-
-        container.innerHTML = `
-            <div class="story-loading">
-                Stories could not be loaded.
-            </div>
-        `;
-
-    }
-
-}
-
-
-/* =====================================================
-   STORY PREVIEW
-===================================================== */
-
-async function getStoryYearPreview(
-    year
-) {
-
-    try {
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .storage
-            .from(PHOTO_BUCKET)
-            .list(
-                `stories/${year}`,
-                {
-                    limit: 100,
-
-                    sortBy: {
-                        column: "created_at",
-                        order: "asc"
-                    }
-                }
-            );
-
-
-        if (error) {
-            throw error;
-        }
-
-
-        const images =
-            (data || []).filter(
-                function (file) {
-
-                    return (
-                        file.name &&
-                        isImageFile(
-                            file.name
-                        )
-                    );
-
-                }
-            );
-
-
-        return images;
-
-    }
-
-    catch (error) {
-
-        console.error(
-            `Story ${year} error:`,
-            error
-        );
-
-        return [];
-
-    }
-
-}
-
-
-/* =====================================================
-   CREATE STORY BUTTON
-===================================================== */
-
-function createStoryButton(
-    year,
-    images
-) {
-
-    const container =
-        document.getElementById(
-            "storyHighlights"
-        );
-
-    if (!container) {
-        return;
-    }
-
-
-    const item =
-        document.createElement(
-            "div"
-        );
-
-    item.className =
-        "story-highlight";
-
-    item.dataset.story =
-        year;
-
-
-    let previewUrl = "";
-
-
-    if (
-        images &&
-        images.length > 0
-    ) {
-
-        previewUrl =
-            getPublicImageUrl(
-                `stories/${year}/${images[0].name}`
-            );
-
-    }
-
-
-    item.innerHTML = `
-
-        <div class="story-circle">
-
-            ${
-                previewUrl
-                ?
-                `<img
-                    src="${previewUrl}"
-                    alt="${year}"
-                    loading="lazy"
-                >`
-                :
-                `<div
-                    class="new-circle"
-                    style="
-                        width:100%;
-                        height:100%;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        font-size:22px;
-                    "
-                >
-                    ${year}
-                </div>`
-            }
+            <p>
+                Upload photos to the
+                Supabase photos bucket.
+            </p>
 
         </div>
 
-        <span>
-            ${year}
-        </span>
-
     `;
 
-
-    item.addEventListener(
-        "click",
-        function () {
-
-            selectStory(
-                year
-            );
-
-        }
-    );
+}
 
 
-    container.appendChild(
-        item
-    );
+/* =====================================================
+   STORY IMAGES
+===================================================== */
+
+function setupStoryImages() {
+
+    if (allPhotos.length === 0) {
+        return;
+    }
+
+
+    const image2026 =
+        document.getElementById(
+            "storyImage2026"
+        );
+
+    const image2025 =
+        document.getElementById(
+            "storyImage2025"
+        );
+
+
+    /*
+     * First photo = 2026
+     */
+
+    if (image2026) {
+
+        image2026.src =
+            allPhotos[0].url;
+
+    }
+
+
+    /*
+     * Second photo = 2025
+     */
+
+    if (image2025) {
+
+        image2025.src =
+            (
+                allPhotos[1] ||
+                allPhotos[0]
+            ).url;
+
+    }
 
 }
 
@@ -847,136 +473,55 @@ function createStoryButton(
    SELECT STORY
 ===================================================== */
 
-async function selectStory(
-    year
-) {
+function selectStory(year) {
 
-    currentStory =
-        year;
+    selectedYear = year;
 
-    currentPhotoIndex =
-        0;
+    currentPhotoIndex = 0;
 
 
-    /*
-        Active year.
-    */
+    document
+        .querySelectorAll(
+            ".story-highlight"
+        )
+        .forEach(item => {
 
-    const items =
-        document.querySelectorAll(
-            ".story-highlight[data-story]"
-        );
-
-
-    items.forEach(
-        function (item) {
-
-            item.classList.toggle(
-                "active",
-                item.dataset.story ===
-                year
+            item.classList.remove(
+                "active"
             );
 
-        }
-    );
+        });
 
 
-    const title =
-        document.getElementById(
-            "selectedTitle"
+    const selected =
+        document.querySelector(
+            `.story-highlight[data-story="${year}"]`
         );
 
 
-    if (title) {
-        title.textContent =
-            year;
-    }
+    if (selected) {
 
-
-    /*
-        Load story photos.
-    */
-
-    try {
-
-        const {
-            data,
-            error
-        } = await supabaseClient
-            .storage
-            .from(PHOTO_BUCKET)
-            .list(
-                `stories/${year}`,
-                {
-                    limit: 1000,
-
-                    sortBy: {
-                        column: "created_at",
-                        order: "asc"
-                    }
-                }
-            );
-
-
-        if (error) {
-            throw error;
-        }
-
-
-        currentStoryPhotos =
-            (data || [])
-                .filter(
-                    function (file) {
-
-                        return (
-                            file.name &&
-                            isImageFile(
-                                file.name
-                            )
-                        );
-
-                    }
-                )
-                .map(
-                    function (file) {
-
-                        return getPublicImageUrl(
-                            `stories/${year}/${file.name}`
-                        );
-
-                    }
-                );
-
-
-        displayStoryPhotos();
-
-    }
-
-    catch (error) {
-
-        console.error(
-            "Story loading error:",
-            error
+        selected.classList.add(
+            "active"
         );
 
-        currentStoryPhotos = [];
-
-        displayStoryPhotos();
-
     }
+
+
+    updateStory();
 
 }
 
 
 /* =====================================================
-   DISPLAY STORY PHOTOS
+   UPDATE STORY
 ===================================================== */
 
-function displayStoryPhotos() {
+function updateStory() {
 
-    const grid =
+    const title =
         document.getElementById(
-            "memoryGrid"
+            "selectedTitle"
         );
 
     const count =
@@ -985,101 +530,204 @@ function displayStoryPhotos() {
         );
 
 
+    if (title) {
+        title.textContent =
+            selectedYear;
+    }
+
+
+    /*
+     * Since Supabase bucket currently
+     * contains normal photo files,
+     * we divide photos between years.
+     *
+     * 2026 = first half
+     * 2025 = second half
+     */
+
+    if (allPhotos.length === 0) {
+
+        currentMemoryPhotos = [];
+
+    }
+    else {
+
+        if (selectedYear === "2026") {
+
+            currentMemoryPhotos =
+                allPhotos.slice(
+                    0,
+                    Math.max(
+                        1,
+                        Math.ceil(
+                            allPhotos.length / 2
+                        )
+                    )
+                );
+
+        }
+        else {
+
+            currentMemoryPhotos =
+                allPhotos.slice(
+                    Math.ceil(
+                        allPhotos.length / 2
+                    )
+                );
+
+        }
+
+
+        /*
+         * If there are no photos
+         * in 2025, use second photo
+         * or first photo.
+         */
+
+        if (
+            currentMemoryPhotos.length === 0
+        ) {
+
+            currentMemoryPhotos =
+                allPhotos.slice(0, 1);
+
+        }
+
+    }
+
+
+    if (count) {
+
+        count.textContent =
+            `${currentMemoryPhotos.length} ${
+                currentMemoryPhotos.length === 1
+                    ? "memory"
+                    : "memories"
+            }`;
+
+    }
+
+
+    renderMemorySlider();
+
+}
+
+
+/* =====================================================
+   MEMORY SLIDER
+===================================================== */
+
+function renderMemorySlider() {
+
+    const grid =
+        document.getElementById(
+            "memoryGrid"
+        );
+
+
     if (!grid) {
         return;
+    }
+
+
+    if (
+        currentMemoryPhotos.length === 0
+    ) {
+
+        grid.innerHTML = `
+
+            <div class="loading-box">
+
+                <p>
+                    No memories available.
+                </p>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /*
+     * Show maximum 2 photos
+     */
+
+    const visiblePhotos = [];
+
+
+    for (
+        let i = 0;
+        i < Math.min(
+            2,
+            currentMemoryPhotos.length
+        );
+        i++
+    ) {
+
+        const index =
+            (
+                currentPhotoIndex + i
+            ) %
+            currentMemoryPhotos.length;
+
+
+        visiblePhotos.push(
+            currentMemoryPhotos[index]
+        );
+
     }
 
 
     grid.innerHTML = "";
 
 
-    if (count) {
-
-        count.textContent =
-            currentStoryPhotos.length +
-            (
-                currentStoryPhotos.length === 1
-                ? " memory"
-                : " memories"
-            );
-
-    }
-
-
-    if (
-        currentStoryPhotos.length === 0
-    ) {
-
-        grid.innerHTML = `
-            <div class="story-empty">
-                No photos added for ${currentStory}.
-            </div>
-        `;
-
-        return;
-    }
-
-
-    /*
-        Show maximum 2 preview images.
-    */
-
-    const visiblePhotos =
-        currentStoryPhotos.slice(
-            0,
-            2
-        );
-
-
     visiblePhotos.forEach(
-        function (url, index) {
+        photo => {
 
             const card =
-                document.createElement(
-                    "div"
-                );
+                document.createElement("div");
 
             card.className =
                 "memory-card";
 
 
-            const image =
-                document.createElement(
-                    "img"
-                );
+            card.innerHTML = `
 
-            image.src =
-                url;
+                <img
+                    src="${escapeAttribute(photo.url)}"
+                    alt="${escapeAttribute(photo.name)}"
+                    loading="lazy"
+                >
 
-            image.alt =
-                `${currentStory} memory ${index + 1}`;
-
-            image.loading =
-                "lazy";
+            `;
 
 
-            image.addEventListener(
+            card.addEventListener(
                 "click",
-                function () {
+                () => {
 
-                    currentPhotoIndex =
-                        index;
+                    const index =
+                        allPhotos.findIndex(
+                            p =>
+                                p.url === photo.url
+                        );
 
-                    openStoryImage(
-                        index
+
+                    openImage(
+                        photo.url,
+                        index >= 0
+                            ? index
+                            : 0
                     );
 
                 }
             );
 
 
-            card.appendChild(
-                image
-            );
-
-            grid.appendChild(
-                card
-            );
+            grid.appendChild(card);
 
         }
     );
@@ -1088,131 +736,64 @@ function displayStoryPhotos() {
 
 
 /* =====================================================
-   STORY PREVIOUS
-===================================================== */
-
-function prevPhoto() {
-
-    if (
-        currentStoryPhotos.length === 0
-    ) {
-        return;
-    }
-
-
-    currentPhotoIndex--;
-
-    if (
-        currentPhotoIndex < 0
-    ) {
-
-        currentPhotoIndex =
-            currentStoryPhotos.length - 1;
-
-    }
-
-
-    openStoryImage(
-        currentPhotoIndex
-    );
-
-}
-
-
-/* =====================================================
-   STORY NEXT
+   NEXT PHOTO
 ===================================================== */
 
 function nextPhoto() {
 
     if (
-        currentStoryPhotos.length === 0
-    ) {
-        return;
-    }
-
-
-    currentPhotoIndex++;
-
-    if (
-        currentPhotoIndex >=
-        currentStoryPhotos.length
-    ) {
-
-        currentPhotoIndex = 0;
-
-    }
-
-
-    openStoryImage(
-        currentPhotoIndex
-    );
-
-}
-
-
-/* =====================================================
-   STORY IMAGE
-===================================================== */
-
-function openStoryImage(
-    index
-) {
-
-    if (
-        !currentStoryPhotos[index]
+        currentMemoryPhotos.length === 0
     ) {
         return;
     }
 
 
     currentPhotoIndex =
-        index;
+        (
+            currentPhotoIndex + 1
+        ) %
+        currentMemoryPhotos.length;
 
 
-    openImage(
-        currentStoryPhotos[index]
-    );
+    renderMemorySlider();
 
 }
 
 
 /* =====================================================
-   GALLERY IMAGE
+   PREVIOUS PHOTO
 ===================================================== */
 
-function openGalleryImage(
-    index
-) {
+function prevPhoto() {
 
     if (
-        !allPhotos[index]
+        currentMemoryPhotos.length === 0
     ) {
         return;
     }
 
 
-    currentGalleryIndex =
-        index;
+    currentPhotoIndex =
+        (
+            currentPhotoIndex -
+            1 +
+            currentMemoryPhotos.length
+        ) %
+        currentMemoryPhotos.length;
 
 
-    const url =
-        getPublicImageUrl(
-            allPhotos[index].name
-        );
-
-
-    openImage(url);
+    renderMemorySlider();
 
 }
 
 
 /* =====================================================
-   OPEN IMAGE
+   IMAGE MODAL
 ===================================================== */
 
 function openImage(
-    src
+    url,
+    index = 0
 ) {
 
     const modal =
@@ -1220,19 +801,26 @@ function openImage(
             "imageModal"
         );
 
-    const image =
+    const fullImage =
         document.getElementById(
             "fullImage"
         );
 
 
-    if (!modal || !image) {
+    if (!modal || !fullImage) {
         return;
     }
 
 
-    image.src =
-        src;
+    modalPhotos = allPhotos;
+
+    modalIndex =
+        index >= 0
+            ? index
+            : 0;
+
+
+    fullImage.src = url;
 
 
     modal.classList.add(
@@ -1246,20 +834,11 @@ function openImage(
 }
 
 
-/* =====================================================
-   CLOSE IMAGE
-===================================================== */
-
 function closeImage() {
 
     const modal =
         document.getElementById(
             "imageModal"
-        );
-
-    const image =
-        document.getElementById(
-            "fullImage"
         );
 
 
@@ -1276,107 +855,110 @@ function closeImage() {
     document.body.style.overflow =
         "";
 
+}
 
-    if (image) {
-        image.src = "";
+
+/* =====================================================
+   MODAL PREVIOUS
+===================================================== */
+
+function modalPrevious() {
+
+    if (
+        modalPhotos.length === 0
+    ) {
+        return;
     }
+
+
+    modalIndex =
+        (
+            modalIndex -
+            1 +
+            modalPhotos.length
+        ) %
+        modalPhotos.length;
+
+
+    showModalPhoto();
 
 }
 
 
 /* =====================================================
-   MODAL EVENTS
+   MODAL NEXT
 ===================================================== */
 
-function setupModalEvents() {
+function modalNext() {
 
-    const modal =
-        document.getElementById(
-            "imageModal"
-        );
-
-    const closeButton =
-        document.getElementById(
-            "closeButton"
-        );
-
-    const modalPrev =
-        document.getElementById(
-            "modalPrev"
-        );
-
-    const modalNext =
-        document.getElementById(
-            "modalNext"
-        );
-
-
-    if (!modal) {
+    if (
+        modalPhotos.length === 0
+    ) {
         return;
     }
 
 
-    if (closeButton) {
+    modalIndex =
+        (
+            modalIndex + 1
+        ) %
+        modalPhotos.length;
 
-        closeButton.addEventListener(
-            "click",
-            closeImage
+
+    showModalPhoto();
+
+}
+
+
+/* =====================================================
+   SHOW MODAL PHOTO
+===================================================== */
+
+function showModalPhoto() {
+
+    const fullImage =
+        document.getElementById(
+            "fullImage"
         );
 
+
+    if (
+        !fullImage ||
+        !modalPhotos[modalIndex]
+    ) {
+        return;
     }
 
 
-    modal.addEventListener(
-        "click",
-        function (event) {
+    fullImage.src =
+        modalPhotos[modalIndex].url;
 
-            if (
-                event.target === modal
-            ) {
-
-                closeImage();
-
-            }
-
-        }
-    );
+}
 
 
-    if (modalPrev) {
+/* =====================================================
+   KEYBOARD CONTROLS
+===================================================== */
 
-        modalPrev.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                previousGalleryImage();
-
-            }
-        );
-
-    }
-
-
-    if (modalNext) {
-
-        modalNext.addEventListener(
-            "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                nextGalleryImage();
-
-            }
-        );
-
-    }
-
+function setupKeyboardControls() {
 
     document.addEventListener(
         "keydown",
-        function (event) {
+        event => {
+
+            const modal =
+                document.getElementById(
+                    "imageModal"
+                );
+
+
+            if (
+                !modal ||
+                !modal.classList.contains("show")
+            ) {
+                return;
+            }
+
 
             if (
                 event.key === "Escape"
@@ -1391,7 +973,7 @@ function setupModalEvents() {
                 event.key === "ArrowLeft"
             ) {
 
-                previousGalleryImage();
+                modalPrevious();
 
             }
 
@@ -1400,167 +982,70 @@ function setupModalEvents() {
                 event.key === "ArrowRight"
             ) {
 
-                nextGalleryImage();
+                modalNext();
 
             }
 
         }
     );
 
+
+    /*
+     * Close modal when clicking
+     * outside image
+     */
+
+    const modal =
+        document.getElementById(
+            "imageModal"
+        );
+
+
+    if (modal) {
+
+        modal.addEventListener(
+            "click",
+            event => {
+
+                if (
+                    event.target === modal
+                ) {
+
+                    closeImage();
+
+                }
+
+            }
+        );
+
+    }
+
 }
 
 
 /* =====================================================
-   GALLERY NEXT
+   NEW STORY
 ===================================================== */
 
-function nextGalleryImage() {
+function showNewStoryMessage() {
 
-    if (
-        allPhotos.length === 0
-    ) {
-        return;
-    }
-
-
-    currentGalleryIndex++;
-
-    if (
-        currentGalleryIndex >=
-        allPhotos.length
-    ) {
-
-        currentGalleryIndex = 0;
-
-    }
-
-
-    openGalleryImage(
-        currentGalleryIndex
+    alert(
+        "You can add a new story by uploading more photos to your Supabase photos bucket."
     );
 
 }
 
 
 /* =====================================================
-   GALLERY PREVIOUS
+   SECURITY / HTML ATTRIBUTE ESCAPE
 ===================================================== */
 
-function previousGalleryImage() {
+function escapeAttribute(value) {
 
-    if (
-        allPhotos.length === 0
-    ) {
-        return;
-    }
-
-
-    currentGalleryIndex--;
-
-    if (
-        currentGalleryIndex < 0
-    ) {
-
-        currentGalleryIndex =
-            allPhotos.length - 1;
-
-    }
-
-
-    openGalleryImage(
-        currentGalleryIndex
-    );
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;");
 
 }
-
-
-/* =====================================================
-   STORY BUTTONS
-===================================================== */
-
-function setupStoryButtons() {
-
-    const prev =
-        document.getElementById(
-            "prevBtn"
-        );
-
-    const next =
-        document.getElementById(
-            "nextBtn"
-        );
-
-
-    if (prev) {
-
-        prev.addEventListener(
-            "click",
-            prevPhoto
-        );
-
-    }
-
-
-    if (next) {
-
-        next.addEventListener(
-            "click",
-            nextPhoto
-        );
-
-    }
-
-}
-
-
-/* =====================================================
-   ERROR
-===================================================== */
-
-function showGalleryError(
-    message
-) {
-
-    const loading =
-        document.getElementById(
-            "galleryLoading"
-        );
-
-    const errorBox =
-        document.getElementById(
-            "galleryError"
-        );
-
-    const errorText =
-        document.getElementById(
-            "galleryErrorText"
-        );
-
-
-    if (loading) {
-        loading.style.display =
-            "none";
-    }
-
-
-    if (errorBox) {
-        errorBox.style.display =
-            "block";
-    }
-
-
-    if (errorText) {
-        errorText.textContent =
-            message;
-    }
-
-}
-
-
-/* =====================================================
-   CONSOLE
-===================================================== */
-
-console.log(
-    "Dhanula website loaded successfully."
-);
