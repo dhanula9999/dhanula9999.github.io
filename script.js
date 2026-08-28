@@ -1,18 +1,23 @@
 /* =====================================================
    DHANULA PERSONAL WEBSITE
-   SUPABASE STORAGE - FIXED URL
+   SUPABASE STORAGE CONFIGURATION
 ===================================================== */
 
-const SUPABASE_URL = "https://widutbgygnamjlkaovrk.supabase.co"; // Small 'l' applied
-const STORAGE_BUCKET = "photos";
+const SUPABASE_URL = "https://widutbgygnamjlkaovrk.supabase.co";
 
-function storageUrl(fileName) {
-    return `${SUPABASE_URL}/storage/v1/object/public/${STORAGE_BUCKET}/${fileName}`;
+// Photos bucket එක සදහා URL
+function getPhotoUrl(fileName) {
+    return `${SUPABASE_URL}/storage/v1/object/public/photos/${fileName}`;
+}
+
+// Stories bucket එක සදහා වෙනම URL
+function getStoryUrl(fileName) {
+    return `${SUPABASE_URL}/storage/v1/object/public/stories/${fileName}`;
 }
 
 
 /* =====================================================
-   PHOTOS SECTION
+   PHOTOS SECTION (Photos Bucket)
 ===================================================== */
 
 const photos = [
@@ -33,8 +38,6 @@ function loadPhotos() {
     loading.style.display = "block";
     errorBox.style.display = "none";
 
-    let loadedCount = 0;
-
     photos.forEach((fileName) => {
         const card = document.createElement("div");
         card.className = "photo-card";
@@ -43,16 +46,12 @@ function loadPhotos() {
         imageContainer.className = "photo-image";
 
         const img = document.createElement("img");
-        img.src = storageUrl(fileName);
+        img.src = getPhotoUrl(fileName); // Photos Bucket
         img.alt = "Dhanula photo";
         img.loading = "lazy";
 
         img.onclick = function () {
             openImage(this.src);
-        };
-
-        img.onload = function () {
-            loadedCount++;
         };
 
         img.onerror = function () {
@@ -76,17 +75,18 @@ function loadPhotos() {
 
 
 /* =====================================================
-   STORIES SECTION WITH AUTO-SLIDE & ARROWS
+   STORIES SECTION (Stories Bucket)
 ===================================================== */
 
+// Supabase "stories" bucket එකේ ඇති ෆයිල් නාමයන් මෙහි ඇතුළත් කරන්න
 const storyData = {
     "2026": [
-        "photo1.jpg",
-        "photo2.jpg"
+        "story1.jpg",
+        "story2.jpg"
     ],
     "2025": [
-        "photo3.jpg",
-        "photo4.jpg"
+        "story3.jpg",
+        "story4.jpg"
     ]
 };
 
@@ -142,7 +142,7 @@ function renderStory() {
         card.className = "memory-card";
 
         const img = document.createElement("img");
-        img.src = storageUrl(fileName);
+        img.src = getStoryUrl(fileName); // Stories Bucket
         img.alt = `${currentYear} memory`;
         img.loading = "lazy";
 
@@ -179,7 +179,7 @@ function prevPhoto() {
 
 
 /* =====================================================
-   AUTO SLIDE (Every 6 Seconds)
+   AUTO SLIDE
 ===================================================== */
 
 function startAutoSlide() {
@@ -189,7 +189,7 @@ function startAutoSlide() {
             currentPhotoIndex = (currentPhotoIndex + 1) % images.length;
             renderStory();
         }
-    }, 6000); // 6000ms = 6 seconds
+    }, 6000);
 }
 
 function resetAutoSlide() {
