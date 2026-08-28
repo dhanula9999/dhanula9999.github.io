@@ -5,12 +5,10 @@
     <meta charset="UTF-8">
 
     <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+        content="width=device-width, initial-scale=1.0">
 
     <meta name="description"
-          content="Dhanula's personal website - memories, photos, stories and experiences.">
-
-    <meta name="theme-color" content="#111111">
+        content="Dhanula's personal website - memories, photos, stories and experiences.">
 
     <title>Dhanula | My Personal Website</title>
 
@@ -85,7 +83,7 @@
             Hi, I'm <span>Dhanula</span>
         </h1>
 
-        <p>
+        <p class="home-description">
             Welcome to my personal website.
             This is a place where I share my memories,
             photos, interests and experiences.
@@ -115,11 +113,17 @@
         </h2>
 
         <p class="about-text">
-            Hello! I'm Dhanula. I'm interested in technology,
-            Artificial Intelligence, programming, travelling,
-            photography and learning new things.
-            This website is my personal space where I can
-            keep my favourite memories and experiences.
+
+            Hello! I'm Dhanula.
+            I'm interested in technology,
+            Artificial Intelligence, programming,
+            travelling, photography and learning
+            new things.
+
+            This website is my personal space where
+            I can keep my favourite memories and
+            experiences.
+
         </p>
 
 
@@ -209,20 +213,74 @@
         </div>
 
 
-        <!-- STORY YEARS -->
+        <!-- Story years -->
 
-        <div
-            class="story-highlights"
-            id="storyHighlights">
+        <div class="story-highlights"
+             id="storyHighlights">
 
-            <div class="story-loading">
-                Loading stories...
+            <div class="story-highlight active"
+                 data-story="2026"
+                 onclick="selectStory('2026')">
+
+                <div class="story-circle">
+
+                    <img
+                        id="storyImage2026"
+                        src=""
+                        alt="2026"
+                    >
+
+                </div>
+
+                <span>
+                    2026
+                </span>
+
+            </div>
+
+
+            <div class="story-highlight"
+                 data-story="2025"
+                 onclick="selectStory('2025')">
+
+                <div class="story-circle">
+
+                    <img
+                        id="storyImage2025"
+                        src=""
+                        alt="2025"
+                    >
+
+                </div>
+
+                <span>
+                    2025
+                </span>
+
+            </div>
+
+
+            <div class="story-highlight new-story"
+                 onclick="showNewStoryMessage()">
+
+                <div class="story-circle new-circle">
+
+                    <span class="plus">
+                        +
+                    </span>
+
+                </div>
+
+                <span>
+                    New
+                </span>
+
             </div>
 
         </div>
 
 
-        <!-- SELECTED STORY -->
+        <!-- Selected memories -->
 
         <div class="selected-memory">
 
@@ -235,16 +293,15 @@
                     </small>
 
                     <h3 id="selectedTitle">
-                        —
+                        2026
                     </h3>
 
                 </div>
 
-                <div
-                    class="memory-count"
-                    id="memoryCount">
+                <div class="memory-count"
+                     id="memoryCount">
 
-                    0 memories
+                    Loading...
 
                 </div>
 
@@ -255,7 +312,7 @@
 
                 <button
                     class="slide-btn prev-btn"
-                    id="prevBtn"
+                    onclick="prevPhoto()"
                     aria-label="Previous photo">
 
                     ‹
@@ -267,8 +324,14 @@
                     class="memory-grid"
                     id="memoryGrid">
 
-                    <div class="story-empty">
-                        Select a year
+                    <div class="loading-box">
+
+                        <div class="loader"></div>
+
+                        <p>
+                            Loading memories...
+                        </p>
+
                     </div>
 
                 </div>
@@ -276,7 +339,7 @@
 
                 <button
                     class="slide-btn next-btn"
-                    id="nextBtn"
+                    onclick="nextPhoto()"
                     aria-label="Next photo">
 
                     ›
@@ -311,67 +374,47 @@
         </p>
 
 
-        <!-- GALLERY STATUS -->
+        <!-- Gallery -->
 
         <div
-            id="galleryLoading"
-            class="gallery-status">
+            class="gallery"
+            id="gallery">
 
-            <div class="spinner"></div>
+            <div class="loading-gallery">
 
-            <p>
-                Loading photos...
-            </p>
+                <div class="loader"></div>
+
+                <p>
+                    Loading photos...
+                </p>
+
+            </div>
 
         </div>
 
 
+        <!-- Error -->
+
         <div
-            id="galleryError"
-            class="gallery-message error-message"
+            id="photoError"
+            class="photo-error"
             style="display:none;">
 
             <h3>
                 Unable to load photos
             </h3>
 
-            <p id="galleryErrorText">
-                Please check your Supabase configuration.
+            <p id="photoErrorText">
+                Failed to fetch photos.
             </p>
 
             <button
-                class="retry-button"
-                onclick="loadPhotos()">
+                onclick="loadPhotos()"
+                class="retry-button">
 
                 Try Again
 
             </button>
-
-        </div>
-
-
-        <div
-            id="galleryEmpty"
-            class="gallery-message"
-            style="display:none;">
-
-            <h3>
-                No photos yet
-            </h3>
-
-            <p>
-                Upload photos to the Supabase
-                <strong>photos</strong> bucket.
-            </p>
-
-        </div>
-
-
-        <!-- GALLERY -->
-
-        <div
-            class="gallery"
-            id="gallery">
 
         </div>
 
@@ -390,33 +433,30 @@
 
     <button
         class="close-button"
-        id="closeButton"
-        aria-label="Close image">
+        onclick="closeImage()"
+        aria-label="Close">
 
-        &times;
+        ×
 
     </button>
 
-
     <button
         class="modal-prev"
-        id="modalPrev"
+        onclick="modalPrevious()"
         aria-label="Previous image">
 
         ‹
 
     </button>
 
-
     <img
         id="fullImage"
         class="full-image"
         alt="Full size image">
 
-
     <button
         class="modal-next"
-        id="modalNext"
+        onclick="modalNext()"
         aria-label="Next image">
 
         ›
@@ -439,8 +479,7 @@
     </p>
 
     <p>
-        &copy; 2026 Dhanula.
-        All Rights Reserved.
+        © 2026 Dhanula. All Rights Reserved.
     </p>
 
 </footer>
@@ -449,5 +488,4 @@
 <script src="script.js"></script>
 
 </body>
-
 </html>
