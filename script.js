@@ -35,16 +35,28 @@ if (themeToggleBtn) {
 }
 
 /* =====================================================
-   PHOTOS SECTION
+   PHOTOS SECTION (INDIVIDUAL & ALBUM COLLECTIONS)
 ===================================================== */
 
-const photos = [
-    "photo1.jpg",
-    "photo2.jpg",
-    "photo3.jpg",
-    "photo4.jpg",
-    "photo5.jpg",
-    "photo6.jpg"
+// photo1 සිට photo6 දක්වා තනි රූප ලෙසද, 
+// photo7 සිට photo20 දක්වා photo7 මුලින්ම පෙනෙන Album එකක් ලෙසද එකතු කර ඇත.
+const photoAlbums = [
+    { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
+    { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
+    { title: "Photo 3", cover: "photo3.jpg", images: ["photo3.jpg"] },
+    { title: "Photo 4", cover: "photo4.jpg", images: ["photo4.jpg"] },
+    { title: "Photo 5", cover: "photo5.jpg", images: ["photo5.jpg"] },
+    { title: "Photo 6", cover: "photo6.jpg", images: ["photo6.jpg"] },
+    {
+        title: "Special Album",
+        cover: "photo7.jpg", // මුලින්ම පෙන්වන පින්තූරය
+        images: [
+            "photo7.jpg",  "photo8.jpg",  "photo9.jpg",  "photo10.jpg",
+            "photo11.jpg", "photo12.jpg", "photo13.jpg", "photo14.jpg",
+            "photo15.jpg", "photo16.jpg", "photo17.jpg", "photo18.jpg",
+            "photo19.jpg", "photo20.jpg"
+        ] // 7 සිට 20 දක්වා පිළිවෙළට
+    }
 ];
 
 function loadPhotos() {
@@ -56,7 +68,7 @@ function loadPhotos() {
     loading.style.display = "block";
     errorBox.style.display = "none";
 
-    photos.forEach((fileName, index) => {
+    photoAlbums.forEach((album) => {
         const card = document.createElement("div");
         card.className = "photo-card";
 
@@ -64,13 +76,22 @@ function loadPhotos() {
         imageContainer.className = "photo-image";
 
         const img = document.createElement("img");
-        img.src = getPhotoUrl(fileName);
-        img.alt = "Dhanula photo";
+        img.src = getPhotoUrl(album.cover);
+        img.alt = album.title;
         img.loading = "lazy";
 
+        // Album එකේ එකට වඩා පින්තූර තිබේ නම් (+ Count) badge එක පෙන්වීම
+        if (album.images.length > 1) {
+            const badge = document.createElement("div");
+            badge.className = "album-badge";
+            badge.innerText = `+${album.images.length - 1} photos`;
+            imageContainer.appendChild(badge);
+        }
+
+        // Cover photo එක click කළ විට album එකේ සියලුම පින්තූර slider එකෙන් බලන්න පුළුවන්
         img.onclick = function () {
-            const photoUrls = photos.map(f => getPhotoUrl(f));
-            openImageSlider(photoUrls, index);
+            const albumUrls = album.images.map(f => getPhotoUrl(f));
+            openImageSlider(albumUrls, 0);
         };
 
         img.onerror = function () {
@@ -89,7 +110,7 @@ function loadPhotos() {
         if (visibleImages.length === 0) {
             errorBox.style.display = "block";
         }
-    }, 1500);
+    }, 1200);
 }
 
 /* =====================================================
@@ -204,7 +225,7 @@ function startAutoSlide() {
             currentPhotoIndex = (currentPhotoIndex + 1) % images.length;
             renderStory();
         }
-    }, 5000); // 5 Seconds (5000ms)
+    }, 5000); // 5 Seconds
 }
 
 function resetAutoSlide() {
