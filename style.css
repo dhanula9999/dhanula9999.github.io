@@ -1,1185 +1,203 @@
 /* =====================================================
-   RESET
+   STORY DATA BY YEAR (All current story photos in 2026)
 ===================================================== */
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+const stories = {
+    "2026": {
+        title: "2026",
+        photos: [
+            { image: "stories/story1.jpg" },
+            { image: "stories/story2.jpg" }
+        ]
+    },
+    "2025": {
+        title: "2025",
+        photos: []
+    }
+};
+
+let autoSlideTimer = null;
 
 
-html {
-    scroll-behavior: smooth;
-}
+/* =====================================================
+   SMOOTH SCROLL - NO NEW TAB
+===================================================== */
 
+function initSmoothScroll() {
+    const navLinks = document.querySelectorAll('.nav-link');
 
-body {
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    navLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault();
 
-    background: #f5f5f5;
+            const targetId = this.getAttribute('href');
+            if (!targetId || !targetId.startsWith('#')) return;
 
-    color: #111;
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                const mainNav = document.getElementById('mainNav');
+                const navToggle = document.getElementById('navToggle');
+                if (mainNav && mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
+                }
 
-    overflow-x: hidden;
+                targetSection.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
 }
 
 
 /* =====================================================
-   NAVBAR
+   IMAGE ERROR HANDLER
 ===================================================== */
 
-.navbar {
-
-    position: sticky;
-
-    top: 0;
-
-    z-index: 1000;
-
-    width: 100%;
-
-    background: rgba(17,17,17,0.97);
-
-    backdrop-filter: blur(10px);
-
-    box-shadow:
-        0 5px 25px rgba(0,0,0,0.15);
-}
-
-
-.nav-container {
-
-    width: 90%;
-
-    max-width: 1300px;
-
-    height: 90px;
-
-    margin: auto;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-}
-
-
-.logo {
-
-    color: white;
-
-    text-decoration: none;
-
-    font-size: 32px;
-
-    font-weight: 700;
-}
-
-
-nav {
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 38px;
-}
-
-
-nav a {
-
-    color: white;
-
-    text-decoration: none;
-
-    font-size: 18px;
-
-    transition: 0.3s;
-}
-
-
-nav a:hover {
-
-    color: #aaa;
+function handleImageError(img) {
+    img.onerror = null;
+    img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTBlMGUwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4=';
+    img.style.objectFit = 'contain';
 }
 
 
 /* =====================================================
-   HOME
+   SELECT STORY BY YEAR
 ===================================================== */
 
-.home {
+function selectStory(year) {
+    const story = stories[year];
+    if (!story) return;
 
-    min-height: 90vh;
+    const highlights = document.querySelectorAll(".story-highlight");
+    highlights.forEach(function(item) {
+        item.classList.remove("active");
+    });
 
-    display: flex;
+    const selected = document.querySelector(`.story-highlight[data-story="${year}"]`);
+    if (selected) {
+        selected.classList.add("active");
+    }
 
-    align-items: center;
+    const selectedTitle = document.getElementById("selectedTitle");
+    selectedTitle.textContent = story.title;
 
-    justify-content: center;
+    const memoryCount = document.getElementById("memoryCount");
+    const total = story.photos.length;
+    memoryCount.textContent = total + (total === 1 ? " memory" : " memories");
 
-    text-align: center;
+    const memoryGrid = document.getElementById("memoryGrid");
+    memoryGrid.innerHTML = "";
 
-    background:
-        linear-gradient(
-            rgba(255,255,255,0.96),
-            rgba(245,245,245,0.96)
-        );
-}
-
-
-.home-content {
-
-    width: 90%;
-
-    max-width: 850px;
-
-    padding: 50px 20px;
-}
-
-
-.small-title {
-
-    letter-spacing: 5px;
-
-    color: #777;
-
-    font-size: 14px;
-
-    margin-bottom: 20px;
-}
-
-
-.home h1 {
-
-    font-size: 70px;
-
-    margin-bottom: 25px;
-
-    line-height: 1.1;
-}
-
-
-.home h1 span {
-
-    color: #555;
-}
-
-
-.home-content > p:not(.small-title) {
-
-    font-size: 21px;
-
-    line-height: 1.8;
-
-    color: #555;
-
-    margin-bottom: 35px;
-}
-
-
-/* BUTTON */
-
-.button {
-
-    display: inline-block;
-
-    background: #111;
-
-    color: white;
-
-    padding: 16px 32px;
-
-    border-radius: 40px;
-
-    text-decoration: none;
-
-    transition: 0.3s;
-
-    font-size: 16px;
-}
-
-
-.button:hover {
-
-    background: #444;
-
-    transform: translateY(-4px);
+    story.photos.forEach(function(photo) {
+        const card = document.createElement("div");
+        card.className = "memory-card";
+        card.innerHTML = `
+            <img src="${photo.image}" alt="${story.title}" loading="lazy" onerror="handleImageError(this)" onclick="openImage('${photo.image}')">
+        `;
+        memoryGrid.appendChild(card);
+    });
 }
 
 
 /* =====================================================
-   COMMON SECTIONS
+   AUTO SWITCH STORIES (Every 7 Seconds)
 ===================================================== */
 
-.about,
-.photos {
+function startAutoSlide() {
+    const years = Object.keys(stories);
+    let currentIndex = 0;
 
-    padding: 110px 20px;
-}
-
-
-.section-container {
-
-    width: 90%;
-
-    max-width: 1200px;
-
-    margin: auto;
-}
-
-
-.section-label {
-
-    text-align: center;
-
-    letter-spacing: 5px;
-
-    color: #888;
-
-    font-size: 13px;
-
-    margin-bottom: 12px;
-}
-
-
-section h2 {
-
-    text-align: center;
-
-    font-size: 55px;
-
-    margin-bottom: 25px;
-}
-
-
-.section-description {
-
-    text-align: center;
-
-    color: #666;
-
-    font-size: 19px;
-
-    margin-bottom: 60px;
+    autoSlideTimer = setInterval(function() {
+        currentIndex = (currentIndex + 1) % years.length;
+        selectStory(years[currentIndex]);
+    }, 7000); // 7000ms = 7 seconds
 }
 
 
 /* =====================================================
-   ABOUT
+   NEW STORY BUTTON
 ===================================================== */
 
-.about {
-
-    background: white;
-}
-
-
-.about-text {
-
-    max-width: 850px;
-
-    margin: 0 auto 60px;
-
-    text-align: center;
-
-    font-size: 19px;
-
-    line-height: 1.9;
-
-    color: #555;
-}
-
-
-.about-boxes {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0,1fr));
-
-    gap: 25px;
-}
-
-
-.about-box {
-
-    background: #f7f7f7;
-
-    padding: 40px 30px;
-
-    border-radius: 22px;
-
-    text-align: center;
-
-    box-shadow:
-        0 12px 35px rgba(0,0,0,0.08);
-
-    transition: 0.3s;
-}
-
-
-.about-box:hover {
-
-    transform: translateY(-7px);
-}
-
-
-.about-icon {
-
-    font-size: 40px;
-
-    margin-bottom: 15px;
-}
-
-
-.about-box h3 {
-
-    font-size: 23px;
-
-    margin-bottom: 15px;
-}
-
-
-.about-box p {
-
-    color: #666;
-
-    line-height: 1.7;
+function showNewStoryMessage() {
+    console.log("New Story feature coming soon!");
 }
 
 
 /* =====================================================
-   STORIES
+   IMAGE VIEWER
 ===================================================== */
 
-.stories {
-
-    padding: 110px 20px;
-
-    background: #f5f5f5;
-}
-
-
-.stories-container {
-
-    width: 90%;
-
-    max-width: 1100px;
-
-    margin: auto;
-}
-
-
-.stories-heading {
-
-    text-align: center;
-
-    margin-bottom: 45px;
-}
-
-
-.stories-heading h2 {
-
-    margin-bottom: 20px;
-}
-
-
-.stories-heading > p:last-child {
-
-    color: #666;
-
-    font-size: 19px;
+function openImage(imageSource) {
+    const modal = document.getElementById("imageModal");
+    const fullImage = document.getElementById("fullImage");
+    fullImage.src = imageSource;
+    modal.style.display = "flex";
+    document.body.style.overflow = "hidden";
 }
 
 
 /* =====================================================
-   STORY HIGHLIGHTS
+   CLOSE IMAGE
 ===================================================== */
 
-.story-highlights {
-
-    display: flex;
-
-    justify-content: center;
-
-    align-items: flex-start;
-
-    gap: 32px;
-
-    width: 100%;
-
-    margin: 0 auto 55px;
-
-    padding: 5px 5px 15px;
-}
-
-
-.story-highlight {
-
-    flex: 0 0 auto;
-
-    text-align: center;
-
-    cursor: pointer;
-
-    user-select: none;
-}
-
-
-.story-circle {
-
-    width: 90px;
-
-    height: 90px;
-
-    border-radius: 50%;
-
-    overflow: hidden;
-
-    background: white;
-
-    border: 3px solid #ddd;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    transition:
-        transform 0.3s,
-        border 0.3s,
-        box-shadow 0.3s;
-
-    box-shadow:
-        0 6px 18px rgba(0,0,0,0.12);
-}
-
-
-.story-circle img {
-
-    display: block;
-
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-}
-
-
-.story-highlight:hover .story-circle {
-
-    transform: scale(1.08);
-}
-
-
-.story-highlight.active .story-circle {
-
-    border: 3px solid #111;
-
-    box-shadow:
-        0 8px 22px rgba(0,0,0,0.2);
-}
-
-
-.story-highlight span {
-
-    display: block;
-
-    margin-top: 10px;
-
-    font-size: 16px;
-
-    color: #222;
-}
-
-
-/* NEW BUTTON */
-
-.new-circle {
-
-    border: 2px solid #bbb;
-
-    background: white;
-}
-
-
-.plus {
-
-    font-size: 34px;
-
-    font-weight: 300;
-
-    color: #111;
+function closeImage() {
+    const modal = document.getElementById("imageModal");
+    const fullImage = document.getElementById("fullImage");
+    modal.style.display = "none";
+    fullImage.src = "";
+    document.body.style.overflow = "";
 }
 
 
 /* =====================================================
-   SELECTED MEMORY
+   CLOSE WHEN CLICKING OUTSIDE IMAGE
 ===================================================== */
 
-.selected-memory {
-
-    width: 100%;
-
-    min-height: 300px;
-
-    background: white;
-
-    border-radius: 28px;
-
-    padding: 35px;
-
-    box-shadow:
-        0 15px 45px rgba(0,0,0,0.08);
-
-    margin-bottom: 80px;
-}
+document.getElementById("imageModal").addEventListener("click", function(event) {
+    if (event.target === this) {
+        closeImage();
+    }
+});
 
 
-.selected-header {
+/* =====================================================
+   ESC KEY
+===================================================== */
 
-    display: flex;
-
-    justify-content: space-between;
-
-    align-items: center;
-
-    margin-bottom: 30px;
-}
-
-
-.selected-header small {
-
-    display: block;
-
-    letter-spacing: 4px;
-
-    color: #999;
-
-    font-size: 11px;
-
-    margin-bottom: 8px;
-}
+document.addEventListener("keydown", function(event) {
+    if (event.key === "Escape") {
+        closeImage();
+    }
+});
 
 
-.selected-header h3 {
+/* =====================================================
+   HAMBURGER MENU TOGGLE
+===================================================== */
 
-    font-size: 28px;
+function initMobileNav() {
+    const navToggle = document.getElementById("navToggle");
+    const mainNav = document.getElementById("mainNav");
 
-    margin: 0;
-}
+    if (!navToggle || !mainNav) return;
 
-
-.memory-count {
-
-    color: #777;
-
-    font-size: 15px;
+    navToggle.addEventListener("click", function() {
+        const isOpen = mainNav.classList.toggle("active");
+        navToggle.setAttribute("aria-expanded", isOpen);
+    });
 }
 
 
 /* =====================================================
-   MEMORY GRID
+   INITIALIZATION
 ===================================================== */
 
-.memory-grid {
-
-    width: 100%;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0,1fr));
-
-    gap: 25px;
-}
-
-
-/* =====================================================
-   MEMORY CARD
-===================================================== */
-
-.memory-card {
-
-    display: block;
-
-    width: 100%;
-
-    min-width: 0;
-
-    overflow: hidden;
-
-    background: white;
-
-    border-radius: 18px;
-
-    box-shadow:
-        0 8px 25px rgba(0,0,0,0.10);
-
-    cursor: pointer;
-
-    transition:
-        transform 0.3s,
-        box-shadow 0.3s;
-}
-
-
-.memory-card:hover {
-
-    transform: translateY(-6px);
-
-    box-shadow:
-        0 15px 35px rgba(0,0,0,0.17);
-}
-
-
-.memory-card img {
-
-    display: block !important;
-
-    width: 100% !important;
-
-    height: 320px !important;
-
-    object-fit: cover;
-
-    opacity: 1 !important;
-
-    visibility: visible !important;
-
-    cursor: pointer;
-
-    transition: transform 0.4s;
-}
-
-
-.memory-card:hover img {
-
-    transform: scale(1.04);
-}
-
-
-.memory-info {
-
-    padding: 18px;
-
-    text-align: center;
-}
-
-
-.memory-info h4 {
-
-    font-size: 19px;
-
-    margin-bottom: 6px;
-}
-
-
-.memory-info p {
-
-    font-size: 14px;
-
-    color: #777;
-}
-
-
-/* =====================================================
-   MY PHOTOS
-===================================================== */
-
-.photos {
-
-    background: white;
-}
-
-
-.gallery {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, minmax(0,1fr));
-
-    gap: 30px;
-}
-
-
-.photo-card {
-
-    background: white;
-
-    border-radius: 20px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 12px 35px rgba(0,0,0,0.12);
-
-    transition: 0.3s;
-}
-
-
-.photo-card:hover {
-
-    transform: translateY(-8px);
-
-    box-shadow:
-        0 20px 45px rgba(0,0,0,0.18);
-}
-
-
-.photo-image {
-
-    width: 100%;
-
-    height: 400px;
-
-    overflow: hidden;
-
-    background: #ddd;
-}
-
-
-.photo-image img {
-
-    display: block;
-
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-
-    cursor: pointer;
-
-    transition: 0.4s;
-}
-
-
-.photo-image img:hover {
-
-    transform: scale(1.05);
-}
-
-
-.photo-info {
-
-    text-align: center;
-
-    padding: 25px 15px;
-}
-
-
-.photo-info h3 {
-
-    font-size: 23px;
-
-    margin-bottom: 8px;
-}
-
-
-.photo-info p {
-
-    color: #666;
-
-    font-size: 16px;
-}
-
-
-/* =====================================================
-   IMAGE MODAL
-===================================================== */
-
-.image-modal {
-
-    display: none;
-
-    position: fixed;
-
-    inset: 0;
-
-    z-index: 5000;
-
-    width: 100%;
-
-    height: 100%;
-
-    background:
-        rgba(0,0,0,0.94);
-
-    align-items: center;
-
-    justify-content: center;
-
-    padding: 30px;
-}
-
-
-.full-image {
-
-    display: block;
-
-    max-width: 92%;
-
-    max-height: 90%;
-
-    object-fit: contain;
-
-    border-radius: 12px;
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,0.5);
-}
-
-
-.close-button {
-
-    position: absolute;
-
-    top: 18px;
-
-    right: 30px;
-
-    width: 50px;
-
-    height: 50px;
-
-    border: none;
-
-    background: transparent;
-
-    color: white;
-
-    font-size: 50px;
-
-    line-height: 1;
-
-    cursor: pointer;
-
-    z-index: 5001;
-}
-
-
-.close-button:hover {
-
-    color: #bbb;
-}
-
-
-/* =====================================================
-   FOOTER
-===================================================== */
-
-footer {
-
-    background: #111;
-
-    color: white;
-
-    text-align: center;
-
-    padding: 50px 20px;
-}
-
-
-footer h3 {
-
-    font-size: 26px;
-
-    margin-bottom: 8px;
-}
-
-
-footer p {
-
-    margin-top: 8px;
-
-    color: #ccc;
-}
-
-
-/* =====================================================
-   DESKTOP FIX
-===================================================== */
-
-@media (min-width: 901px) {
-
-    .memory-grid {
-
-        display: grid !important;
-
-        grid-template-columns:
-            repeat(3, minmax(0,1fr)) !important;
-    }
-
-
-    .memory-card {
-
-        display: block !important;
-
-        visibility: visible !important;
-
-        opacity: 1 !important;
-    }
-
-
-    .memory-card img {
-
-        display: block !important;
-
-        visibility: visible !important;
-
-        opacity: 1 !important;
-    }
-
-}
-
-
-/* =====================================================
-   TABLET
-===================================================== */
-
-@media (max-width: 900px) {
-
-    .home h1 {
-
-        font-size: 55px;
-    }
-
-
-    .about-boxes {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    .memory-grid {
-
-        grid-template-columns:
-            repeat(2, minmax(0,1fr));
-    }
-
-
-    .gallery {
-
-        grid-template-columns:
-            repeat(2, minmax(0,1fr));
-    }
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 600px) {
-
-    .nav-container {
-
-        height: auto;
-
-        padding: 20px 0;
-
-        flex-direction: column;
-
-        gap: 20px;
-    }
-
-
-    .logo {
-
-        font-size: 30px;
-    }
-
-
-    nav {
-
-        gap: 18px;
-
-        flex-wrap: wrap;
-
-        justify-content: center;
-    }
-
-
-    nav a {
-
-        font-size: 14px;
-    }
-
-
-    .home {
-
-        min-height: 80vh;
-    }
-
-
-    .home-content {
-
-        padding: 40px 10px;
-    }
-
-
-    .home h1 {
-
-        font-size: 42px;
-    }
-
-
-    .home-content > p:not(.small-title) {
-
-        font-size: 17px;
-
-        line-height: 1.7;
-    }
-
-
-    .about,
-    .photos,
-    .stories {
-
-        padding: 75px 15px;
-    }
-
-
-    .section-container,
-    .stories-container {
-
-        width: 100%;
-    }
-
-
-    section h2 {
-
-        font-size: 40px;
-    }
-
-
-    .section-description {
-
-        font-size: 17px;
-    }
-
-
-    /* STORY HIGHLIGHTS */
-
-    .story-highlights {
-
-        justify-content: flex-start;
-
-        overflow-x: auto;
-
-        gap: 22px;
-
-        padding:
-            5px 8px 18px;
-
-        scrollbar-width: none;
-
-        -webkit-overflow-scrolling: touch;
-    }
-
-
-    .story-highlights::-webkit-scrollbar {
-
-        display: none;
-    }
-
-
-    .story-circle {
-
-        width: 82px;
-
-        height: 82px;
-    }
-
-
-    .story-highlight span {
-
-        font-size: 14px;
-    }
-
-
-    /* SELECTED MEMORY */
-
-    .selected-memory {
-
-        padding: 22px;
-
-        border-radius: 22px;
-
-        margin-bottom: 55px;
-    }
-
-
-    .selected-header {
-
-        align-items: flex-start;
-    }
-
-
-    .selected-header h3 {
-
-        font-size: 25px;
-    }
-
-
-    .memory-count {
-
-        font-size: 13px;
-
-        padding-top: 6px;
-    }
-
-
-    .memory-grid {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    .memory-card img {
-
-        height: 300px !important;
-    }
-
-
-    /* GALLERY */
-
-    .gallery {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    .photo-image {
-
-        height: 380px;
-    }
-
-
-    .full-image {
-
-        max-width: 96%;
-
-        max-height: 85%;
-    }
-
-
-    .close-button {
-
-        top: 10px;
-
-        right: 15px;
-    }
-
-}
+document.addEventListener("DOMContentLoaded", function() {
+    selectStory("2026");
+    initMobileNav();
+    initSmoothScroll();
+    startAutoSlide();
+});
