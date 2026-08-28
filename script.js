@@ -57,7 +57,6 @@ const photoAlbums = [
         ]
     },
     { title: "Photo 21", cover: "photo21.jpg", images: ["photo21.jpg"] },
-    // photo23.jpg ගොනුව අවසානයටම ඇතුළත් කරන ලදී:
     { title: "Photo 23", cover: "photo23.jpg", images: ["photo23.jpg"] }
 ];
 
@@ -70,7 +69,10 @@ function loadPhotos() {
     if (loading) loading.style.display = "block";
     if (errorBox) errorBox.style.display = "none";
 
-    photoAlbums.forEach((album) => {
+    // ගැලරියේ ඇති සියලුම ප්‍රධාන පින්තූරවල URL එකතු කර ගැනීම (Slider එක සඳහා)
+    const allGalleryCovers = photoAlbums.map(album => getPhotoUrl(album.cover));
+
+    photoAlbums.forEach((album, index) => {
         const card = document.createElement("div");
         card.className = "photo-card";
 
@@ -89,9 +91,14 @@ function loadPhotos() {
             imageContainer.appendChild(badge);
         }
 
+        // මෙහිදී ඇල්බමයක එකකට වඩා තිබේ නම් ඒවාත්, නැතහොත් මුළු ගැලරියම Slider එකට ලබා දේ
         img.onclick = function () {
-            const albumUrls = album.images.map(f => getPhotoUrl(f));
-            openImageSlider(albumUrls, 0);
+            if (album.images.length > 1) {
+                const albumUrls = album.images.map(f => getPhotoUrl(f));
+                openImageSlider(albumUrls, 0);
+            } else {
+                openImageSlider(allGalleryCovers, index);
+            }
         };
 
         img.onerror = function () {
@@ -339,9 +346,8 @@ document.addEventListener("keydown", function(event) {
 ===================================================== */
 
 function handleContactSubmit(event) {
-    event.preventDefault();
-    alert("Thank you for your message! I will get back to you soon.");
-    event.target.reset();
+    .event?.preventDefault(); // Safe check
+    // ...
 }
 
 function showNewStoryMessage() {
