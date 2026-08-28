@@ -5,14 +5,37 @@
 
 const SUPABASE_URL = "https://widutbgygnamjlkaovrk.supabase.co";
 
-// Photos bucket එක සදහා URL
+// Photos bucket URL
 function getPhotoUrl(fileName) {
     return `${SUPABASE_URL}/storage/v1/object/public/photos/${fileName}`;
 }
 
-// Stories bucket එක සදහා වෙනම URL
+// Stories bucket URL
 function getStoryUrl(fileName) {
     return `${SUPABASE_URL}/storage/v1/object/public/stories/${fileName}`;
+}
+
+
+/* =====================================================
+   DARK / LIGHT MODE SYSTEM
+===================================================== */
+
+const themeToggleBtn = document.getElementById('themeToggle');
+
+// Load theme from localStorage or system preference
+const savedTheme = localStorage.getItem('theme') || 
+    (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+document.documentElement.setAttribute('data-theme', savedTheme);
+
+if (themeToggleBtn) {
+    themeToggleBtn.addEventListener('click', () => {
+        let currentTheme = document.documentElement.getAttribute('data-theme');
+        let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
 }
 
 
@@ -46,7 +69,7 @@ function loadPhotos() {
         imageContainer.className = "photo-image";
 
         const img = document.createElement("img");
-        img.src = getPhotoUrl(fileName); // Photos Bucket
+        img.src = getPhotoUrl(fileName);
         img.alt = "Dhanula photo";
         img.loading = "lazy";
 
@@ -75,10 +98,9 @@ function loadPhotos() {
 
 
 /* =====================================================
-   STORIES SECTION (Stories Bucket)
+   STORIES SECTION (Stories Bucket - All 3 in 2026)
 ===================================================== */
 
-// Stories 3 ම 2026 යටතේ මෙසේ ඇතුළත් කර ඇත
 const storyData = {
     "2026": [
         "story1.jpg",
@@ -122,7 +144,7 @@ function renderStory() {
 
     if (images.length === 0) {
         grid.innerHTML = `
-            <div style="grid-column:1/-1; text-align:center; padding:60px; color:#777;">
+            <div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-secondary);">
                 No memories available for ${currentYear}.
             </div>
         `;
@@ -140,7 +162,7 @@ function renderStory() {
         card.className = "memory-card";
 
         const img = document.createElement("img");
-        img.src = getStoryUrl(fileName); // Stories Bucket
+        img.src = getStoryUrl(fileName);
         img.alt = `${currentYear} memory`;
         img.loading = "lazy";
 
