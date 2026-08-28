@@ -6,13 +6,13 @@ const stories = {
     story1: {
         title: "Story 1",
         photos: [
-            { image: "stories/story1.jpg", title: "Story 1", description: "Memory from story 1." }
+            { image: "stories/story1.jpg" }
         ]
     },
     story2: {
         title: "Story 2",
         photos: [
-            { image: "stories/story2.jpg", title: "Story 2", description: "Memory from story 2." }
+            { image: "stories/story2.jpg" }
         ]
     }
 };
@@ -63,7 +63,7 @@ function handleImageError(img) {
 
 
 /* =====================================================
-   SELECT STORY
+   SELECT STORY (Text Removed - Images Only)
 ===================================================== */
 
 function selectStory(storyName) {
@@ -90,15 +90,12 @@ function selectStory(storyName) {
     const memoryGrid = document.getElementById("memoryGrid");
     memoryGrid.innerHTML = "";
 
+    // Image only card (No text)
     story.photos.forEach(function(photo) {
         const card = document.createElement("div");
         card.className = "memory-card";
         card.innerHTML = `
-            <img src="${photo.image}" alt="${photo.title}" loading="lazy" onerror="handleImageError(this)" onclick="openImage('${photo.image}')">
-            <div class="memory-info">
-                <h4>${photo.title}</h4>
-                <p>${photo.description}</p>
-            </div>
+            <img src="${photo.image}" alt="${story.title}" loading="lazy" onerror="handleImageError(this)" onclick="openImage('${photo.image}')">
         `;
         memoryGrid.appendChild(card);
     });
