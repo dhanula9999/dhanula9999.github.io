@@ -8,11 +8,9 @@
     box-sizing: border-box;
 }
 
-
 html {
     scroll-behavior: smooth;
 }
-
 
 body {
     font-family:
@@ -27,20 +25,18 @@ body {
     overflow-x: hidden;
 }
 
-
 img {
     max-width: 100%;
 }
 
-
-button {
-    font-family: inherit;
+a {
+    text-decoration: none;
 }
 
 
 
 /* =====================================================
-   NAVIGATION
+   NAVBAR
 ===================================================== */
 
 .navbar {
@@ -53,14 +49,11 @@ button {
 
     background: rgba(17,17,17,0.97);
 
-    backdrop-filter: blur(10px);
-
-    color: white;
+    backdrop-filter: blur(12px);
 
     box-shadow:
-        0 5px 25px rgba(0,0,0,0.12);
+        0 5px 25px rgba(0,0,0,0.15);
 }
-
 
 .nav-container {
 
@@ -68,27 +61,27 @@ button {
 
     max-width: 1200px;
 
-    height: 85px;
+    height: 90px;
 
     margin: auto;
 
     display: flex;
 
-    justify-content: space-between;
-
     align-items: center;
-}
 
+    justify-content: space-between;
+}
 
 .logo {
 
-    font-size: 30px;
+    color: white;
+
+    font-size: 32px;
 
     font-weight: bold;
 
     letter-spacing: -1px;
 }
-
 
 nav {
 
@@ -97,23 +90,20 @@ nav {
     gap: 40px;
 }
 
-
 nav a {
 
     color: white;
-
-    text-decoration: none;
 
     font-size: 18px;
 
     transition: 0.3s;
 }
 
-
 nav a:hover {
 
     color: #aaa;
 
+    transform: translateY(-2px);
 }
 
 
@@ -138,18 +128,22 @@ nav a:hover {
         linear-gradient(
             135deg,
             #ffffff,
-            #f1f1f1
+            #eeeeee
         );
-}
 
+    position: relative;
+}
 
 .home-content {
 
-    max-width: 800px;
+    position: relative;
 
-    padding: 50px 25px;
+    z-index: 2;
+
+    max-width: 850px;
+
+    padding: 40px 20px;
 }
-
 
 .small-title {
 
@@ -159,42 +153,31 @@ nav a:hover {
 
     font-size: 14px;
 
-    margin-bottom: 18px;
+    margin-bottom: 20px;
 }
-
 
 .home h1 {
 
-    font-size: 65px;
+    font-size: 70px;
 
-    margin-bottom: 20px;
-
-    letter-spacing: -2px;
+    margin-bottom: 25px;
 }
-
 
 .home h1 span {
 
     color: #555;
 }
 
-
 .home-description {
-
-    font-size: 21px;
-
-    line-height: 1.7;
 
     color: #555;
 
+    font-size: 21px;
+
+    line-height: 1.8;
+
     margin-bottom: 35px;
 }
-
-
-
-/* =====================================================
-   BUTTON
-===================================================== */
 
 .button {
 
@@ -208,20 +191,16 @@ nav a:hover {
 
     border-radius: 40px;
 
-    text-decoration: none;
-
-    font-size: 16px;
+    font-size: 17px;
 
     transition: 0.3s;
 }
-
 
 .button:hover {
 
     background: #444;
 
-    transform: translateY(-3px);
-
+    transform: translateY(-4px);
 }
 
 
@@ -231,12 +210,11 @@ nav a:hover {
 ===================================================== */
 
 .about,
-.stories-section,
+.stories,
 .photos {
 
     padding: 110px 20px;
 }
-
 
 .section-container {
 
@@ -246,7 +224,6 @@ nav a:hover {
 
     margin: auto;
 }
-
 
 .section-label {
 
@@ -261,26 +238,22 @@ nav a:hover {
     margin-bottom: 12px;
 }
 
-
 section h2 {
 
     text-align: center;
 
-    font-size: 55px;
+    font-size: 54px;
 
-    letter-spacing: -2px;
-
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
-
 
 .section-description {
 
     text-align: center;
 
-    color: #666;
-
     font-size: 20px;
+
+    color: #666;
 
     margin-bottom: 55px;
 }
@@ -296,7 +269,6 @@ section h2 {
     background: white;
 }
 
-
 .about-text {
 
     max-width: 850px;
@@ -306,13 +278,12 @@ section h2 {
 
     text-align: center;
 
+    color: #555;
+
     font-size: 19px;
 
     line-height: 1.9;
-
-    color: #555;
 }
-
 
 .about-boxes {
 
@@ -324,7 +295,6 @@ section h2 {
     gap: 25px;
 }
 
-
 .about-box {
 
     background: #f5f5f5;
@@ -335,36 +305,33 @@ section h2 {
 
     text-align: center;
 
-    box-shadow:
-        0 10px 30px
-        rgba(0,0,0,0.07);
-
     transition: 0.3s;
-}
 
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.07);
+}
 
 .about-box:hover {
 
-    transform:
-        translateY(-7px);
-}
+    transform: translateY(-8px);
 
+    box-shadow:
+        0 18px 40px rgba(0,0,0,0.12);
+}
 
 .about-icon {
 
-    font-size: 42px;
-
-    margin-bottom: 18px;
-}
-
-
-.about-box h3 {
-
-    font-size: 22px;
+    font-size: 45px;
 
     margin-bottom: 15px;
 }
 
+.about-box h3 {
+
+    font-size: 23px;
+
+    margin-bottom: 15px;
+}
 
 .about-box p {
 
@@ -376,10 +343,10 @@ section h2 {
 
 
 /* =====================================================
-   STORIES SECTION
+   STORIES
 ===================================================== */
 
-.stories-section {
+.stories {
 
     background: #f7f7f7;
 }
@@ -387,7 +354,7 @@ section h2 {
 
 
 /* =====================================================
-   STORY HIGHLIGHTS
+   INSTAGRAM STYLE STORY HIGHLIGHTS
 ===================================================== */
 
 .story-highlights {
@@ -398,43 +365,39 @@ section h2 {
 
     align-items: flex-start;
 
-    gap: 32px;
+    gap: 35px;
 
-    margin:
-        20px auto 70px;
+    margin-bottom: 65px;
 
-    flex-wrap: wrap;
+    overflow-x: auto;
+
+    padding:
+        10px 10px 20px;
+
+    scrollbar-width: none;
 }
 
+.story-highlights::-webkit-scrollbar {
+
+    display: none;
+}
 
 .story-highlight {
 
-    width: 105px;
+    min-width: 105px;
 
     text-align: center;
 
     cursor: pointer;
 
     user-select: none;
-
-    transition: 0.3s;
 }
-
-
-.story-highlight:hover {
-
-    transform:
-        translateY(-6px);
-}
-
 
 .story-circle {
 
-    width: 92px;
+    width: 105px;
 
-    height: 92px;
-
-    margin: auto;
+    height: 105px;
 
     padding: 4px;
 
@@ -448,13 +411,8 @@ section h2 {
             #111
         );
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
+    transition: 0.3s;
 }
-
 
 .story-circle img {
 
@@ -462,320 +420,177 @@ section h2 {
 
     height: 100%;
 
+    display: block;
+
     object-fit: cover;
 
     border-radius: 50%;
 
-    border:
-        3px solid white;
+    border: 4px solid white;
 }
-
 
 .story-highlight p {
 
     margin-top: 10px;
 
-    font-size: 14px;
+    font-size: 15px;
 
     color: #222;
+}
 
-    white-space: nowrap;
+.story-highlight:hover
+.story-circle {
 
-    overflow: hidden;
+    transform:
+        scale(1.08);
+}
 
-    text-overflow: ellipsis;
+.story-highlight.active
+.story-circle {
+
+    background:
+        linear-gradient(
+            135deg,
+            #000,
+            #555
+        );
+
+    transform: scale(1.05);
 }
 
 
 
-/* EMPTY HIGHLIGHT */
+/* EMPTY / ADD STORY */
 
-.empty-story {
+.empty-circle {
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
 
     background: #ddd;
 
-    border: 2px solid #ccc;
+    color: #555;
 
-    color: #777;
-
-    font-size: 32px;
+    font-size: 40px;
 }
 
+.empty-circle span {
 
-.empty-story span {
-
-    font-weight: 300;
+    margin-top: -5px;
 }
 
 
 
 /* =====================================================
-   STORY PREVIEW
+   SELECTED STORY
 ===================================================== */
 
-.story-preview {
+.selected-story {
 
-    max-width: 900px;
+    max-width: 1100px;
 
     margin: auto;
-
-    background: white;
-
-    border-radius: 25px;
-
-    padding: 45px;
-
-    box-shadow:
-        0 15px 40px
-        rgba(0,0,0,0.07);
-
-    text-align: center;
 }
 
+.selected-story-header {
 
-.preview-label {
+    display: flex;
 
-    letter-spacing: 4px;
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 25px;
+}
+
+.selected-label {
 
     font-size: 13px;
 
-    color: #888;
+    letter-spacing: 2px;
 
-    margin-bottom: 12px;
+    color: #777;
+
+    margin-bottom: 7px;
 }
 
+.selected-story-header h3 {
 
-.preview-text h3 {
-
-    font-size: 30px;
-
-    margin-bottom: 15px;
+    font-size: 26px;
 }
 
+#storyCount {
 
-.preview-text > p:last-child {
+    color: #777;
 
-    color: #666;
-
-    line-height: 1.7;
-
-    font-size: 17px;
+    font-size: 15px;
 }
 
 
 
 /* =====================================================
-   STORY FULL SCREEN VIEWER
+   STORY CONTENT
 ===================================================== */
 
-.story-viewer {
+.story-content {
 
-    display: none;
+    display: grid;
 
-    position: fixed;
+    grid-template-columns:
+        repeat(3, 1fr);
 
-    inset: 0;
-
-    z-index: 5000;
-
-    background:
-        rgba(0,0,0,0.97);
-
-    align-items: center;
-
-    justify-content: center;
+    gap: 25px;
 }
 
+.story-item {
 
-.story-viewer.active {
+    width: 100%;
 
-    display: flex;
+    height: 390px;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    background: #ddd;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.12);
+
+    cursor: pointer;
 }
 
-
-
-/* STORY IMAGE */
-
-.story-viewer-content {
-
-    height: 92vh;
-
-    width: min(
-        480px,
-        88vw
-    );
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-}
-
-
-.story-viewer-content img {
+.story-item img {
 
     width: 100%;
 
     height: 100%;
 
-    object-fit: contain;
+    object-fit: cover;
 
-    border-radius: 12px;
+    display: block;
+
+    transition: 0.4s;
 }
 
+.story-item:hover img {
 
-
-/* CLOSE */
-
-.story-close {
-
-    position: absolute;
-
-    top: 20px;
-
-    right: 30px;
-
-    width: 50px;
-
-    height: 50px;
-
-    border: none;
-
-    background:
-        rgba(255,255,255,0.15);
-
-    color: white;
-
-    border-radius: 50%;
-
-    font-size: 35px;
-
-    line-height: 40px;
-
-    cursor: pointer;
-
-    z-index: 5100;
-}
-
-
-.story-close:hover {
-
-    background:
-        rgba(255,255,255,0.3);
-}
-
-
-
-/* NAVIGATION BUTTONS */
-
-.story-navigation {
-
-    position: absolute;
-
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    width: 55px;
-
-    height: 55px;
-
-    border-radius: 50%;
-
-    border: none;
-
-    background:
-        rgba(255,255,255,0.15);
-
-    color: white;
-
-    font-size: 28px;
-
-    cursor: pointer;
-
-    z-index: 5100;
-
-    transition: 0.3s;
-}
-
-
-.story-navigation:hover {
-
-    background:
-        rgba(255,255,255,0.3);
-}
-
-
-.story-prev {
-
-    left: 30px;
-}
-
-
-.story-next {
-
-    right: 30px;
-}
-
-
-
-/* STORY PROGRESS */
-
-.story-progress {
-
-    position: absolute;
-
-    top: 15px;
-
-    left: 50%;
-
-    transform:
-        translateX(-50%);
-
-    display: flex;
-
-    gap: 5px;
-
-    width: min(
-        430px,
-        75vw
-    );
-
-    z-index: 5100;
-}
-
-
-.story-progress span {
-
-    height: 3px;
-
-    flex: 1;
-
-    background:
-        rgba(255,255,255,0.4);
-
-    border-radius: 5px;
-}
-
-
-.story-progress span.active {
-
-    background: white;
+    transform: scale(1.04);
 }
 
 
 
 /* =====================================================
-   PHOTO GALLERY
+   PHOTOS
 ===================================================== */
 
 .photos {
 
-    background: #f5f5f5;
+    background: white;
 }
-
 
 .gallery {
 
@@ -787,7 +602,6 @@ section h2 {
     gap: 30px;
 }
 
-
 .photo-card {
 
     background: white;
@@ -797,23 +611,18 @@ section h2 {
     overflow: hidden;
 
     box-shadow:
-        0 12px 35px
-        rgba(0,0,0,0.10);
+        0 10px 30px rgba(0,0,0,0.1);
 
     transition: 0.3s;
 }
 
-
 .photo-card:hover {
 
-    transform:
-        translateY(-8px);
+    transform: translateY(-8px);
 
     box-shadow:
-        0 20px 45px
-        rgba(0,0,0,0.16);
+        0 20px 40px rgba(0,0,0,0.15);
 }
-
 
 .photo-image {
 
@@ -821,19 +630,16 @@ section h2 {
 
     height: 400px;
 
-    background: #ddd;
-
     overflow: hidden;
-}
 
+    background: #ddd;
+}
 
 .photo-image img {
 
     width: 100%;
 
     height: 100%;
-
-    display: block;
 
     object-fit: cover;
 
@@ -842,41 +648,15 @@ section h2 {
     transition: 0.4s;
 }
 
-
 .photo-image img:hover {
 
-    transform:
-        scale(1.05);
-}
-
-
-.photo-info {
-
-    text-align: center;
-
-    padding: 25px 15px;
-}
-
-
-.photo-info h3 {
-
-    font-size: 23px;
-
-    margin-bottom: 8px;
-}
-
-
-.photo-info p {
-
-    color: #666;
-
-    font-size: 16px;
+    transform: scale(1.05);
 }
 
 
 
 /* =====================================================
-   PHOTO MODAL
+   IMAGE MODAL
 ===================================================== */
 
 .image-modal {
@@ -885,38 +665,33 @@ section h2 {
 
     position: fixed;
 
-    inset: 0;
+    z-index: 5000;
 
-    z-index: 4000;
+    inset: 0;
 
     background:
         rgba(0,0,0,0.94);
 
-    align-items: center;
-
     justify-content: center;
+
+    align-items: center;
 
     padding: 30px;
 }
 
-
-.image-modal.active {
-
-    display: flex;
-}
-
-
 .full-image {
 
-    max-width: 92%;
+    max-width: 88%;
 
-    max-height: 90%;
+    max-height: 88%;
 
     object-fit: contain;
 
     border-radius: 10px;
-}
 
+    box-shadow:
+        0 20px 70px rgba(0,0,0,0.5);
+}
 
 .close-button {
 
@@ -924,7 +699,39 @@ section h2 {
 
     top: 20px;
 
-    right: 35px;
+    right: 30px;
+
+    width: 50px;
+
+    height: 50px;
+
+    border: none;
+
+    background: transparent;
+
+    color: white;
+
+    font-size: 45px;
+
+    cursor: pointer;
+
+    z-index: 5001;
+}
+
+.close-button:hover {
+
+    color: #aaa;
+}
+
+.modal-prev,
+.modal-next {
+
+    position: absolute;
+
+    top: 50%;
+
+    transform:
+        translateY(-50%);
 
     width: 50px;
 
@@ -939,15 +746,25 @@ section h2 {
 
     color: white;
 
-    font-size: 38px;
+    font-size: 25px;
 
     cursor: pointer;
 
-    z-index: 4100;
+    z-index: 5001;
 }
 
+.modal-prev {
 
-.close-button:hover {
+    left: 25px;
+}
+
+.modal-next {
+
+    right: 25px;
+}
+
+.modal-prev:hover,
+.modal-next:hover {
 
     background:
         rgba(255,255,255,0.3);
@@ -970,20 +787,18 @@ footer {
     padding: 50px 20px;
 }
 
-
 footer h3 {
 
-    font-size: 26px;
+    font-size: 27px;
 
-    margin-bottom: 7px;
+    margin-bottom: 8px;
 }
-
 
 footer p {
 
-    margin-top: 8px;
-
     color: #ccc;
+
+    margin-top: 8px;
 }
 
 
@@ -994,12 +809,10 @@ footer p {
 
 @media (max-width: 900px) {
 
-    .gallery {
+    .home h1 {
 
-        grid-template-columns:
-            repeat(2, 1fr);
+        font-size: 55px;
     }
-
 
     .about-boxes {
 
@@ -1007,16 +820,16 @@ footer p {
             1fr;
     }
 
+    .gallery {
 
-    .home h1 {
-
-        font-size: 52px;
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
+    .story-content {
 
-    section h2 {
-
-        font-size: 45px;
+        grid-template-columns:
+            repeat(2, 1fr);
     }
 
 }
@@ -1034,100 +847,89 @@ footer p {
         height: auto;
 
         padding:
-            18px 0;
+            20px 0;
 
         flex-direction: column;
 
-        gap: 18px;
+        gap: 20px;
     }
 
+    .logo {
+
+        font-size: 28px;
+    }
 
     nav {
 
-        gap: 18px;
+        gap: 20px;
 
         flex-wrap: wrap;
 
         justify-content: center;
     }
 
-
     nav a {
 
-        font-size: 14px;
+        font-size: 15px;
     }
-
 
     .home {
 
         min-height: 80vh;
     }
 
-
     .home h1 {
 
-        font-size: 40px;
+        font-size: 42px;
     }
-
 
     .home-description {
 
         font-size: 17px;
     }
 
-
     section h2 {
 
-        font-size: 38px;
+        font-size: 40px;
     }
 
-
     .about,
-    .stories-section,
+    .stories,
     .photos {
 
         padding:
             80px 15px;
     }
 
-
-    .section-container {
-
-        width: 94%;
-    }
-
-
     .story-highlights {
+
+        justify-content: flex-start;
 
         gap: 22px;
     }
 
-
     .story-circle {
 
-        width: 78px;
+        width: 85px;
 
-        height: 78px;
+        height: 85px;
     }
-
 
     .story-highlight {
 
-        width: 85px;
+        min-width: 85px;
     }
 
+    .story-content {
 
-    .story-preview {
-
-        padding: 30px 20px;
+        grid-template-columns:
+            1fr;
     }
 
+    .story-item {
 
-    .preview-text h3 {
-
-        font-size: 24px;
+        height: 450px;
     }
-
 
     .gallery {
 
@@ -1135,54 +937,21 @@ footer p {
             1fr;
     }
 
-
     .photo-image {
 
-        height: 430px;
+        height: 450px;
     }
 
+    .selected-story-header {
 
-    .story-viewer-content {
-
-        width: 94vw;
-
-        height: 88vh;
+        align-items: flex-end;
     }
 
+    .full-image {
 
-    .story-navigation {
+        max-width: 95%;
 
-        width: 45px;
-
-        height: 45px;
-
-        font-size: 22px;
-    }
-
-
-    .story-prev {
-
-        left: 8px;
-    }
-
-
-    .story-next {
-
-        right: 8px;
-    }
-
-
-    .story-close {
-
-        top: 45px;
-
-        right: 15px;
-
-        width: 42px;
-
-        height: 42px;
-
-        font-size: 30px;
+        max-height: 80%;
     }
 
 }
