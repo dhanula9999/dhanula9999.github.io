@@ -77,7 +77,6 @@ body {
     gap: 15px;
 }
 
-/* Theme Toggle Button */
 .theme-toggle {
     background: var(--bg-card-sub);
     border: 1px solid var(--border-color);
