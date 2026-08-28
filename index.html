@@ -11,7 +11,6 @@
 
 <body>
 
-<!-- NAVIGATION -->
 <header class="navbar">
     <div class="nav-container">
         <a href="#home" class="logo">Dhanula</a>
@@ -27,7 +26,6 @@
     </div>
 </header>
 
-<!-- HOME -->
 <section id="home" class="home">
     <div class="home-content">
         <p class="small-title">WELCOME TO MY WEBSITE</p>
@@ -37,7 +35,6 @@
     </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about" class="about">
     <div class="section-container">
         <p class="section-label">GET TO KNOW ME</p>
@@ -65,7 +62,6 @@
     </div>
 </section>
 
-<!-- STORIES -->
 <section id="stories" class="stories">
     <div class="stories-container">
         <div class="stories-heading">
@@ -75,29 +71,17 @@
         </div>
 
         <div class="story-highlights" id="storyHighlights">
-            <div class="story-highlight active" data-story="china" onclick="selectStory('china')">
+            <div class="story-highlight active" data-story="story1" onclick="selectStory('story1')">
                 <div class="story-circle">
-                    <img src="stories/story1.jpg" alt="China" loading="lazy" onerror="handleImageError(this)">
+                    <img src="stories/story1.jpg" alt="Story 1" loading="lazy" onerror="handleImageError(this)">
                 </div>
-                <span>China</span>
+                <span>Story 1</span>
             </div>
-            <div class="story-highlight" data-story="nature" onclick="selectStory('nature')">
+            <div class="story-highlight" data-story="story2" onclick="selectStory('story2')">
                 <div class="story-circle">
-                    <img src="stories/story2.jpg" alt="Nature" loading="lazy" onerror="handleImageError(this)">
+                    <img src="stories/story2.jpg" alt="Story 2" loading="lazy" onerror="handleImageError(this)">
                 </div>
-                <span>Nature</span>
-            </div>
-            <div class="story-highlight" data-story="travel" onclick="selectStory('travel')">
-                <div class="story-circle">
-                    <img src="images/photo1.jpg" alt="Travel" loading="lazy" onerror="handleImageError(this)">
-                </div>
-                <span>Travel</span>
-            </div>
-            <div class="story-highlight" data-story="friends" onclick="selectStory('friends')">
-                <div class="story-circle">
-                    <img src="images/photo2.jpg" alt="Friends" loading="lazy" onerror="handleImageError(this)">
-                </div>
-                <span>Friends</span>
+                <span>Story 2</span>
             </div>
             <div class="story-highlight new-story" onclick="showNewStoryMessage()">
                 <div class="story-circle new-circle">
@@ -111,29 +95,29 @@
             <div class="selected-header">
                 <div>
                     <small>SELECTED MEMORY</small>
-                    <h3 id="selectedTitle">China</h3>
+                    <h3 id="selectedTitle">Story 1</h3>
                 </div>
-                <div class="memory-count" id="memoryCount">2 memories</div>
+                <div class="memory-count" id="memoryCount">1 memory</div>
             </div>
             <div class="memory-grid" id="memoryGrid"></div>
         </div>
     </div>
 </section>
 
-<!-- MY PHOTOS -->
 <section id="photos" class="photos">
     <div class="section-container">
         <p class="section-label">MY MEMORIES</p>
         <h2>My Photos</h2>
         <p class="section-description">A collection of my favourite photos.</p>
+        
         <div class="gallery">
             <div class="photo-card">
                 <div class="photo-image">
                     <img src="images/photo1.jpg" alt="Photo 1" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
                 </div>
                 <div class="photo-info">
-                    <h3>China</h3>
-                    <p>A beautiful memory.</p>
+                    <h3>Photo 1</h3>
+                    <p>Memory 1</p>
                 </div>
             </div>
             <div class="photo-card">
@@ -141,8 +125,8 @@
                     <img src="images/photo2.jpg" alt="Photo 2" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
                 </div>
                 <div class="photo-info">
-                    <h3>Nature</h3>
-                    <p>A peaceful moment.</p>
+                    <h3>Photo 2</h3>
+                    <p>Memory 2</p>
                 </div>
             </div>
             <div class="photo-card">
@@ -150,8 +134,8 @@
                     <img src="images/photo3.jpg" alt="Photo 3" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
                 </div>
                 <div class="photo-info">
-                    <h3>Travel</h3>
-                    <p>Exploring new places.</p>
+                    <h3>Photo 3</h3>
+                    <p>Memory 3</p>
                 </div>
             </div>
             <div class="photo-card">
@@ -159,8 +143,8 @@
                     <img src="images/photo4.jpg" alt="Photo 4" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
                 </div>
                 <div class="photo-info">
-                    <h3>Friends</h3>
-                    <p>Good times together.</p>
+                    <h3>Photo 4</h3>
+                    <p>Memory 4</p>
                 </div>
             </div>
             <div class="photo-card">
@@ -168,8 +152,8 @@
                     <img src="images/photo5.jpg" alt="Photo 5" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
                 </div>
                 <div class="photo-info">
-                    <h3>Memories</h3>
-                    <p>Special moments.</p>
+                    <h3>Photo 5</h3>
+                    <p>Memory 5</p>
                 </div>
             </div>
             <div class="photo-card">
@@ -177,21 +161,19 @@
                     <img src="images/photo6.jpg" alt="Photo 6" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
                 </div>
                 <div class="photo-info">
-                    <h3>Life</h3>
-                    <p>Everyday view.</p>
+                    <h3>Photo 6</h3>
+                    <p>Memory 6</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- FULLSCREEN IMAGE -->
 <div id="imageModal" class="image-modal" role="dialog" aria-modal="true" aria-label="Image viewer">
     <button class="close-button" onclick="closeImage()" aria-label="Close image viewer">&times;</button>
     <img id="fullImage" class="full-image" alt="Full size image">
 </div>
 
-<!-- FOOTER -->
 <footer>
     <h3>Dhanula</h3>
     <p>My Personal Website</p>
