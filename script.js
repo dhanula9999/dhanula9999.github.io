@@ -2,183 +2,198 @@
    STORY DATA
 ===================================================== */
 
-const stories = [
+const stories = {
 
-    "stories/story1.jpg",
+    story1: {
 
-    "stories/story2.jpg"
+        title: "Memories",
 
-];
+        images: [
+            "stories/story1.jpg"
+        ]
 
-
-let currentStory = 0;
-
-
-
-/* =====================================================
-   STORY VIEWER
-===================================================== */
-
-function openStory(index) {
-
-    currentStory = index;
-
-    const viewer =
-        document.getElementById("storyViewer");
-
-    viewer.classList.add("active");
-
-    document.body.style.overflow = "hidden";
-
-    showStory(currentStory);
-
-}
+    },
 
 
+    story2: {
 
-/* =====================================================
-   SHOW STORY
-===================================================== */
+        title: "Nature",
 
-function showStory(index) {
-
-    const image =
-        document.getElementById(
-            "storyViewerImage"
-        );
-
-
-    image.src = stories[index];
-
-
-    updateStoryProgress();
-
-}
-
-
-
-/* =====================================================
-   NEXT STORY
-===================================================== */
-
-function nextStory() {
-
-    currentStory++;
-
-    if (currentStory >= stories.length) {
-
-        currentStory = 0;
+        images: [
+            "stories/story2.jpg"
+        ]
 
     }
 
-    showStory(currentStory);
-
-}
+};
 
 
 
 /* =====================================================
-   PREVIOUS STORY
+   SHOW STORY SECTION
 ===================================================== */
 
-function previousStory() {
+function showStory(storyId, selectedElement) {
 
-    currentStory--;
+    const story = stories[storyId];
 
-    if (currentStory < 0) {
+    if (!story) {
+        return;
+    }
 
-        currentStory =
-            stories.length - 1;
+
+    /* Change active circle */
+
+    const allHighlights =
+        document.querySelectorAll(".story-highlight");
+
+    allHighlights.forEach(function(item) {
+
+        item.classList.remove("active");
+
+    });
+
+
+    if (selectedElement) {
+
+        selectedElement.classList.add("active");
 
     }
 
-    showStory(currentStory);
+
+
+    /* Change title */
+
+    const title =
+        document.getElementById("storyTitle");
+
+    title.textContent =
+        story.title;
+
+
+
+    /* Change count */
+
+    const count =
+        document.getElementById("storyCount");
+
+    const number =
+        story.images.length;
+
+    count.textContent =
+        number === 1
+            ? "1 memory"
+            : number + " memories";
+
+
+
+    /* Get story content */
+
+    const content =
+        document.getElementById("storyContent");
+
+
+    content.innerHTML = "";
+
+
+
+    /* Add images */
+
+    story.images.forEach(function(image) {
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "story-item";
+
+
+        const img =
+            document.createElement("img");
+
+        img.src =
+            image;
+
+        img.alt =
+            story.title;
+
+
+        img.onclick =
+            function() {
+
+                openImage(this.src);
+
+            };
+
+
+        item.appendChild(img);
+
+        content.appendChild(item);
+
+    });
 
 }
 
 
 
 /* =====================================================
-   STORY PROGRESS
+   IMAGE VIEWER
 ===================================================== */
 
-function updateStoryProgress() {
+let currentImages = [];
 
-    const progress =
-        document.getElementById(
-            "storyProgress"
-        );
+let currentIndex = 0;
 
 
-    progress.innerHTML = "";
-
-
-    stories.forEach(
-        function(story, index) {
-
-            const bar =
-                document.createElement("span");
-
-
-            if (index === currentStory) {
-
-                bar.classList.add("active");
-
-            }
-
-
-            progress.appendChild(bar);
-
-        }
-    );
-
-}
-
-
-
-/* =====================================================
-   CLOSE STORY
-===================================================== */
-
-function closeStory() {
-
-    const viewer =
-        document.getElementById(
-            "storyViewer"
-        );
-
-
-    viewer.classList.remove("active");
-
-
-    document.body.style.overflow = "";
-
-}
-
-
-
-/* =====================================================
-   PHOTO VIEWER
-===================================================== */
 
 function openImage(imageSource) {
 
     const modal =
-        document.getElementById(
-            "imageModal"
-        );
-
+        document.getElementById("imageModal");
 
     const fullImage =
-        document.getElementById(
-            "fullImage"
-        );
+        document.getElementById("fullImage");
 
 
-    fullImage.src = imageSource;
+    /*
+       Collect all images from
+       gallery + current story
+    */
+
+    currentImages =
+        Array.from(
+            document.querySelectorAll(
+                ".gallery img, .story-content img"
+            )
+        )
+        .map(function(img) {
+
+            return img.src;
+
+        });
 
 
-    modal.classList.add("active");
+    currentIndex =
+        currentImages.indexOf(imageSource);
+
+
+    if (currentIndex === -1) {
+
+        currentIndex = 0;
+
+        currentImages = [
+            imageSource
+        ];
+
+    }
+
+
+    fullImage.src =
+        imageSource;
+
+
+    modal.style.display =
+        "flex";
 
 
     document.body.style.overflow =
@@ -189,28 +204,85 @@ function openImage(imageSource) {
 
 
 /* =====================================================
-   CLOSE PHOTO
+   CLOSE IMAGE
 ===================================================== */
 
 function closeImage() {
 
     const modal =
-        document.getElementById(
-            "imageModal"
-        );
+        document.getElementById("imageModal");
 
 
-    modal.classList.remove("active");
+    modal.style.display =
+        "none";
 
 
-    document.body.style.overflow = "";
+    document.body.style.overflow =
+        "auto";
 
 }
 
 
 
 /* =====================================================
-   CLICK OUTSIDE PHOTO
+   NEXT IMAGE
+===================================================== */
+
+function nextImage() {
+
+    if (currentImages.length === 0) {
+        return;
+    }
+
+
+    currentIndex++;
+
+
+    if (currentIndex >= currentImages.length) {
+
+        currentIndex = 0;
+
+    }
+
+
+    document.getElementById("fullImage").src =
+        currentImages[currentIndex];
+
+}
+
+
+
+/* =====================================================
+   PREVIOUS IMAGE
+===================================================== */
+
+function previousImage() {
+
+    if (currentImages.length === 0) {
+        return;
+    }
+
+
+    currentIndex--;
+
+
+    if (currentIndex < 0) {
+
+        currentIndex =
+            currentImages.length - 1;
+
+    }
+
+
+    document.getElementById("fullImage").src =
+        currentImages[currentIndex];
+
+}
+
+
+
+/* =====================================================
+   CLOSE WHEN CLICKING OUTSIDE
 ===================================================== */
 
 document
@@ -233,29 +305,6 @@ document
 
 
 /* =====================================================
-   CLICK OUTSIDE STORY
-===================================================== */
-
-document
-    .getElementById("storyViewer")
-    .addEventListener(
-        "click",
-        function(event) {
-
-            if (
-                event.target === this
-            ) {
-
-                closeStory();
-
-            }
-
-        }
-    );
-
-
-
-/* =====================================================
    KEYBOARD CONTROLS
 ===================================================== */
 
@@ -264,67 +313,23 @@ document.addEventListener(
     function(event) {
 
 
-        /* ESC */
-
-        if (
-            event.key === "Escape"
-        ) {
-
-            closeStory();
+        if (event.key === "Escape") {
 
             closeImage();
 
         }
 
 
+        if (event.key === "ArrowRight") {
 
-        /* STORY NEXT */
-
-        if (
-            event.key === "ArrowRight"
-        ) {
-
-            const viewer =
-                document.getElementById(
-                    "storyViewer"
-                );
-
-
-            if (
-                viewer.classList.contains(
-                    "active"
-                )
-            ) {
-
-                nextStory();
-
-            }
+            nextImage();
 
         }
 
 
+        if (event.key === "ArrowLeft") {
 
-        /* STORY PREVIOUS */
-
-        if (
-            event.key === "ArrowLeft"
-        ) {
-
-            const viewer =
-                document.getElementById(
-                    "storyViewer"
-                );
-
-
-            if (
-                viewer.classList.contains(
-                    "active"
-                )
-            ) {
-
-                previousStory();
-
-            }
+            previousImage();
 
         }
 
@@ -334,71 +339,27 @@ document.addEventListener(
 
 
 /* =====================================================
-   TOUCH / SWIPE SUPPORT
+   INITIAL STORY
 ===================================================== */
 
-let touchStartX = 0;
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
 
-let touchEndX = 0;
-
-
-
-document
-    .getElementById("storyViewer")
-    .addEventListener(
-        "touchstart",
-        function(event) {
-
-            touchStartX =
-                event.changedTouches[0].screenX;
-
-        }
-    );
+        const firstStory =
+            document.querySelector(
+                ".story-highlight"
+            );
 
 
+        if (firstStory) {
 
-document
-    .getElementById("storyViewer")
-    .addEventListener(
-        "touchend",
-        function(event) {
-
-            touchEndX =
-                event.changedTouches[0].screenX;
-
-
-            handleSwipe();
+            showStory(
+                "story1",
+                firstStory
+            );
 
         }
-    );
-
-
-
-function handleSwipe() {
-
-    const difference =
-        touchStartX - touchEndX;
-
-
-    /* SWIPE LEFT */
-
-    if (
-        difference > 50
-    ) {
-
-        nextStory();
 
     }
-
-
-    /* SWIPE RIGHT */
-
-    if (
-        difference < -50
-    ) {
-
-        previousStory();
-
-    }
-
-}
+);
