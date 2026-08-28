@@ -1,5 +1,5 @@
 /* =====================================================
-   GENERAL
+   RESET
 ===================================================== */
 
 * {
@@ -8,31 +8,17 @@
     box-sizing: border-box;
 }
 
+
 html {
     scroll-behavior: smooth;
 }
 
+
 body {
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    background: #f5f5f5;
-
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f7f7f7;
     color: #111;
-
-    overflow-x: hidden;
 }
-
-img {
-    max-width: 100%;
-}
-
-a {
-    text-decoration: none;
-}
-
 
 
 /* =====================================================
@@ -40,25 +26,19 @@ a {
 ===================================================== */
 
 .navbar {
-
     position: sticky;
-
     top: 0;
-
     z-index: 1000;
 
-    background: rgba(17,17,17,0.97);
-
-    backdrop-filter: blur(12px);
+    background: rgba(15, 15, 15, 0.97);
 
     box-shadow:
-        0 5px 25px rgba(0,0,0,0.15);
+        0 5px 20px rgba(0, 0, 0, 0.12);
 }
 
+
 .nav-container {
-
     width: 90%;
-
     max-width: 1200px;
 
     height: 90px;
@@ -66,46 +46,39 @@ a {
     margin: auto;
 
     display: flex;
-
     align-items: center;
-
     justify-content: space-between;
 }
 
-.logo {
 
+.logo {
     color: white;
 
     font-size: 32px;
-
-    font-weight: bold;
-
-    letter-spacing: -1px;
+    font-weight: 700;
 }
 
+
 nav {
-
     display: flex;
-
     gap: 40px;
 }
 
-nav a {
 
+nav a {
     color: white;
+
+    text-decoration: none;
 
     font-size: 18px;
 
     transition: 0.3s;
 }
 
+
 nav a:hover {
-
     color: #aaa;
-
-    transform: translateY(-2px);
 }
-
 
 
 /* =====================================================
@@ -113,14 +86,11 @@ nav a:hover {
 ===================================================== */
 
 .home {
-
     min-height: 90vh;
 
     display: flex;
-
-    justify-content: center;
-
     align-items: center;
+    justify-content: center;
 
     text-align: center;
 
@@ -128,48 +98,43 @@ nav a:hover {
         linear-gradient(
             135deg,
             #ffffff,
-            #eeeeee
+            #f1f1f1
         );
-
-    position: relative;
 }
+
 
 .home-content {
-
-    position: relative;
-
-    z-index: 2;
-
+    width: 90%;
     max-width: 850px;
 
-    padding: 40px 20px;
+    padding: 40px;
 }
 
+
 .small-title {
+    color: #777;
 
     letter-spacing: 5px;
-
-    color: #777;
 
     font-size: 14px;
 
     margin-bottom: 20px;
 }
 
-.home h1 {
 
+.home h1 {
     font-size: 70px;
 
     margin-bottom: 25px;
 }
 
-.home h1 span {
 
+.home h1 span {
     color: #555;
 }
 
-.home-description {
 
+.home-content > p:not(.small-title) {
     color: #555;
 
     font-size: 21px;
@@ -179,85 +144,86 @@ nav a:hover {
     margin-bottom: 35px;
 }
 
-.button {
 
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.button {
     display: inline-block;
 
+    padding: 16px 32px;
+
     background: #111;
-
     color: white;
-
-    padding: 15px 32px;
 
     border-radius: 40px;
 
-    font-size: 17px;
+    text-decoration: none;
+
+    font-size: 16px;
 
     transition: 0.3s;
 }
 
-.button:hover {
 
+.button:hover {
     background: #444;
 
-    transform: translateY(-4px);
+    transform: translateY(-3px);
 }
-
 
 
 /* =====================================================
-   COMMON SECTIONS
+   GENERAL SECTIONS
 ===================================================== */
 
 .about,
-.stories,
+.stories-section,
 .photos {
-
     padding: 110px 20px;
 }
 
+
 .section-container {
-
     width: 90%;
-
     max-width: 1200px;
 
     margin: auto;
 }
 
+
 .section-label {
-
     text-align: center;
-
-    letter-spacing: 5px;
 
     color: #777;
 
     font-size: 14px;
 
+    letter-spacing: 5px;
+
     margin-bottom: 12px;
 }
 
-section h2 {
 
+section h2 {
     text-align: center;
 
-    font-size: 54px;
+    font-size: 52px;
 
-    margin-bottom: 22px;
+    margin-bottom: 20px;
 }
 
+
 .section-description {
-
     text-align: center;
-
-    font-size: 20px;
 
     color: #666;
 
+    font-size: 20px;
+
     margin-bottom: 55px;
 }
-
 
 
 /* =====================================================
@@ -265,16 +231,14 @@ section h2 {
 ===================================================== */
 
 .about {
-
     background: white;
 }
 
-.about-text {
 
+.about-text {
     max-width: 850px;
 
-    margin:
-        0 auto 60px;
+    margin: 0 auto 60px;
 
     text-align: center;
 
@@ -285,8 +249,8 @@ section h2 {
     line-height: 1.9;
 }
 
-.about-boxes {
 
+.about-boxes {
     display: grid;
 
     grid-template-columns:
@@ -295,9 +259,9 @@ section h2 {
     gap: 25px;
 }
 
-.about-box {
 
-    background: #f5f5f5;
+.about-box {
+    background: #f7f7f7;
 
     padding: 40px 30px;
 
@@ -305,56 +269,50 @@ section h2 {
 
     text-align: center;
 
-    transition: 0.3s;
-
     box-shadow:
         0 10px 30px rgba(0,0,0,0.07);
+
+    transition: 0.3s;
 }
+
 
 .about-box:hover {
-
     transform: translateY(-8px);
-
-    box-shadow:
-        0 18px 40px rgba(0,0,0,0.12);
 }
+
 
 .about-icon {
+    font-size: 40px;
 
-    font-size: 45px;
-
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
-.about-box h3 {
 
+.about-box h3 {
     font-size: 23px;
 
     margin-bottom: 15px;
 }
 
-.about-box p {
 
+.about-box p {
     color: #666;
 
     line-height: 1.7;
 }
 
 
-
 /* =====================================================
-   STORIES
+   STORIES SECTION
 ===================================================== */
 
-.stories {
-
+.stories-section {
     background: #f7f7f7;
 }
 
 
-
 /* =====================================================
-   INSTAGRAM STYLE STORY HIGHLIGHTS
+   STORY HIGHLIGHTS
 ===================================================== */
 
 .story-highlights {
@@ -365,135 +323,156 @@ section h2 {
 
     align-items: flex-start;
 
-    gap: 35px;
+    gap: 28px;
 
-    margin-bottom: 65px;
+    margin-bottom: 55px;
 
     overflow-x: auto;
 
-    padding:
-        10px 10px 20px;
+    padding: 10px 10px 20px;
 
     scrollbar-width: none;
 }
 
-.story-highlights::-webkit-scrollbar {
 
+.story-highlights::-webkit-scrollbar {
     display: none;
 }
 
+
+/* HIGHLIGHT BUTTON */
+
 .story-highlight {
 
-    min-width: 105px;
+    border: none;
 
-    text-align: center;
+    background: transparent;
 
     cursor: pointer;
 
-    user-select: none;
+    min-width: 95px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 10px;
+
+    color: #222;
+
+    font-size: 14px;
 }
+
+
+.story-highlight span:last-child {
+    font-size: 15px;
+}
+
+
+/* =====================================================
+   STORY CIRCLE
+===================================================== */
 
 .story-circle {
 
-    width: 105px;
-
-    height: 105px;
-
-    padding: 4px;
+    width: 82px;
+    height: 82px;
 
     border-radius: 50%;
 
-    background:
-        linear-gradient(
-            135deg,
-            #111,
-            #777,
-            #111
-        );
+    padding: 4px;
+
+    background: white;
+
+    border: 2px solid #bbb;
 
     transition: 0.3s;
+
+    overflow: hidden;
 }
+
 
 .story-circle img {
 
     width: 100%;
-
     height: 100%;
-
-    display: block;
-
-    object-fit: cover;
 
     border-radius: 50%;
 
-    border: 4px solid white;
-}
+    object-fit: cover;
 
-.story-highlight p {
-
-    margin-top: 10px;
-
-    font-size: 15px;
-
-    color: #222;
-}
-
-.story-highlight:hover
-.story-circle {
-
-    transform:
-        scale(1.08);
-}
-
-.story-highlight.active
-.story-circle {
-
-    background:
-        linear-gradient(
-            135deg,
-            #000,
-            #555
-        );
-
-    transform: scale(1.05);
+    display: block;
 }
 
 
+/* ACTIVE STORY */
 
-/* EMPTY / ADD STORY */
+.story-highlight.active .story-circle {
 
-.empty-circle {
+    border: 3px solid #111;
+
+    padding: 3px;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,0.18);
+}
+
+
+.story-highlight:hover .story-circle {
+
+    transform: scale(1.07);
+
+}
+
+
+/* NEW BUTTON */
+
+.new-circle {
 
     display: flex;
 
+    align-items: center;
     justify-content: center;
 
-    align-items: center;
+    background: white;
 
-    background: #ddd;
-
-    color: #555;
-
-    font-size: 40px;
+    border: 2px solid #aaa;
 }
 
-.empty-circle span {
 
-    margin-top: -5px;
+.new-circle span {
+
+    font-size: 36px;
+
+    font-weight: 300;
+
+    color: #222;
+
 }
-
 
 
 /* =====================================================
-   SELECTED STORY
+   SELECTED STORY BOX
 ===================================================== */
 
 .selected-story {
 
-    max-width: 1100px;
+    background: white;
 
-    margin: auto;
+    border-radius: 25px;
+
+    padding: 28px;
+
+    box-shadow:
+        0 12px 40px rgba(0,0,0,0.08);
+
+    min-height: 300px;
 }
+
+
+/* HEADER */
 
 .selected-story-header {
 
@@ -506,67 +485,67 @@ section h2 {
     margin-bottom: 25px;
 }
 
-.selected-label {
 
-    font-size: 13px;
+.selected-story-header p {
 
-    letter-spacing: 2px;
+    color: #888;
 
-    color: #777;
+    font-size: 11px;
+
+    letter-spacing: 3px;
 
     margin-bottom: 7px;
 }
 
+
 .selected-story-header h3 {
 
-    font-size: 26px;
+    font-size: 27px;
 }
 
-#storyCount {
+
+.selected-story-header > span {
 
     color: #777;
 
-    font-size: 15px;
+    font-size: 14px;
 }
 
 
-
 /* =====================================================
-   STORY CONTENT
+   STORY GALLERY
 ===================================================== */
 
-.story-content {
+.story-gallery {
 
     display: grid;
 
     grid-template-columns:
-        repeat(3, 1fr);
+        repeat(4, 1fr);
 
-    gap: 25px;
+    gap: 18px;
 }
+
+
+/* STORY IMAGE */
 
 .story-item {
 
-    width: 100%;
+    aspect-ratio: 1 / 1;
 
-    height: 390px;
-
-    border-radius: 18px;
+    border-radius: 16px;
 
     overflow: hidden;
 
-    background: #ddd;
-
-    box-shadow:
-        0 10px 30px rgba(0,0,0,0.12);
-
     cursor: pointer;
+
+    background: #eee;
 }
+
 
 .story-item img {
 
     width: 100%;
-
     height: 100%;
 
     object-fit: cover;
@@ -576,21 +555,45 @@ section h2 {
     transition: 0.4s;
 }
 
+
 .story-item:hover img {
 
-    transform: scale(1.04);
+    transform: scale(1.06);
+
 }
 
 
+/* =====================================================
+   NO STORIES
+===================================================== */
+
+.no-stories {
+
+    min-height: 220px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: #888;
+
+    font-size: 16px;
+}
+
 
 /* =====================================================
-   PHOTOS
+   MY PHOTOS
 ===================================================== */
 
 .photos {
 
     background: white;
 }
+
 
 .gallery {
 
@@ -602,27 +605,30 @@ section h2 {
     gap: 30px;
 }
 
+
 .photo-card {
-
-    background: white;
-
-    border-radius: 20px;
 
     overflow: hidden;
 
+    background: #eee;
+
+    border-radius: 20px;
+
     box-shadow:
-        0 10px 30px rgba(0,0,0,0.1);
+        0 10px 30px rgba(0,0,0,0.10);
 
     transition: 0.3s;
 }
+
 
 .photo-card:hover {
 
     transform: translateY(-8px);
 
     box-shadow:
-        0 20px 40px rgba(0,0,0,0.15);
+        0 18px 40px rgba(0,0,0,0.16);
 }
+
 
 .photo-image {
 
@@ -631,22 +637,23 @@ section h2 {
     height: 400px;
 
     overflow: hidden;
-
-    background: #ddd;
 }
+
 
 .photo-image img {
 
     width: 100%;
-
     height: 100%;
 
     object-fit: cover;
+
+    display: block;
 
     cursor: pointer;
 
     transition: 0.4s;
 }
+
 
 .photo-image img:hover {
 
@@ -654,9 +661,8 @@ section h2 {
 }
 
 
-
 /* =====================================================
-   IMAGE MODAL
+   FULL SCREEN IMAGE
 ===================================================== */
 
 .image-modal {
@@ -665,44 +671,46 @@ section h2 {
 
     position: fixed;
 
-    z-index: 5000;
+    z-index: 3000;
 
-    inset: 0;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
 
     background:
         rgba(0,0,0,0.94);
 
-    justify-content: center;
-
     align-items: center;
+    justify-content: center;
 
     padding: 30px;
 }
 
+
 .full-image {
 
-    max-width: 88%;
-
-    max-height: 88%;
+    max-width: 92%;
+    max-height: 90%;
 
     object-fit: contain;
 
-    border-radius: 10px;
+    border-radius: 12px;
 
     box-shadow:
-        0 20px 70px rgba(0,0,0,0.5);
+        0 20px 60px rgba(0,0,0,0.5);
 }
+
 
 .close-button {
 
     position: absolute;
 
     top: 20px;
-
     right: 30px;
 
     width: 50px;
-
     height: 50px;
 
     border: none;
@@ -711,65 +719,18 @@ section h2 {
 
     color: white;
 
-    font-size: 45px;
+    font-size: 48px;
+
+    line-height: 1;
 
     cursor: pointer;
-
-    z-index: 5001;
 }
+
 
 .close-button:hover {
 
     color: #aaa;
 }
-
-.modal-prev,
-.modal-next {
-
-    position: absolute;
-
-    top: 50%;
-
-    transform:
-        translateY(-50%);
-
-    width: 50px;
-
-    height: 50px;
-
-    border: none;
-
-    border-radius: 50%;
-
-    background:
-        rgba(255,255,255,0.15);
-
-    color: white;
-
-    font-size: 25px;
-
-    cursor: pointer;
-
-    z-index: 5001;
-}
-
-.modal-prev {
-
-    left: 25px;
-}
-
-.modal-next {
-
-    right: 25px;
-}
-
-.modal-prev:hover,
-.modal-next:hover {
-
-    background:
-        rgba(255,255,255,0.3);
-}
-
 
 
 /* =====================================================
@@ -787,12 +748,14 @@ footer {
     padding: 50px 20px;
 }
 
+
 footer h3 {
 
     font-size: 27px;
 
     margin-bottom: 8px;
 }
+
 
 footer p {
 
@@ -802,7 +765,6 @@ footer p {
 }
 
 
-
 /* =====================================================
    TABLET
 ===================================================== */
@@ -810,30 +772,34 @@ footer p {
 @media (max-width: 900px) {
 
     .home h1 {
-
         font-size: 55px;
     }
+
 
     .about-boxes {
 
         grid-template-columns:
             1fr;
+
     }
+
+
+    .story-gallery {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
 
     .gallery {
 
         grid-template-columns:
             repeat(2, 1fr);
-    }
 
-    .story-content {
-
-        grid-template-columns:
-            repeat(2, 1fr);
     }
 
 }
-
 
 
 /* =====================================================
@@ -842,116 +808,184 @@ footer p {
 
 @media (max-width: 600px) {
 
+
+    /* NAV */
+
     .nav-container {
 
         height: auto;
 
-        padding:
-            20px 0;
+        padding: 20px 0;
 
         flex-direction: column;
 
-        gap: 20px;
+        gap: 18px;
+
     }
+
 
     .logo {
 
-        font-size: 28px;
+        font-size: 27px;
+
     }
+
 
     nav {
 
-        gap: 20px;
+        gap: 18px;
 
         flex-wrap: wrap;
 
         justify-content: center;
+
     }
+
 
     nav a {
 
-        font-size: 15px;
+        font-size: 14px;
+
     }
+
+
+
+    /* HOME */
 
     .home {
 
         min-height: 80vh;
+
     }
+
+
+    .home-content {
+
+        padding: 30px 10px;
+
+    }
+
 
     .home h1 {
 
         font-size: 42px;
+
     }
 
-    .home-description {
+
+    .home-content > p:not(.small-title) {
 
         font-size: 17px;
+
     }
+
+
+
+    /* SECTIONS */
+
+    .about,
+    .stories-section,
+    .photos {
+
+        padding: 80px 15px;
+
+    }
+
 
     section h2 {
 
         font-size: 40px;
+
     }
 
-    .about,
-    .stories,
-    .photos {
 
-        padding:
-            80px 15px;
+    .section-description {
+
+        font-size: 17px;
+
     }
+
+
+
+    /* STORY HIGHLIGHTS */
 
     .story-highlights {
 
         justify-content: flex-start;
 
-        gap: 22px;
+        gap: 20px;
+
     }
+
 
     .story-circle {
 
-        width: 85px;
+        width: 70px;
+        height: 70px;
 
-        height: 85px;
     }
+
 
     .story-highlight {
 
-        min-width: 85px;
+        min-width: 75px;
+
     }
 
-    .story-content {
+
+
+    /* SELECTED STORY */
+
+    .selected-story {
+
+        padding: 18px;
+
+        border-radius: 20px;
+
+    }
+
+
+    .selected-story-header h3 {
+
+        font-size: 22px;
+
+    }
+
+
+    /* STORY GRID */
+
+    .story-gallery {
 
         grid-template-columns:
-            1fr;
+            repeat(2, 1fr);
+
+        gap: 12px;
+
     }
+
 
     .story-item {
 
-        height: 450px;
+        border-radius: 12px;
+
     }
+
+
+
+    /* PHOTOS */
 
     .gallery {
 
         grid-template-columns:
             1fr;
+
     }
+
 
     .photo-image {
 
-        height: 450px;
-    }
+        height: 430px;
 
-    .selected-story-header {
-
-        align-items: flex-end;
-    }
-
-    .full-image {
-
-        max-width: 95%;
-
-        max-height: 80%;
     }
 
 }
