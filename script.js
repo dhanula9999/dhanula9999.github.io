@@ -2,261 +2,347 @@
    STORY DATA
 ===================================================== */
 
-const stories = {
+/*
+    IMPORTANT:
 
-    china: {
+    Your images must be inside:
 
-        title: "China",
+    images/
+    
+    Example:
 
-        photos: [
+    images/china1.jpg
+    images/china2.jpg
+    images/nature1.jpg
+    images/nature2.jpg
+    images/travel1.jpg
+    images/friends1.jpg
+*/
 
-            {
-                image: "images/china1.jpg",
-                title: "China",
-                description: "A beautiful night in China."
-            },
 
-            {
-                image: "images/china2.jpg",
-                title: "China Memory",
-                description: "Another special moment."
-            }
+const stories = [
 
+    {
+        name: "China",
+
+        cover: "images/china1.jpg",
+
+        images: [
+            "images/china1.jpg",
+            "images/china2.jpg"
         ]
-
     },
 
 
-    nature: {
+    {
+        name: "Nature",
 
-        title: "Nature",
+        cover: "images/nature1.jpg",
 
-        photos: [
-
-            {
-                image: "images/nature1.jpg",
-                title: "Nature",
-                description: "A peaceful moment surrounded by nature."
-            },
-
-            {
-                image: "images/nature2.jpg",
-                title: "Beautiful Nature",
-                description: "A beautiful place to remember."
-            }
-
+        images: [
+            "images/nature1.jpg",
+            "images/nature2.jpg"
         ]
-
     },
 
 
-    travel: {
+    {
+        name: "Travel",
 
-        title: "Travel",
+        cover: "images/travel1.jpg",
 
-        photos: [
-
-            {
-                image: "images/travel1.jpg",
-                title: "Travel",
-                description: "Exploring a new place."
-            },
-
-            {
-                image: "images/travel2.jpg",
-                title: "Travel Memory",
-                description: "A special moment from my journey."
-            }
-
+        images: [
+            "images/travel1.jpg",
+            "images/travel2.jpg"
         ]
-
     },
 
 
-    friends: {
+    {
+        name: "Friends",
 
-        title: "Friends",
+        cover: "images/friends1.jpg",
 
-        photos: [
-
-            {
-                image: "images/friends1.jpg",
-                title: "Friends",
-                description: "Good times with friends."
-            },
-
-            {
-                image: "images/friends2.jpg",
-                title: "Good Times",
-                description: "A memory worth keeping."
-            }
-
+        images: [
+            "images/friends1.jpg",
+            "images/friends2.jpg"
         ]
-
     }
 
-};
+];
+
+
+/* =====================================================
+   VARIABLES
+===================================================== */
+
+let selectedStory = 0;
+
+let currentImages = [];
+
+let currentImageIndex = 0;
+
+
+/* =====================================================
+   DOM ELEMENTS
+===================================================== */
+
+const storyHighlights =
+    document.getElementById("storyHighlights");
+
+const storyGallery =
+    document.getElementById("storyGallery");
+
+const selectedStoryTitle =
+    document.getElementById("selectedStoryTitle");
+
+const storyCount =
+    document.getElementById("storyCount");
+
+
+/* =====================================================
+   CREATE STORY HIGHLIGHTS
+===================================================== */
+
+function createStoryHighlights() {
+
+    storyHighlights.innerHTML = "";
+
+
+    stories.forEach(function(story, index) {
+
+        const storyItem =
+            document.createElement("div");
+
+        storyItem.className =
+            "story-highlight";
+
+
+        if (index === selectedStory) {
+
+            storyItem.classList.add("active");
+
+        }
+
+
+        storyItem.innerHTML = `
+
+            <div class="story-circle">
+
+                <img
+                    src="${story.cover}"
+                    alt="${story.name}"
+                >
+
+            </div>
+
+            <span class="story-name">
+                ${story.name}
+            </span>
+
+        `;
+
+
+        storyItem.addEventListener(
+            "click",
+            function() {
+
+                selectStory(index);
+
+            }
+        );
+
+
+        storyHighlights.appendChild(storyItem);
+
+    });
+
+
+    /* ================= NEW BUTTON ================= */
+
+    const newStory =
+        document.createElement("div");
+
+    newStory.className =
+        "story-highlight new-story";
+
+
+    newStory.innerHTML = `
+
+        <div class="story-circle">
+            +
+        </div>
+
+        <span class="story-name">
+            New
+        </span>
+
+    `;
+
+
+    newStory.addEventListener(
+        "click",
+        function() {
+
+            alert(
+                "To add a new Story section, add it inside the 'stories' array in script.js."
+            );
+
+        }
+    );
+
+
+    storyHighlights.appendChild(newStory);
+
+}
 
 
 /* =====================================================
    SELECT STORY
 ===================================================== */
 
-function selectStory(storyName) {
+function selectStory(index) {
 
-    const story = stories[storyName];
-
-    if (!story) {
-        return;
-    }
+    selectedStory = index;
 
 
-    /* ------------------------------
-       Change active highlight
-    ------------------------------ */
-
-    const highlights =
-        document.querySelectorAll(".story-highlight");
+    createStoryHighlights();
 
 
-    highlights.forEach(function(item) {
-
-        item.classList.remove("active");
-
-    });
-
-
-    const selected =
-        document.querySelector(
-            `.story-highlight[data-story="${storyName}"]`
-        );
-
-
-    if (selected) {
-
-        selected.classList.add("active");
-
-    }
-
-
-    /* ------------------------------
-       Change title
-    ------------------------------ */
-
-    const selectedTitle =
-        document.getElementById("selectedTitle");
-
-
-    selectedTitle.textContent =
-        story.title;
-
-
-    /* ------------------------------
-       Change memory count
-    ------------------------------ */
-
-    const memoryCount =
-        document.getElementById("memoryCount");
-
-
-    const total =
-        story.photos.length;
-
-
-    memoryCount.textContent =
-        total +
-        (total === 1 ? " memory" : " memories");
-
-
-    /* ------------------------------
-       Get grid
-    ------------------------------ */
-
-    const memoryGrid =
-        document.getElementById("memoryGrid");
-
-
-    memoryGrid.innerHTML = "";
-
-
-    /* ------------------------------
-       Create cards
-    ------------------------------ */
-
-    story.photos.forEach(function(photo) {
-
-        const card =
-            document.createElement("div");
-
-
-        card.className =
-            "memory-card";
-
-
-        card.innerHTML = `
-
-            <img
-                src="${photo.image}"
-                alt="${photo.title}"
-                onclick="openImage('${photo.image}')"
-            >
-
-            <div class="memory-info">
-
-                <h4>
-                    ${photo.title}
-                </h4>
-
-                <p>
-                    ${photo.description}
-                </p>
-
-            </div>
-
-        `;
-
-
-        memoryGrid.appendChild(card);
-
-    });
+    displaySelectedStory();
 
 }
 
 
 /* =====================================================
-   NEW STORY BUTTON
+   DISPLAY SELECTED STORY
 ===================================================== */
 
-function showNewStoryMessage() {
+function displaySelectedStory() {
 
-    alert(
-        "You can create a new Story Highlight here later."
+    const story =
+        stories[selectedStory];
+
+
+    if (!story) {
+
+        return;
+
+    }
+
+
+    selectedStoryTitle.textContent =
+        story.name;
+
+
+    const total =
+        story.images.length;
+
+
+    storyCount.textContent =
+        total === 1
+            ? "1 memory"
+            : `${total} memories`;
+
+
+    storyGallery.innerHTML = "";
+
+
+    currentImages =
+        story.images;
+
+
+    story.images.forEach(
+        function(image, index) {
+
+            const imageBox =
+                document.createElement("div");
+
+
+            imageBox.className =
+                "story-image";
+
+
+            imageBox.innerHTML = `
+
+                <img
+                    src="${image}"
+                    alt="${story.name} memory"
+                    loading="lazy"
+                >
+
+            `;
+
+
+            imageBox.addEventListener(
+                "click",
+                function() {
+
+                    openStoryImage(index);
+
+                }
+            );
+
+
+            storyGallery.appendChild(
+                imageBox
+            );
+
+        }
     );
 
 }
 
 
 /* =====================================================
-   IMAGE VIEWER
+   IMAGE MODAL
+===================================================== */
+
+const imageModal =
+    document.getElementById("imageModal");
+
+const fullImage =
+    document.getElementById("fullImage");
+
+
+/* =====================================================
+   OPEN NORMAL IMAGE
 ===================================================== */
 
 function openImage(imageSource) {
 
-    const modal =
-        document.getElementById("imageModal");
+    currentImages = [
+        imageSource
+    ];
 
-
-    const fullImage =
-        document.getElementById("fullImage");
-
+    currentImageIndex = 0;
 
     fullImage.src =
         imageSource;
 
+    imageModal.classList.add("show");
 
-    modal.style.display =
-        "flex";
+    document.body.style.overflow =
+        "hidden";
 
+}
+
+
+/* =====================================================
+   OPEN STORY IMAGE
+===================================================== */
+
+function openStoryImage(index) {
+
+    currentImageIndex =
+        index;
+
+
+    fullImage.src =
+        currentImages[currentImageIndex];
+
+
+    imageModal.classList.add("show");
 
     document.body.style.overflow =
         "hidden";
@@ -270,21 +356,9 @@ function openImage(imageSource) {
 
 function closeImage() {
 
-    const modal =
-        document.getElementById("imageModal");
+    imageModal.classList.remove("show");
 
-
-    const fullImage =
-        document.getElementById("fullImage");
-
-
-    modal.style.display =
-        "none";
-
-
-    fullImage.src =
-        "";
-
+    fullImage.src = "";
 
     document.body.style.overflow =
         "";
@@ -293,34 +367,83 @@ function closeImage() {
 
 
 /* =====================================================
-   CLOSE WHEN CLICKING OUTSIDE IMAGE
+   NEXT IMAGE
 ===================================================== */
 
-document
-    .getElementById("imageModal")
-    .addEventListener("click", function(event) {
+function nextImage() {
 
-        if (
-            event.target === this
-        ) {
+    if (
+        currentImages.length <= 1
+    ) {
 
-            closeImage();
+        return;
 
-        }
+    }
 
-    });
+
+    currentImageIndex++;
+
+    
+    if (
+        currentImageIndex >=
+        currentImages.length
+    ) {
+
+        currentImageIndex = 0;
+
+    }
+
+
+    fullImage.src =
+        currentImages[currentImageIndex];
+
+}
 
 
 /* =====================================================
-   ESC KEY
+   PREVIOUS IMAGE
 ===================================================== */
 
-document.addEventListener(
-    "keydown",
+function previousImage() {
+
+    if (
+        currentImages.length <= 1
+    ) {
+
+        return;
+
+    }
+
+
+    currentImageIndex--;
+
+
+    if (
+        currentImageIndex < 0
+    ) {
+
+        currentImageIndex =
+            currentImages.length - 1;
+
+    }
+
+
+    fullImage.src =
+        currentImages[currentImageIndex];
+
+}
+
+
+/* =====================================================
+   CLICK OUTSIDE IMAGE
+===================================================== */
+
+imageModal.addEventListener(
+    "click",
     function(event) {
 
         if (
-            event.key === "Escape"
+            event.target === imageModal
         ) {
 
             closeImage();
@@ -332,14 +455,123 @@ document.addEventListener(
 
 
 /* =====================================================
-   LOAD FIRST STORY
+   KEYBOARD CONTROLS
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        /* ESC */
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeImage();
+
+        }
+
+
+        /* RIGHT ARROW */
+
+        if (
+            event.key === "ArrowRight"
+        ) {
+
+            nextImage();
+
+        }
+
+
+        /* LEFT ARROW */
+
+        if (
+            event.key === "ArrowLeft"
+        ) {
+
+            previousImage();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   TOUCH / SWIPE SUPPORT
+===================================================== */
+
+let touchStartX = 0;
+
+let touchEndX = 0;
+
+
+imageModal.addEventListener(
+    "touchstart",
+    function(event) {
+
+        touchStartX =
+            event.changedTouches[0].screenX;
+
+    }
+);
+
+
+imageModal.addEventListener(
+    "touchend",
+    function(event) {
+
+        touchEndX =
+            event.changedTouches[0].screenX;
+
+
+        handleSwipe();
+
+    }
+);
+
+
+function handleSwipe() {
+
+    const distance =
+        touchEndX - touchStartX;
+
+
+    if (
+        Math.abs(distance) < 50
+    ) {
+
+        return;
+
+    }
+
+
+    if (distance < 0) {
+
+        nextImage();
+
+    }
+    else {
+
+        previousImage();
+
+    }
+
+}
+
+
+/* =====================================================
+   INITIALIZE WEBSITE
 ===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     function() {
 
-        selectStory("china");
+        createStoryHighlights();
+
+        displaySelectedStory();
 
     }
 );
