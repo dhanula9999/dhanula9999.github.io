@@ -57,7 +57,12 @@ const photoAlbums = [
         ]
     },
     { title: "Photo 21", cover: "photo21.jpg", images: ["photo21.jpg"] },
-    { title: "Photo 23", cover: "photo23.jpg", images: ["photo23.jpg"] }
+    { title: "Photo 23", cover: "photo23.jpg", images: ["photo23.jpg"] },
+    // photo24 සිට photo27 දක්වා පින්තූර අවසානයට ඇතුළත් කරන ලදී:
+    { title: "Photo 24", cover: "photo24.jpg", images: ["photo24.jpg"] },
+    { title: "Photo 25", cover: "photo25.jpg", images: ["photo25.jpg"] },
+    { title: "Photo 26", cover: "photo26.jpg", images: ["photo26.jpg"] },
+    { title: "Photo 27", cover: "photo27.jpg", images: ["photo27.jpg"] }
 ];
 
 function loadPhotos() {
@@ -115,7 +120,6 @@ function loadPhotos() {
    STORIES SECTION
 ===================================================== */
 
-// story8.jpg, story9.jpg, story10.jpg මෙහි ඇතුළත් කර ඇත
 const storyData = {
     "2026": [
         "story1.jpg",
