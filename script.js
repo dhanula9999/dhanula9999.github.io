@@ -38,7 +38,6 @@ if (themeToggleBtn) {
    PHOTOS SECTION (INDIVIDUAL & ALBUM COLLECTIONS)
 ===================================================== */
 
-// photo1 - photo6 දක්වා තනි පින්තූර, photo7 - photo20 Album එකක්, photo21 වෙනම තනි පින්තූරයක් ලෙස
 const photoAlbums = [
     { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
     { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
@@ -65,8 +64,8 @@ function loadPhotos() {
     const errorBox = document.getElementById("photoError");
 
     gallery.innerHTML = "";
-    loading.style.display = "block";
-    errorBox.style.display = "none";
+    if (loading) loading.style.display = "block";
+    if (errorBox) errorBox.style.display = "none";
 
     photoAlbums.forEach((album) => {
         const card = document.createElement("div");
@@ -80,7 +79,6 @@ function loadPhotos() {
         img.alt = album.title;
         img.loading = "lazy";
 
-        // Album එකක 1ට වැඩි පින්තූර තිබේ නම් (+ Count) badge එක පෙන්වීම
         if (album.images.length > 1) {
             const badge = document.createElement("div");
             badge.className = "album-badge";
@@ -88,14 +86,14 @@ function loadPhotos() {
             imageContainer.appendChild(badge);
         }
 
-        // Cover image click කළ විට Modal Slider එක open වීම
         img.onclick = function () {
             const albumUrls = album.images.map(f => getPhotoUrl(f));
             openImageSlider(albumUrls, 0);
         };
 
+        // පින්තූරය Loading ගැටලුවකදී Card එක නොසඟවා Console log කිරීම
         img.onerror = function () {
-            card.style.display = "none";
+            console.error("Failed to load photo:", this.src);
         };
 
         imageContainer.appendChild(img);
@@ -103,14 +101,7 @@ function loadPhotos() {
         gallery.appendChild(card);
     });
 
-    setTimeout(() => {
-        loading.style.display = "none";
-        const visibleImages = gallery.querySelectorAll(".photo-card:not([style*='display: none'])");
-
-        if (visibleImages.length === 0) {
-            errorBox.style.display = "block";
-        }
-    }, 1200);
+    if (loading) loading.style.display = "none";
 }
 
 /* =====================================================
@@ -278,7 +269,7 @@ function closeStoryGallery() {
 }
 
 /* =====================================================
-   LIGHTBOX IMAGE SLIDER (WITH IMAGE ERROR HANDLING)
+   LIGHTBOX IMAGE SLIDER
 ===================================================== */
 
 let currentSliderList = [];
@@ -299,7 +290,6 @@ function updateModalImage() {
     fullImage.style.display = "block";
     fullImage.src = currentSliderList[currentSliderIndex];
 
-    // Image එක Supabase හි නැතිනම් (Error වුවහොත්) Blank Icon එකක් සඟවා පාලනය කිරීම
     fullImage.onerror = function() {
         console.warn("Image load error for: " + this.src);
     };
