@@ -69,7 +69,6 @@ function loadPhotos() {
     if (loading) loading.style.display = "block";
     if (errorBox) errorBox.style.display = "none";
 
-    // ගැලරියේ ඇති සියලුම ප්‍රධාන පින්තූරවල URL එකතු කර ගැනීම (Slider එක සඳහා)
     const allGalleryCovers = photoAlbums.map(album => getPhotoUrl(album.cover));
 
     photoAlbums.forEach((album, index) => {
@@ -91,7 +90,6 @@ function loadPhotos() {
             imageContainer.appendChild(badge);
         }
 
-        // මෙහිදී ඇල්බමයක එකකට වඩා තිබේ නම් ඒවාත්, නැතහොත් මුළු ගැලරියම Slider එකට ලබා දේ
         img.onclick = function () {
             if (album.images.length > 1) {
                 const albumUrls = album.images.map(f => getPhotoUrl(f));
@@ -117,6 +115,7 @@ function loadPhotos() {
    STORIES SECTION
 ===================================================== */
 
+// story8.jpg, story9.jpg, story10.jpg මෙහි ඇතුළත් කර ඇත
 const storyData = {
     "2026": [
         "story1.jpg",
@@ -125,7 +124,10 @@ const storyData = {
         "story4.jpg",
         "story5.jpg",
         "story6.jpg",
-        "story7.jpg"
+        "story7.jpg",
+        "story8.jpg",
+        "story9.jpg",
+        "story10.jpg"
     ],
     "2025": []
 };
@@ -346,8 +348,9 @@ document.addEventListener("keydown", function(event) {
 ===================================================== */
 
 function handleContactSubmit(event) {
-    .event?.preventDefault(); // Safe check
-    // ...
+    event.preventDefault();
+    alert("Thank you for your message! I will get back to you soon.");
+    event.target.reset();
 }
 
 function showNewStoryMessage() {
