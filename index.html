@@ -11,7 +11,6 @@
 
 <body>
 
-<!-- NAVIGATION -->
 <header class="navbar">
     <div class="nav-container">
         <a href="#home" class="logo">Dhanula</a>
@@ -27,7 +26,6 @@
     </div>
 </header>
 
-<!-- HOME -->
 <section id="home" class="home">
     <div class="home-content">
         <p class="small-title">WELCOME TO MY WEBSITE</p>
@@ -37,7 +35,6 @@
     </div>
 </section>
 
-<!-- ABOUT -->
 <section id="about" class="about">
     <div class="section-container">
         <p class="section-label">GET TO KNOW ME</p>
@@ -65,7 +62,6 @@
     </div>
 </section>
 
-<!-- STORIES BY YEAR -->
 <section id="stories" class="stories">
     <div class="stories-container">
         <div class="stories-heading">
@@ -74,7 +70,6 @@
             <p>Memories, moments and experiences organized by year.</p>
         </div>
 
-        <!-- Year Highlights -->
         <div class="story-highlights" id="storyHighlights">
             <div class="story-highlight active" data-story="2026" onclick="selectStory('2026')">
                 <div class="story-circle">
@@ -104,16 +99,22 @@
                 </div>
                 <div class="memory-count" id="memoryCount">2 memories</div>
             </div>
-            <div class="memory-grid" id="memoryGrid"></div>
+            
+            <div class="slider-container" style="position: relative; display: flex; align-items: center; justify-content: center;">
+                <button class="slide-btn prev-btn" onclick="prevPhoto()" style="position: absolute; left: 10px; z-index: 10; background: rgba(0,0,0,0.6); color: white; border: none; font-size: 24px; padding: 10px 15px; cursor: pointer; border-radius: 50%;">&lt;</button>
+                
+                <div class="memory-grid" id="memoryGrid" style="width: 100%;"></div>
+                
+                <button class="slide-btn next-btn" onclick="nextPhoto()" style="position: absolute; right: 10px; z-index: 10; background: rgba(0,0,0,0.6); color: white; border: none; font-size: 24px; padding: 10px 15px; cursor: pointer; border-radius: 50%;">&gt;</button>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- MY PHOTOS -->
 <section id="photos" class="photos">
     <div class="section-container">
         <p class="section-label">MY MEMORIES</p>
-        <h2>My Photos</h2>
+        2<h2>My Photos</h2>
         <p class="section-description">A collection of my favourite photos.</p>
         
         <div class="gallery">
@@ -151,13 +152,11 @@
     </div>
 </section>
 
-<!-- FULLSCREEN IMAGE -->
 <div id="imageModal" class="image-modal" role="dialog" aria-modal="true" aria-label="Image viewer">
     <button class="close-button" onclick="closeImage()" aria-label="Close image viewer">&times;</button>
     <img id="fullImage" class="full-image" alt="Full size image">
 </div>
 
-<!-- FOOTER -->
 <footer>
     <h3>Dhanula</h3>
     <p>My Personal Website</p>
