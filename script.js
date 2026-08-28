@@ -2,26 +2,81 @@
    STORY DATA
 ===================================================== */
 
+/*
+    Add your story images here.
+
+    Example:
+
+    China:
+        stories/story1.jpg
+
+    Nature:
+        stories/story2.jpg
+
+    If you want more photos inside a category,
+    simply add more image paths.
+*/
+
+
 const stories = {
 
-    story1: {
+    china: {
 
-        title: "Memories",
+        title: "China",
 
         images: [
+
             "stories/story1.jpg"
+
         ]
 
     },
 
 
-    story2: {
+    nature: {
 
         title: "Nature",
 
         images: [
+
             "stories/story2.jpg"
+
         ]
+
+    },
+
+
+    travel: {
+
+        title: "Travel",
+
+        images: [
+
+            "stories/story3.jpg"
+
+        ]
+
+    },
+
+
+    friends: {
+
+        title: "Friends",
+
+        images: [
+
+            "stories/story4.jpg"
+
+        ]
+
+    },
+
+
+    new: {
+
+        title: "New",
+
+        images: []
 
     }
 
@@ -30,79 +85,112 @@ const stories = {
 
 
 /* =====================================================
-   SHOW STORY SECTION
+   SHOW STORY
 ===================================================== */
 
-function showStory(storyId, selectedElement) {
+function showStory(storyName, clickedButton) {
 
-    const story = stories[storyId];
+
+    const story = stories[storyName];
+
 
     if (!story) {
+
         return;
-    }
-
-
-    /* Change active circle */
-
-    const allHighlights =
-        document.querySelectorAll(".story-highlight");
-
-    allHighlights.forEach(function(item) {
-
-        item.classList.remove("active");
-
-    });
-
-
-    if (selectedElement) {
-
-        selectedElement.classList.add("active");
 
     }
 
 
-
-    /* Change title */
+    /* TITLE */
 
     const title =
         document.getElementById("storyTitle");
+
+
+    const count =
+        document.getElementById("storyCount");
+
+
+    const gallery =
+        document.getElementById("storyGallery");
+
 
     title.textContent =
         story.title;
 
 
 
-    /* Change count */
+    /* REMOVE ACTIVE */
 
-    const count =
-        document.getElementById("storyCount");
+    document
+        .querySelectorAll(".story-highlight")
+        .forEach(button => {
 
-    const number =
-        story.images.length;
+            button.classList.remove("active");
+
+        });
+
+
+    /* ADD ACTIVE */
+
+    clickedButton.classList.add("active");
+
+
+
+    /* CLEAR GALLERY */
+
+    gallery.innerHTML = "";
+
+
+
+    /* EMPTY STORY */
+
+    if (story.images.length === 0) {
+
+
+        count.textContent =
+            "No memories";
+
+
+        gallery.innerHTML = `
+
+            <div class="no-stories">
+
+                <p>
+                    No memories added yet.
+                </p>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+
+    /* COUNT */
 
     count.textContent =
-        number === 1
-            ? "1 memory"
-            : number + " memories";
+        story.images.length +
+        (
+            story.images.length === 1
+                ? " memory"
+                : " memories"
+        );
 
 
 
-    /* Get story content */
+    /* ADD IMAGES */
 
-    const content =
-        document.getElementById("storyContent");
+    story.images.forEach(image => {
 
-
-    content.innerHTML = "";
-
-
-
-    /* Add images */
-
-    story.images.forEach(function(image) {
 
         const item =
             document.createElement("div");
+
 
         item.className =
             "story-item";
@@ -111,24 +199,32 @@ function showStory(storyId, selectedElement) {
         const img =
             document.createElement("img");
 
+
         img.src =
             image;
+
 
         img.alt =
             story.title;
 
 
-        img.onclick =
-            function() {
+        img.loading =
+            "lazy";
 
-                openImage(this.src);
 
-            };
+        /* OPEN FULL IMAGE */
+
+        img.onclick = function () {
+
+            openImage(image);
+
+        };
 
 
         item.appendChild(img);
 
-        content.appendChild(item);
+
+        gallery.appendChild(item);
 
     });
 
@@ -140,52 +236,15 @@ function showStory(storyId, selectedElement) {
    IMAGE VIEWER
 ===================================================== */
 
-let currentImages = [];
-
-let currentIndex = 0;
-
-
-
 function openImage(imageSource) {
+
 
     const modal =
         document.getElementById("imageModal");
 
+
     const fullImage =
         document.getElementById("fullImage");
-
-
-    /*
-       Collect all images from
-       gallery + current story
-    */
-
-    currentImages =
-        Array.from(
-            document.querySelectorAll(
-                ".gallery img, .story-content img"
-            )
-        )
-        .map(function(img) {
-
-            return img.src;
-
-        });
-
-
-    currentIndex =
-        currentImages.indexOf(imageSource);
-
-
-    if (currentIndex === -1) {
-
-        currentIndex = 0;
-
-        currentImages = [
-            imageSource
-        ];
-
-    }
 
 
     fullImage.src =
@@ -209,6 +268,7 @@ function openImage(imageSource) {
 
 function closeImage() {
 
+
     const modal =
         document.getElementById("imageModal");
 
@@ -218,64 +278,7 @@ function closeImage() {
 
 
     document.body.style.overflow =
-        "auto";
-
-}
-
-
-
-/* =====================================================
-   NEXT IMAGE
-===================================================== */
-
-function nextImage() {
-
-    if (currentImages.length === 0) {
-        return;
-    }
-
-
-    currentIndex++;
-
-
-    if (currentIndex >= currentImages.length) {
-
-        currentIndex = 0;
-
-    }
-
-
-    document.getElementById("fullImage").src =
-        currentImages[currentIndex];
-
-}
-
-
-
-/* =====================================================
-   PREVIOUS IMAGE
-===================================================== */
-
-function previousImage() {
-
-    if (currentImages.length === 0) {
-        return;
-    }
-
-
-    currentIndex--;
-
-
-    if (currentIndex < 0) {
-
-        currentIndex =
-            currentImages.length - 1;
-
-    }
-
-
-    document.getElementById("fullImage").src =
-        currentImages[currentIndex];
+        "";
 
 }
 
@@ -291,6 +294,7 @@ document
         "click",
         function(event) {
 
+
             if (
                 event.target === this
             ) {
@@ -305,7 +309,7 @@ document
 
 
 /* =====================================================
-   KEYBOARD CONTROLS
+   ESC KEY
 ===================================================== */
 
 document.addEventListener(
@@ -313,23 +317,11 @@ document.addEventListener(
     function(event) {
 
 
-        if (event.key === "Escape") {
+        if (
+            event.key === "Escape"
+        ) {
 
             closeImage();
-
-        }
-
-
-        if (event.key === "ArrowRight") {
-
-            nextImage();
-
-        }
-
-
-        if (event.key === "ArrowLeft") {
-
-            previousImage();
 
         }
 
@@ -339,12 +331,13 @@ document.addEventListener(
 
 
 /* =====================================================
-   INITIAL STORY
+   LOAD FIRST STORY
 ===================================================== */
 
 document.addEventListener(
     "DOMContentLoaded",
     function() {
+
 
         const firstStory =
             document.querySelector(
@@ -355,7 +348,7 @@ document.addEventListener(
         if (firstStory) {
 
             showStory(
-                "story1",
+                "china",
                 firstStory
             );
 
