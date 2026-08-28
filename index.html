@@ -117,7 +117,10 @@
                     <small>SELECTED YEAR</small>
                     <h3 id="selectedTitle">2026</h3>
                 </div>
-                <div class="memory-count" id="memoryCount">3 memories</div>
+                <div class="memory-count-box">
+                    <span class="memory-count" id="memoryCount">7 memories</span>
+                    <button class="view-all-btn" onclick="openStoryGallery()">View all</button>
+                </div>
             </div>
 
             <div class="slider-container">
@@ -160,7 +163,7 @@
                     <span class="info-icon">📧</span>
                     <div>
                         <h4>Email</h4>
-                        <p>dhanularajakaruna9999@.com</p>
+                        <p>dhanula@example.com</p>
                     </div>
                 </div>
                 <div class="info-item">
@@ -190,10 +193,23 @@
     </div>
 </section>
 
-<!-- IMAGE MODAL -->
+<!-- VIEW ALL STORIES MODAL -->
+<div id="storyGalleryModal" class="story-gallery-modal">
+    <div class="gallery-modal-content">
+        <div class="gallery-modal-header">
+            <h3 id="galleryModalTitle">2026 - All Memories</h3>
+            <button class="close-gallery-btn" onclick="closeStoryGallery()">&times;</button>
+        </div>
+        <div class="story-gallery-grid" id="storyGalleryGrid"></div>
+    </div>
+</div>
+
+<!-- LIGHTBOX IMAGE MODAL -->
 <div id="imageModal" class="image-modal">
     <button class="close-button" onclick="closeImage()">&times;</button>
+    <button class="modal-nav-btn modal-prev-btn" onclick="prevModalImage()">‹</button>
     <img id="fullImage" class="full-image" alt="Full size image">
+    <button class="modal-nav-btn modal-next-btn" onclick="nextModalImage()">›</button>
 </div>
 
 <!-- FOOTER -->
