@@ -1,5 +1,5 @@
 /* =====================================================
-   STORY DATA BY YEAR (All current story photos in 2026)
+   STORY DATA BY YEAR (2026 Stories)
 ===================================================== */
 
 const stories = {
@@ -16,6 +16,8 @@ const stories = {
     }
 };
 
+let currentYear = "2026";
+let currentPhotoIndex = 0;
 let autoSlideTimer = null;
 
 
@@ -64,12 +66,41 @@ function handleImageError(img) {
 
 
 /* =====================================================
-   SELECT STORY BY YEAR
+   DISPLAY IMAGE FOR SELECTED YEAR
+===================================================== */
+
+function displayCurrentPhoto() {
+    const story = stories[currentYear];
+    if (!story || story.photos.length === 0) return;
+
+    // Index එක ලිමිට් එක පැනලා නම් නැවත 0ට සකසන්න
+    if (currentPhotoIndex >= story.photos.length) {
+        currentPhotoIndex = 0;
+    }
+
+    const memoryGrid = document.getElementById("memoryGrid");
+    memoryGrid.innerHTML = "";
+
+    const photo = story.photos[currentPhotoIndex];
+    const card = document.createElement("div");
+    card.className = "memory-card";
+    card.innerHTML = `
+        <img src="${photo.image}" alt="${story.title}" loading="lazy" onerror="handleImageError(this)" onclick="openImage('${photo.image}')">
+    `;
+    memoryGrid.appendChild(card);
+}
+
+
+/* =====================================================
+   SELECT STORY BY YEAR (Manual Click)
 ===================================================== */
 
 function selectStory(year) {
     const story = stories[year];
     if (!story) return;
+
+    currentYear = year;
+    currentPhotoIndex = 0; // නව Year එකක් ක්ලික් කළ විට 1 වෙනි ෆොටෝ එකෙන් පටන් ගනී
 
     const highlights = document.querySelectorAll(".story-highlight");
     highlights.forEach(function(item) {
@@ -88,32 +119,28 @@ function selectStory(year) {
     const total = story.photos.length;
     memoryCount.textContent = total + (total === 1 ? " memory" : " memories");
 
-    const memoryGrid = document.getElementById("memoryGrid");
-    memoryGrid.innerHTML = "";
-
-    story.photos.forEach(function(photo) {
-        const card = document.createElement("div");
-        card.className = "memory-card";
-        card.innerHTML = `
-            <img src="${photo.image}" alt="${story.title}" loading="lazy" onerror="handleImageError(this)" onclick="openImage('${photo.image}')">
-        `;
-        memoryGrid.appendChild(card);
-    });
+    displayCurrentPhoto();
+    resetAutoSlide();
 }
 
 
 /* =====================================================
-   AUTO SWITCH STORIES (Every 7 Seconds)
+   AUTO SWITCH IMAGES (Every 7 Seconds)
 ===================================================== */
 
 function startAutoSlide() {
-    const years = Object.keys(stories);
-    let currentIndex = 0;
-
     autoSlideTimer = setInterval(function() {
-        currentIndex = (currentIndex + 1) % years.length;
-        selectStory(years[currentIndex]);
-    }, 7000); // 7000ms = 7 seconds
+        const story = stories[currentYear];
+        if (story && story.photos.length > 1) {
+            currentPhotoIndex = (currentPhotoIndex + 1) % story.photos.length;
+            displayCurrentPhoto();
+        }
+    }, 7000); // තත්පර 7 (7000ms)
+}
+
+function resetAutoSlide() {
+    clearInterval(autoSlideTimer);
+    startAutoSlide();
 }
 
 
