@@ -38,8 +38,6 @@ if (themeToggleBtn) {
    PHOTOS SECTION (INDIVIDUAL & ALBUM COLLECTIONS)
 ===================================================== */
 
-// photo1 සිට photo6 දක්වා තනි රූප ලෙසද, 
-// photo7 සිට photo20 දක්වා photo7 මුලින්ම පෙනෙන Album එකක් ලෙසද එකතු කර ඇත.
 const photoAlbums = [
     { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
     { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
@@ -49,13 +47,13 @@ const photoAlbums = [
     { title: "Photo 6", cover: "photo6.jpg", images: ["photo6.jpg"] },
     {
         title: "Special Album",
-        cover: "photo7.jpg", // මුලින්ම පෙන්වන පින්තූරය
+        cover: "photo7.jpg",
         images: [
             "photo7.jpg",  "photo8.jpg",  "photo9.jpg",  "photo10.jpg",
             "photo11.jpg", "photo12.jpg", "photo13.jpg", "photo14.jpg",
             "photo15.jpg", "photo16.jpg", "photo17.jpg", "photo18.jpg",
-            "photo19.jpg", "photo20.jpg"
-        ] // 7 සිට 20 දක්වා පිළිවෙළට
+            "photo19.jpg", "photo20.jpg", "photo21.jpg"
+        ]
     }
 ];
 
@@ -80,7 +78,6 @@ function loadPhotos() {
         img.alt = album.title;
         img.loading = "lazy";
 
-        // Album එකේ එකට වඩා පින්තූර තිබේ නම් (+ Count) badge එක පෙන්වීම
         if (album.images.length > 1) {
             const badge = document.createElement("div");
             badge.className = "album-badge";
@@ -88,7 +85,6 @@ function loadPhotos() {
             imageContainer.appendChild(badge);
         }
 
-        // Cover photo එක click කළ විට album එකේ සියලුම පින්තූර slider එකෙන් බලන්න පුළුවන්
         img.onclick = function () {
             const albumUrls = album.images.map(f => getPhotoUrl(f));
             openImageSlider(albumUrls, 0);
@@ -225,7 +221,7 @@ function startAutoSlide() {
             currentPhotoIndex = (currentPhotoIndex + 1) % images.length;
             renderStory();
         }
-    }, 5000); // 5 Seconds
+    }, 5000);
 }
 
 function resetAutoSlide() {
@@ -296,6 +292,7 @@ function openImageSlider(imageList, startIndex) {
 
 function updateModalImage() {
     const fullImage = document.getElementById("fullImage");
+    fullImage.style.display = "block";
     fullImage.src = currentSliderList[currentSliderIndex];
 }
 
