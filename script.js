@@ -98,14 +98,16 @@ function loadPhotos() {
 
 
 /* =====================================================
-   STORIES SECTION (Stories Bucket - All 3 in 2026)
+   STORIES SECTION (Stories Bucket - All 5 in 2026)
 ===================================================== */
 
 const storyData = {
     "2026": [
         "story1.jpg",
         "story2.jpg",
-        "story3.jpg"
+        "story3.jpg",
+        "story4.jpg",
+        "story5.jpg"
     ],
     "2025": []
 };
