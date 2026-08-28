@@ -15,9 +15,7 @@ body {
     line-height: 1.6;
 }
 
-
-/* ================= NAVBAR ================= */
-
+/* NAVBAR */
 .navbar {
     position: sticky;
     top: 0;
@@ -31,11 +29,9 @@ body {
     max-width: 1080px;
     margin: auto;
     height: 76px;
-
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     padding: 0 25px;
 }
 
@@ -79,27 +75,15 @@ nav a:hover {
     border-radius: 5px;
 }
 
-
-/* ================= HOME ================= */
-
+/* HOME */
 .home {
     min-height: 620px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     text-align: center;
-
     position: relative;
-
-    background:
-        linear-gradient(
-            rgba(0,0,0,0.45),
-            rgba(0,0,0,0.45)
-        ),
-        url("https://widutbgygnamjIkaovrk.supabase.co/storage/v1/object/public/photos/photo1.jpg");
-
+    background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("https://widutbgygnamjlkaovrk.supabase.co/storage/v1/object/public/photos/photo1.jpg");
     background-size: cover;
     background-position: center;
 }
@@ -140,15 +124,11 @@ nav a:hover {
     display: inline-block;
     margin-top: 30px;
     padding: 14px 28px;
-
     background: #ffffff;
     color: #111111;
-
     text-decoration: none;
     border-radius: 30px;
-
     font-weight: 700;
-
     transition: 0.3s;
 }
 
@@ -157,9 +137,7 @@ nav a:hover {
     background: #eeeeee;
 }
 
-
-/* ================= COMMON ================= */
-
+/* COMMON */
 .section-container {
     max-width: 1080px;
     margin: auto;
@@ -180,9 +158,7 @@ h2 {
     margin-bottom: 25px;
 }
 
-
-/* ================= ABOUT ================= */
-
+/* ABOUT */
 .about {
     background: #ffffff;
 }
@@ -227,9 +203,7 @@ h2 {
     color: #666666;
 }
 
-
-/* ================= STORIES ================= */
-
+/* STORIES */
 .stories {
     background: #f6f6f6;
 }
@@ -249,9 +223,6 @@ h2 {
     color: #777777;
 }
 
-
-/* STORY HIGHLIGHTS */
-
 .story-highlights {
     display: flex;
     justify-content: center;
@@ -268,17 +239,11 @@ h2 {
 .story-circle {
     width: 100px;
     height: 100px;
-
     border-radius: 50%;
-
     padding: 4px;
-
     background: #ffffff;
-
     border: 3px solid transparent;
-
     margin-bottom: 10px;
-
     transition: 0.3s;
 }
 
@@ -315,9 +280,6 @@ h2 {
     transform: scale(1.07);
 }
 
-
-/* SELECTED MEMORY */
-
 .selected-memory {
     background: white;
     border-radius: 25px;
@@ -347,9 +309,6 @@ h2 {
     color: #777777;
     font-size: 14px;
 }
-
-
-/* STORY SLIDER */
 
 .slider-container {
     position: relative;
@@ -386,19 +345,14 @@ h2 {
 .slide-btn {
     position: absolute;
     z-index: 10;
-
     width: 45px;
     height: 45px;
-
     border: none;
     border-radius: 50%;
-
     background: rgba(0,0,0,0.75);
     color: white;
-
     font-size: 30px;
     cursor: pointer;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -416,9 +370,7 @@ h2 {
     background: #000000;
 }
 
-
-/* ================= PHOTOS ================= */
-
+/* PHOTOS */
 .photos {
     background: #ffffff;
 }
@@ -450,9 +402,7 @@ h2 {
     width: 100%;
     height: 100%;
     object-fit: cover;
-
     display: block;
-
     transition: transform 0.5s;
 }
 
@@ -460,17 +410,11 @@ h2 {
     transform: scale(1.06);
 }
 
-
-/* LOADING */
-
 .loading {
     text-align: center;
     padding: 50px;
     color: #777777;
 }
-
-
-/* ERROR */
 
 .photo-error {
     text-align: center;
@@ -497,21 +441,15 @@ h2 {
     cursor: pointer;
 }
 
-
-/* ================= IMAGE MODAL ================= */
-
+/* MODAL */
 .image-modal {
     position: fixed;
     inset: 0;
-
     background: rgba(0,0,0,0.94);
-
     display: none;
     align-items: center;
     justify-content: center;
-
     z-index: 2000;
-
     padding: 30px;
 }
 
@@ -522,9 +460,7 @@ h2 {
 .full-image {
     max-width: 95%;
     max-height: 90vh;
-
     object-fit: contain;
-
     border-radius: 10px;
 }
 
@@ -532,25 +468,18 @@ h2 {
     position: absolute;
     top: 20px;
     right: 30px;
-
     background: none;
     border: none;
-
     color: white;
-
     font-size: 50px;
     cursor: pointer;
 }
 
-
-/* ================= FOOTER ================= */
-
+/* FOOTER */
 footer {
     background: #111111;
     color: white;
-
     text-align: center;
-
     padding: 60px 20px;
 }
 
@@ -564,29 +493,21 @@ footer p {
     margin-top: 8px;
 }
 
-
-/* ================= MOBILE ================= */
-
+/* MOBILE RESPONSIVE */
 @media (max-width: 800px) {
-
     .nav-toggle {
         display: block;
     }
 
     nav {
         position: absolute;
-
         top: 76px;
         left: 0;
         right: 0;
-
         display: none;
         flex-direction: column;
-
         background: white;
-
         padding: 20px 25px;
-
         border-bottom: 1px solid #eeeeee;
     }
 
@@ -617,12 +538,9 @@ footer p {
     .story-highlights {
         gap: 25px;
     }
-
 }
 
-
 @media (max-width: 550px) {
-
     .nav-container {
         padding: 0 18px;
     }
@@ -664,5 +582,4 @@ footer p {
     .memory-card {
         height: 380px;
     }
-
 }
