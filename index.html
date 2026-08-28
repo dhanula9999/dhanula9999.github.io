@@ -11,6 +11,7 @@
 
 <body>
 
+<!-- NAVIGATION -->
 <header class="navbar">
     <div class="nav-container">
         <a href="#home" class="logo">Dhanula</a>
@@ -26,6 +27,7 @@
     </div>
 </header>
 
+<!-- HOME -->
 <section id="home" class="home">
     <div class="home-content">
         <p class="small-title">WELCOME TO MY WEBSITE</p>
@@ -35,6 +37,7 @@
     </div>
 </section>
 
+<!-- ABOUT -->
 <section id="about" class="about">
     <div class="section-container">
         <p class="section-label">GET TO KNOW ME</p>
@@ -62,6 +65,7 @@
     </div>
 </section>
 
+<!-- STORIES -->
 <section id="stories" class="stories">
     <div class="stories-container">
         <div class="stories-heading">
@@ -104,6 +108,7 @@
     </div>
 </section>
 
+<!-- MY PHOTOS (Images Only - No Text) -->
 <section id="photos" class="photos">
     <div class="section-container">
         <p class="section-label">MY MEMORIES</p>
@@ -115,65 +120,43 @@
                 <div class="photo-image">
                     <img src="images/photo1.jpg" alt="Photo 1" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
                 </div>
-                <div class="photo-info">
-                    <h3>Photo 1</h3>
-                    <p>Memory 1</p>
-                </div>
             </div>
             <div class="photo-card">
                 <div class="photo-image">
                     <img src="images/photo2.jpg" alt="Photo 2" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
-                </div>
-                <div class="photo-info">
-                    <h3>Photo 2</h3>
-                    <p>Memory 2</p>
                 </div>
             </div>
             <div class="photo-card">
                 <div class="photo-image">
                     <img src="images/photo3.jpg" alt="Photo 3" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
                 </div>
-                <div class="photo-info">
-                    <h3>Photo 3</h3>
-                    <p>Memory 3</p>
-                </div>
             </div>
             <div class="photo-card">
                 <div class="photo-image">
                     <img src="images/photo4.jpg" alt="Photo 4" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
-                </div>
-                <div class="photo-info">
-                    <h3>Photo 4</h3>
-                    <p>Memory 4</p>
                 </div>
             </div>
             <div class="photo-card">
                 <div class="photo-image">
                     <img src="images/photo5.jpg" alt="Photo 5" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
                 </div>
-                <div class="photo-info">
-                    <h3>Photo 5</h3>
-                    <p>Memory 5</p>
-                </div>
             </div>
             <div class="photo-card">
                 <div class="photo-image">
                     <img src="images/photo6.jpg" alt="Photo 6" loading="lazy" onerror="handleImageError(this)" onclick="openImage(this.src)">
-                </div>
-                <div class="photo-info">
-                    <h3>Photo 6</h3>
-                    <p>Memory 6</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
+<!-- FULLSCREEN IMAGE -->
 <div id="imageModal" class="image-modal" role="dialog" aria-modal="true" aria-label="Image viewer">
     <button class="close-button" onclick="closeImage()" aria-label="Close image viewer">&times;</button>
     <img id="fullImage" class="full-image" alt="Full size image">
 </div>
 
+<!-- FOOTER -->
 <footer>
     <h3>Dhanula</h3>
     <p>My Personal Website</p>
