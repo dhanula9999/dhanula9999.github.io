@@ -1,3 +1,30 @@
+/* =====================================================
+   THEME VARIABLES (LIGHT & DARK MODE)
+===================================================== */
+:root {
+    --bg-main: #ffffff;
+    --bg-secondary: #f6f6f6;
+    --bg-card: #ffffff;
+    --bg-card-sub: #fafafa;
+    --text-primary: #171717;
+    --text-secondary: #666666;
+    --border-color: #eeeeee;
+    --nav-bg: rgba(255, 255, 255, 0.96);
+    --shadow: rgba(0, 0, 0, 0.07);
+}
+
+[data-theme="dark"] {
+    --bg-main: #121212;
+    --bg-secondary: #1a1a1a;
+    --bg-card: #222222;
+    --bg-card-sub: #2a2a2a;
+    --text-primary: #f1f1f1;
+    --text-secondary: #aaaaaa;
+    --border-color: #333333;
+    --nav-bg: rgba(18, 18, 18, 0.96);
+    --shadow: rgba(0, 0, 0, 0.4);
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -10,9 +37,10 @@ html {
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    color: #171717;
-    background: #ffffff;
+    color: var(--text-primary);
+    background-color: var(--bg-main);
     line-height: 1.6;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 /* NAVBAR */
@@ -20,9 +48,10 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
-    background: rgba(255, 255, 255, 0.96);
-    border-bottom: 1px solid #eeeeee;
+    background: var(--nav-bg);
+    border-bottom: 1px solid var(--border-color);
     backdrop-filter: blur(10px);
+    transition: background 0.3s, border-color 0.3s;
 }
 
 .nav-container {
@@ -37,10 +66,39 @@ body {
 
 .logo {
     text-decoration: none;
-    color: #111111;
+    color: var(--text-primary);
     font-size: 25px;
     font-weight: 800;
 }
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Theme Toggle Button */
+.theme-toggle {
+    background: var(--bg-card-sub);
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.3s;
+}
+
+.theme-toggle:hover {
+    transform: scale(1.05);
+}
+
+[data-theme="dark"] .sun-icon { display: inline; }
+[data-theme="dark"] .moon-icon { display: none; }
+[data-theme="light"] .sun-icon { display: none; }
+[data-theme="light"] .moon-icon { display: inline; }
 
 nav {
     display: flex;
@@ -49,14 +107,14 @@ nav {
 
 nav a {
     text-decoration: none;
-    color: #222222;
+    color: var(--text-primary);
     font-size: 14px;
     font-weight: 600;
     transition: 0.3s;
 }
 
 nav a:hover {
-    color: #777777;
+    color: var(--text-secondary);
 }
 
 .nav-toggle {
@@ -70,7 +128,7 @@ nav a:hover {
     display: block;
     width: 25px;
     height: 3px;
-    background: #111;
+    background: var(--text-primary);
     margin: 5px;
     border-radius: 5px;
 }
@@ -83,7 +141,7 @@ nav a:hover {
     justify-content: center;
     text-align: center;
     position: relative;
-    background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url("https://widutbgygnamjlkaovrk.supabase.co/storage/v1/object/public/photos/photo1.jpg");
+    background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)), url("https://widutbgygnamjlkaovrk.supabase.co/storage/v1/object/public/photos/photo1.jpg");
     background-size: cover;
     background-position: center;
 }
@@ -148,7 +206,7 @@ nav a:hover {
     font-size: 11px;
     letter-spacing: 4px;
     font-weight: 800;
-    color: #777777;
+    color: var(--text-secondary);
     margin-bottom: 12px;
 }
 
@@ -156,16 +214,18 @@ h2 {
     font-size: clamp(38px, 5vw, 60px);
     line-height: 1.1;
     margin-bottom: 25px;
+    color: var(--text-primary);
 }
 
 /* ABOUT */
 .about {
-    background: #ffffff;
+    background: var(--bg-main);
+    transition: background 0.3s;
 }
 
 .about-text {
     max-width: 780px;
-    color: #666666;
+    color: var(--text-secondary);
     font-size: 17px;
     margin-bottom: 50px;
 }
@@ -178,15 +238,15 @@ h2 {
 
 .about-box {
     padding: 35px;
-    border: 1px solid #eeeeee;
+    border: 1px solid var(--border-color);
     border-radius: 20px;
-    background: #fafafa;
+    background: var(--bg-card-sub);
     transition: 0.3s;
 }
 
 .about-box:hover {
     transform: translateY(-6px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    box-shadow: 0 15px 40px var(--shadow);
 }
 
 .about-icon {
@@ -197,15 +257,17 @@ h2 {
 .about-box h3 {
     margin-bottom: 10px;
     font-size: 21px;
+    color: var(--text-primary);
 }
 
 .about-box p {
-    color: #666666;
+    color: var(--text-secondary);
 }
 
 /* STORIES */
 .stories {
-    background: #f6f6f6;
+    background: var(--bg-secondary);
+    transition: background 0.3s;
 }
 
 .stories-container {
@@ -220,7 +282,7 @@ h2 {
 }
 
 .stories-heading > p:last-child {
-    color: #777777;
+    color: var(--text-secondary);
 }
 
 .story-highlights {
@@ -241,14 +303,14 @@ h2 {
     height: 100px;
     border-radius: 50%;
     padding: 4px;
-    background: #ffffff;
+    background: var(--bg-card);
     border: 3px solid transparent;
     margin-bottom: 10px;
     transition: 0.3s;
 }
 
 .story-highlight.active .story-circle {
-    border-color: #111111;
+    border-color: var(--text-primary);
 }
 
 .story-circle img {
@@ -261,10 +323,11 @@ h2 {
 .story-highlight span {
     font-weight: 700;
     font-size: 14px;
+    color: var(--text-primary);
 }
 
 .new-circle {
-    border: 2px dashed #aaaaaa;
+    border: 2px dashed var(--text-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -273,7 +336,7 @@ h2 {
 .plus {
     font-size: 35px;
     font-weight: 300;
-    color: #777777;
+    color: var(--text-secondary);
 }
 
 .story-highlight:hover .story-circle {
@@ -281,10 +344,11 @@ h2 {
 }
 
 .selected-memory {
-    background: white;
+    background: var(--bg-card);
     border-radius: 25px;
     padding: 30px;
-    box-shadow: 0 15px 50px rgba(0,0,0,0.07);
+    box-shadow: 0 15px 50px var(--shadow);
+    transition: background 0.3s;
 }
 
 .selected-header {
@@ -295,7 +359,7 @@ h2 {
 }
 
 .selected-header small {
-    color: #999999;
+    color: var(--text-secondary);
     font-size: 10px;
     letter-spacing: 3px;
     font-weight: 700;
@@ -303,10 +367,11 @@ h2 {
 
 .selected-header h3 {
     font-size: 32px;
+    color: var(--text-primary);
 }
 
 .memory-count {
-    color: #777777;
+    color: var(--text-secondary);
     font-size: 14px;
 }
 
@@ -327,7 +392,7 @@ h2 {
     height: 350px;
     border-radius: 18px;
     overflow: hidden;
-    background: #eeeeee;
+    background: var(--bg-card-sub);
     cursor: pointer;
 }
 
@@ -366,17 +431,14 @@ h2 {
     right: 15px;
 }
 
-.slide-btn:hover {
-    background: #000000;
-}
-
 /* PHOTOS */
 .photos {
-    background: #ffffff;
+    background: var(--bg-main);
+    transition: background 0.3s;
 }
 
 .section-description {
-    color: #777777;
+    color: var(--text-secondary);
     margin-bottom: 45px;
 }
 
@@ -389,7 +451,7 @@ h2 {
 .photo-card {
     overflow: hidden;
     border-radius: 18px;
-    background: #eeeeee;
+    background: var(--bg-card-sub);
 }
 
 .photo-image {
@@ -413,29 +475,30 @@ h2 {
 .loading {
     text-align: center;
     padding: 50px;
-    color: #777777;
+    color: var(--text-secondary);
 }
 
 .photo-error {
     text-align: center;
     padding: 50px;
-    background: #fff2f2;
+    background: var(--bg-card-sub);
     border-radius: 20px;
 }
 
 .photo-error h3 {
     margin-bottom: 10px;
+    color: var(--text-primary);
 }
 
 .photo-error p {
-    color: #777777;
+    color: var(--text-secondary);
     margin-bottom: 20px;
 }
 
 .photo-error button {
     border: none;
-    background: #111111;
-    color: white;
+    background: var(--text-primary);
+    color: var(--bg-main);
     padding: 12px 22px;
     border-radius: 25px;
     cursor: pointer;
@@ -477,7 +540,7 @@ h2 {
 
 /* FOOTER */
 footer {
-    background: #111111;
+    background: #000000;
     color: white;
     text-align: center;
     padding: 60px 20px;
@@ -506,9 +569,9 @@ footer p {
         right: 0;
         display: none;
         flex-direction: column;
-        background: white;
+        background: var(--bg-main);
         padding: 20px 25px;
-        border-bottom: 1px solid #eeeeee;
+        border-bottom: 1px solid var(--border-color);
     }
 
     nav.show {
