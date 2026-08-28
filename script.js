@@ -38,13 +38,14 @@ if (themeToggleBtn) {
    PHOTOS SECTION (INDIVIDUAL & ALBUM COLLECTIONS)
 ===================================================== */
 
+// 6 වන පින්තූරය ලෙස photo22.jpg යොදා ඇත
 const photoAlbums = [
     { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
     { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
     { title: "Photo 3", cover: "photo3.jpg", images: ["photo3.jpg"] },
     { title: "Photo 4", cover: "photo4.jpg", images: ["photo4.jpg"] },
     { title: "Photo 5", cover: "photo5.jpg", images: ["photo5.jpg"] },
-    { title: "Photo 6", cover: "photo6.jpg", images: ["photo6.jpg"] },
+    { title: "Photo 22", cover: "photo22.jpg", images: ["photo22.jpg"] }, // 6 වන පින්තූරය
     {
         title: "Special Album",
         cover: "photo7.jpg",
@@ -91,7 +92,6 @@ function loadPhotos() {
             openImageSlider(albumUrls, 0);
         };
 
-        // පින්තූරය Loading ගැටලුවකදී Card එක නොසඟවා Console log කිරීම
         img.onerror = function () {
             console.error("Failed to load photo:", this.src);
         };
