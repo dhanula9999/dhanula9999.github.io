@@ -5,8 +5,10 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Dhanula | My Personal Website</title>
 
@@ -26,10 +28,9 @@
 
     <div class="nav-container">
 
-        <div class="logo">
+        <a href="#home" class="logo">
             Dhanula
-        </div>
-
+        </a>
 
         <nav>
 
@@ -69,21 +70,18 @@
             WELCOME TO MY WEBSITE
         </p>
 
-
         <h1>
             Hi, I'm <span>Dhanula</span>
         </h1>
 
-
         <p>
             Welcome to my personal website.
-            A place where I share my memories,
-            experiences, photographs and journey.
+            This is a place where I share my memories,
+            photos, interests and experiences.
         </p>
 
-
-        <a href="#stories" class="button">
-            Explore My Journey
+        <a href="#about" class="button">
+            Explore More
         </a>
 
     </div>
@@ -104,11 +102,9 @@
             GET TO KNOW ME
         </p>
 
-
         <h2>
             About Me
         </h2>
-
 
         <p class="about-text">
 
@@ -197,48 +193,51 @@
      STORIES
 ===================================================== -->
 
-<section id="stories" class="stories-section">
+<section id="stories" class="stories">
 
-
-    <div class="section-container">
+    <div class="stories-container">
 
 
         <!-- TITLE -->
 
-        <p class="section-label">
-            MY JOURNEY
-        </p>
+        <div class="stories-heading">
 
+            <p class="section-label">
+                MY JOURNEY
+            </p>
 
-        <h2>
-            Stories
-        </h2>
+            <h2>
+                Stories
+            </h2>
 
+            <p>
+                Memories, moments and experiences
+                from my journey.
+            </p>
 
-        <p class="section-description">
-            Memories, moments and experiences from my journey.
-        </p>
+        </div>
 
 
 
         <!-- =================================================
              STORY HIGHLIGHTS
-        ================================================= -->
+        ================================================== -->
 
-        <div class="story-highlights">
+        <div class="story-highlights" id="storyHighlights">
 
 
             <!-- CHINA -->
 
-            <button
+            <div
                 class="story-highlight active"
-                onclick="showStory('china', this)"
+                data-story="china"
+                onclick="selectStory('china')"
             >
 
                 <div class="story-circle">
 
                     <img
-                        src="stories/story1.jpg"
+                        src="images/china1.jpg"
                         alt="China"
                     >
 
@@ -248,21 +247,22 @@
                     China
                 </span>
 
-            </button>
+            </div>
 
 
 
             <!-- NATURE -->
 
-            <button
+            <div
                 class="story-highlight"
-                onclick="showStory('nature', this)"
+                data-story="nature"
+                onclick="selectStory('nature')"
             >
 
                 <div class="story-circle">
 
                     <img
-                        src="stories/story2.jpg"
+                        src="images/nature1.jpg"
                         alt="Nature"
                     >
 
@@ -272,21 +272,22 @@
                     Nature
                 </span>
 
-            </button>
+            </div>
 
 
 
             <!-- TRAVEL -->
 
-            <button
+            <div
                 class="story-highlight"
-                onclick="showStory('travel', this)"
+                data-story="travel"
+                onclick="selectStory('travel')"
             >
 
                 <div class="story-circle">
 
                     <img
-                        src="stories/story3.jpg"
+                        src="images/travel1.jpg"
                         alt="Travel"
                     >
 
@@ -296,21 +297,22 @@
                     Travel
                 </span>
 
-            </button>
+            </div>
 
 
 
             <!-- FRIENDS -->
 
-            <button
+            <div
                 class="story-highlight"
-                onclick="showStory('friends', this)"
+                data-story="friends"
+                onclick="selectStory('friends')"
             >
 
                 <div class="story-circle">
 
                     <img
-                        src="stories/story4.jpg"
+                        src="images/friends1.jpg"
                         alt="Friends"
                     >
 
@@ -320,20 +322,20 @@
                     Friends
                 </span>
 
-            </button>
+            </div>
 
 
 
             <!-- NEW -->
 
-            <button
+            <div
                 class="story-highlight new-story"
-                onclick="showStory('new', this)"
+                onclick="showNewStoryMessage()"
             >
 
                 <div class="story-circle new-circle">
 
-                    <span>
+                    <span class="plus">
                         +
                     </span>
 
@@ -343,7 +345,7 @@
                     New
                 </span>
 
-            </button>
+            </div>
 
 
         </div>
@@ -351,41 +353,48 @@
 
 
         <!-- =================================================
-             SELECTED STORY
-        ================================================= -->
+             SELECTED MEMORY
+        ================================================== -->
 
-        <div class="selected-story">
+        <div class="selected-memory">
 
 
-            <div class="selected-story-header">
+            <div class="selected-header">
+
 
                 <div>
 
-                    <p>
+                    <small>
                         SELECTED MEMORY
-                    </p>
+                    </small>
 
-                    <h3 id="storyTitle">
+                    <h3 id="selectedTitle">
                         China
                     </h3>
 
                 </div>
 
 
-                <span id="storyCount">
-                    1 memory
-                </span>
+                <div
+                    class="memory-count"
+                    id="memoryCount"
+                >
+                    2 memories
+                </div>
+
 
             </div>
 
 
 
-            <!-- STORY IMAGES -->
+            <!-- MEMORY GRID -->
 
             <div
-                id="storyGallery"
-                class="story-gallery"
+                class="memory-grid"
+                id="memoryGrid"
             >
+
+                <!-- JavaScript loads memories here -->
 
             </div>
 
@@ -412,11 +421,9 @@
             MY MEMORIES
         </p>
 
-
         <h2>
             My Photos
         </h2>
-
 
         <p class="section-description">
             A collection of my favourite photos.
@@ -427,17 +434,27 @@
         <div class="gallery">
 
 
-            <!-- PHOTO 1 -->
-
             <div class="photo-card">
 
                 <div class="photo-image">
 
                     <img
-                        src="images/photo1.jpg"
-                        alt="My Photo 1"
+                        src="images/china1.jpg"
+                        alt="China"
                         onclick="openImage(this.src)"
                     >
+
+                </div>
+
+                <div class="photo-info">
+
+                    <h3>
+                        China
+                    </h3>
+
+                    <p>
+                        A beautiful memory.
+                    </p>
 
                 </div>
 
@@ -445,17 +462,27 @@
 
 
 
-            <!-- PHOTO 2 -->
-
             <div class="photo-card">
 
                 <div class="photo-image">
 
                     <img
-                        src="images/photo2.jpg"
-                        alt="My Photo 2"
+                        src="images/nature1.jpg"
+                        alt="Nature"
                         onclick="openImage(this.src)"
                     >
+
+                </div>
+
+                <div class="photo-info">
+
+                    <h3>
+                        Nature
+                    </h3>
+
+                    <p>
+                        A peaceful moment.
+                    </p>
 
                 </div>
 
@@ -463,17 +490,27 @@
 
 
 
-            <!-- PHOTO 3 -->
-
             <div class="photo-card">
 
                 <div class="photo-image">
 
                     <img
-                        src="images/photo3.jpg"
-                        alt="My Photo 3"
+                        src="images/travel1.jpg"
+                        alt="Travel"
                         onclick="openImage(this.src)"
                     >
+
+                </div>
+
+                <div class="photo-info">
+
+                    <h3>
+                        Travel
+                    </h3>
+
+                    <p>
+                        Exploring new places.
+                    </p>
 
                 </div>
 
@@ -481,53 +518,27 @@
 
 
 
-            <!-- PHOTO 4 -->
-
             <div class="photo-card">
 
                 <div class="photo-image">
 
                     <img
-                        src="images/photo4.jpg"
-                        alt="My Photo 4"
+                        src="images/friends1.jpg"
+                        alt="Friends"
                         onclick="openImage(this.src)"
                     >
 
                 </div>
 
-            </div>
+                <div class="photo-info">
 
+                    <h3>
+                        Friends
+                    </h3>
 
-
-            <!-- PHOTO 5 -->
-
-            <div class="photo-card">
-
-                <div class="photo-image">
-
-                    <img
-                        src="images/photo5.jpg"
-                        alt="My Photo 5"
-                        onclick="openImage(this.src)"
-                    >
-
-                </div>
-
-            </div>
-
-
-
-            <!-- PHOTO 6 -->
-
-            <div class="photo-card">
-
-                <div class="photo-image">
-
-                    <img
-                        src="images/photo6.jpg"
-                        alt="My Photo 6"
-                        onclick="openImage(this.src)"
-                    >
+                    <p>
+                        Good times together.
+                    </p>
 
                 </div>
 
@@ -543,7 +554,7 @@
 
 
 <!-- =====================================================
-     FULL SCREEN IMAGE
+     FULLSCREEN IMAGE
 ===================================================== -->
 
 <div
@@ -555,8 +566,9 @@
     <button
         class="close-button"
         onclick="closeImage()"
+        aria-label="Close"
     >
-        ×
+        &times;
     </button>
 
 
@@ -565,7 +577,6 @@
         class="full-image"
         alt="Full size image"
     >
-
 
 </div>
 
@@ -581,11 +592,9 @@
         Dhanula
     </h3>
 
-
     <p>
         My Personal Website
     </p>
-
 
     <p>
         © 2026 Dhanula. All Rights Reserved.
