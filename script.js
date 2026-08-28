@@ -1,257 +1,629 @@
-/* =====================================================
-   STORY DATA BY YEAR
-===================================================== */
+/* =========================================================
+   SUPABASE CONFIGURATION
+========================================================= */
+
+/*
+   IMPORTANT:
+
+   Replace these two values with your Supabase project
+   information.
+
+   Supabase Dashboard
+   → Project Settings
+   → API
+*/
+
+const SUPABASE_URL =
+    "YOUR_SUPABASE_PROJECT_URL";
+
+const SUPABASE_ANON_KEY =
+    "YOUR_SUPABASE_ANON_KEY";
+
+
+/* =========================================================
+   STORAGE CONFIGURATION
+========================================================= */
+
+const BUCKET_NAME = "photos";
+
+
+/*
+   Public URL generator
+*/
+
+function getPublicUrl(path) {
+
+    return (
+        SUPABASE_URL +
+        "/storage/v1/object/public/" +
+        BUCKET_NAME +
+        "/" +
+        path
+    );
+
+}
+
+
+/* =========================================================
+   MOBILE NAVIGATION
+========================================================= */
+
+const navToggle =
+    document.getElementById("navToggle");
+
+const mainNav =
+    document.getElementById("mainNav");
+
+
+if (navToggle) {
+
+    navToggle.addEventListener("click", () => {
+
+        const isOpen =
+            mainNav.classList.toggle("open");
+
+        navToggle.setAttribute(
+            "aria-expanded",
+            isOpen
+        );
+
+    });
+
+}
+
+
+/* Close mobile menu after clicking */
+
+document.querySelectorAll(".nav-link")
+    .forEach(link => {
+
+        link.addEventListener("click", () => {
+
+            mainNav.classList.remove("open");
+
+            navToggle.setAttribute(
+                "aria-expanded",
+                "false"
+            );
+
+        });
+
+    });
+
+
+/* =========================================================
+   IMAGE ERROR
+========================================================= */
+
+function handleImageError(image) {
+
+    image.style.display = "none";
+
+}
+
+
+/* =========================================================
+   GALLERY
+========================================================= */
+
+/*
+   Add your Supabase photo filenames here.
+
+   Example:
+
+   photos/
+      photo1.jpg
+      photo2.jpg
+      photo3.jpg
+      photo4.jpg
+      photo5.jpg
+      photo6.jpg
+*/
+
+const galleryPhotos = [
+
+    "images/photo1.jpg",
+    "images/photo2.jpg",
+    "images/photo3.jpg",
+    "images/photo4.jpg",
+    "images/photo5.jpg",
+    "images/photo6.jpg"
+
+];
+
+
+function loadGallery() {
+
+    const gallery =
+        document.getElementById("gallery");
+
+    gallery.innerHTML = "";
+
+
+    galleryPhotos.forEach((path, index) => {
+
+        const url =
+            getPublicUrl(path);
+
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "photo-card";
+
+
+        card.innerHTML = `
+
+            <div class="photo-image">
+
+                <img
+                    src="${url}"
+                    alt="Dhanula photo ${index + 1}"
+                    loading="lazy"
+                    onclick="openImage('${url}')"
+                    onerror="this.closest('.photo-card').style.display='none'"
+                >
+
+            </div>
+
+        `;
+
+
+        gallery.appendChild(card);
+
+    });
+
+
+    if (gallery.children.length === 0) {
+
+        gallery.innerHTML = `
+            <div class="loading">
+                No photos available.
+            </div>
+        `;
+
+    }
+
+}
+
+
+/* =========================================================
+   STORIES DATA
+========================================================= */
+
+
+/*
+   Supabase Storage structure:
+
+   photos/
+   │
+   ├── images/
+   │   ├── photo1.jpg
+   │   ├── photo2.jpg
+   │   ├── photo3.jpg
+   │   ├── photo4.jpg
+   │   ├── photo5.jpg
+   │   └── photo6.jpg
+   │
+   └── stories/
+       ├── story1.jpg
+       └── story2.jpg
+
+
+   For 2026 memories:
+
+   stories/2026/
+
+   For 2025 memories:
+
+   stories/2025/
+*/
+
 
 const stories = {
-    "2026": {
-        title: "2026",
-        photos: [
-            { image: "stories/story1.jpg" },
-            { image: "stories/story2.jpg" }
-        ]
-    },
-    "2025": {
-        title: "2025",
-        photos: []
-    }
+
+    "2026": [
+
+        "stories/2026/photo1.jpg",
+        "stories/2026/photo2.jpg"
+
+    ],
+
+    "2025": [
+
+        "stories/2025/photo1.jpg",
+        "stories/2025/photo2.jpg"
+
+    ]
+
 };
 
-let currentYear = "2026";
+
+/* =========================================================
+   STORY COVER IMAGES
+========================================================= */
+
+const storyCovers = {
+
+    "2026":
+        "stories/story1.jpg",
+
+    "2025":
+        "stories/story2.jpg"
+
+};
+
+
+function loadStoryCovers() {
+
+    const cover2026 =
+        document.getElementById(
+            "storyImage2026"
+        );
+
+    const cover2025 =
+        document.getElementById(
+            "storyImage2025"
+        );
+
+
+    if (cover2026) {
+
+        cover2026.src =
+            getPublicUrl(
+                storyCovers["2026"]
+            );
+
+    }
+
+
+    if (cover2025) {
+
+        cover2025.src =
+            getPublicUrl(
+                storyCovers["2025"]
+            );
+
+    }
+
+}
+
+
+/* =========================================================
+   STORY SLIDER
+========================================================= */
+
+let selectedYear = "2026";
+
 let currentPhotoIndex = 0;
-let autoSlideTimer = null;
 
-
-/* =====================================================
-   SMOOTH SCROLL - NO NEW TAB
-===================================================== */
-
-function initSmoothScroll() {
-    const navLinks = document.querySelectorAll('.nav-link');
-
-    navLinks.forEach(function(link) {
-        link.addEventListener('click', function(event) {
-            event.preventDefault();
-
-            const targetId = this.getAttribute('href');
-            if (!targetId || !targetId.startsWith('#')) return;
-
-            const targetSection = document.querySelector(targetId);
-            if (targetSection) {
-                const mainNav = document.getElementById('mainNav');
-                const navToggle = document.getElementById('navToggle');
-                if (mainNav && mainNav.classList.contains('active')) {
-                    mainNav.classList.remove('active');
-                    if (navToggle) navToggle.setAttribute('aria-expanded', 'false');
-                }
-
-                targetSection.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-}
-
-
-/* =====================================================
-   IMAGE ERROR HANDLER
-===================================================== */
-
-function handleImageError(img) {
-    img.onerror = null;
-    img.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTBlMGUwIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPkltYWdlIE5vdCBGb3VuZDwvdGV4dD48L3N2Zz4=';
-    img.style.objectFit = 'contain';
-}
-
-
-/* =====================================================
-   DISPLAY CURRENT PHOTO
-===================================================== */
-
-function displayCurrentPhoto() {
-    const story = stories[currentYear];
-    const memoryGrid = document.getElementById("memoryGrid");
-    memoryGrid.innerHTML = "";
-
-    if (!story || story.photos.length === 0) {
-        memoryGrid.innerHTML = `<p style="text-align: center; color: #777; width: 100%;">No memories added for ${currentYear} yet.</p>`;
-        return;
-    }
-
-    if (currentPhotoIndex >= story.photos.length) {
-        currentPhotoIndex = 0;
-    } else if (currentPhotoIndex < 0) {
-        currentPhotoIndex = story.photos.length - 1;
-    }
-
-    const photo = story.photos[currentPhotoIndex];
-    const card = document.createElement("div");
-    card.className = "memory-card";
-    card.innerHTML = `
-        <img src="${photo.image}" alt="${story.title}" loading="lazy" onerror="handleImageError(this)" onclick="openImage('${photo.image}')">
-    `;
-    memoryGrid.appendChild(card);
-}
-
-
-/* =====================================================
-   NEXT & PREVIOUS BUTTON FUNCTIONS
-===================================================== */
-
-function nextPhoto() {
-    const story = stories[currentYear];
-    if (story && story.photos.length > 0) {
-        currentPhotoIndex = (currentPhotoIndex + 1) % story.photos.length;
-        displayCurrentPhoto();
-        resetAutoSlide();
-    }
-}
-
-function prevPhoto() {
-    const story = stories[currentYear];
-    if (story && story.photos.length > 0) {
-        currentPhotoIndex = (currentPhotoIndex - 1 + story.photos.length) % story.photos.length;
-        displayCurrentPhoto();
-        resetAutoSlide();
-    }
-}
-
-
-/* =====================================================
-   SELECT STORY BY YEAR
-===================================================== */
 
 function selectStory(year) {
-    const story = stories[year];
-    if (!story) return;
 
-    currentYear = year;
+    if (!stories[year]) {
+
+        return;
+
+    }
+
+
+    selectedYear = year;
+
     currentPhotoIndex = 0;
 
-    const highlights = document.querySelectorAll(".story-highlight");
-    highlights.forEach(function(item) {
+
+    document.querySelectorAll(
+        ".story-highlight"
+    ).forEach(item => {
+
         item.classList.remove("active");
+
     });
 
-    const selected = document.querySelector(`.story-highlight[data-story="${year}"]`);
+
+    const selected =
+        document.querySelector(
+            `[data-story="${year}"]`
+        );
+
+
     if (selected) {
+
         selected.classList.add("active");
+
     }
 
-    const selectedTitle = document.getElementById("selectedTitle");
-    selectedTitle.textContent = story.title;
 
-    const memoryCount = document.getElementById("memoryCount");
-    const total = story.photos.length;
-    memoryCount.textContent = total + (total === 1 ? " memory" : " memories");
+    document.getElementById(
+        "selectedTitle"
+    ).textContent = year;
 
-    displayCurrentPhoto();
-    resetAutoSlide();
+
+    renderStoryPhotos();
+
 }
 
 
-/* =====================================================
-   AUTO SWITCH IMAGES (Every 6 Seconds)
-===================================================== */
+/* =========================================================
+   RENDER STORY PHOTOS
+========================================================= */
 
-function startAutoSlide() {
-    autoSlideTimer = setInterval(function() {
-        const story = stories[currentYear];
-        if (story && story.photos.length > 1) {
-            currentPhotoIndex = (currentPhotoIndex + 1) % story.photos.length;
-            displayCurrentPhoto();
+function renderStoryPhotos() {
+
+    const grid =
+        document.getElementById(
+            "memoryGrid"
+        );
+
+    const count =
+        document.getElementById(
+            "memoryCount"
+        );
+
+
+    const photos =
+        stories[selectedYear] || [];
+
+
+    if (photos.length === 0) {
+
+        grid.innerHTML = `
+            <div class="loading">
+                No memories available for ${selectedYear}.
+            </div>
+        `;
+
+        count.textContent =
+            "0 memories";
+
+        return;
+
+    }
+
+
+    count.textContent =
+        photos.length === 1
+            ? "1 memory"
+            : `${photos.length} memories`;
+
+
+    /*
+       Show current photo and next photo
+       on desktop.
+    */
+
+    const visiblePhotos = [];
+
+
+    for (
+        let i = 0;
+        i < Math.min(2, photos.length);
+        i++
+    ) {
+
+        const index =
+            (currentPhotoIndex + i)
+            % photos.length;
+
+        visiblePhotos.push(
+            photos[index]
+        );
+
+    }
+
+
+    grid.innerHTML = "";
+
+
+    visiblePhotos.forEach(
+        (path, index) => {
+
+            const url =
+                getPublicUrl(path);
+
+
+            const card =
+                document.createElement("div");
+
+            card.className =
+                "memory-card";
+
+
+            card.innerHTML = `
+
+                <img
+                    src="${url}"
+                    alt="${selectedYear} memory ${index + 1}"
+                    loading="lazy"
+                    onclick="openImage('${url}')"
+                    onerror="this.parentElement.style.display='none'"
+                >
+
+            `;
+
+
+            grid.appendChild(card);
+
         }
-    }, 6000); // 6000ms = 6 seconds
-}
+    );
 
-function resetAutoSlide() {
-    clearInterval(autoSlideTimer);
-    startAutoSlide();
 }
 
 
-/* =====================================================
-   NEW STORY BUTTON
-===================================================== */
+/* =========================================================
+   NEXT PHOTO
+========================================================= */
+
+function nextPhoto() {
+
+    const photos =
+        stories[selectedYear] || [];
+
+
+    if (photos.length <= 1) {
+
+        return;
+
+    }
+
+
+    currentPhotoIndex =
+        (currentPhotoIndex + 1)
+        % photos.length;
+
+
+    renderStoryPhotos();
+
+}
+
+
+/* =========================================================
+   PREVIOUS PHOTO
+========================================================= */
+
+function prevPhoto() {
+
+    const photos =
+        stories[selectedYear] || [];
+
+
+    if (photos.length <= 1) {
+
+        return;
+
+    }
+
+
+    currentPhotoIndex =
+        (
+            currentPhotoIndex -
+            1 +
+            photos.length
+        )
+        % photos.length;
+
+
+    renderStoryPhotos();
+
+}
+
+
+/* =========================================================
+   NEW STORY
+========================================================= */
 
 function showNewStoryMessage() {
-    console.log("New Story feature coming soon!");
+
+    alert(
+        "New stories will be added soon ❤️"
+    );
+
 }
 
 
-/* =====================================================
-   IMAGE VIEWER
-===================================================== */
+/* =========================================================
+   IMAGE MODAL
+========================================================= */
 
-function openImage(imageSource) {
-    const modal = document.getElementById("imageModal");
-    const fullImage = document.getElementById("fullImage");
-    fullImage.src = imageSource;
-    modal.style.display = "flex";
-    document.body.style.overflow = "hidden";
+function openImage(src) {
+
+    const modal =
+        document.getElementById(
+            "imageModal"
+        );
+
+    const image =
+        document.getElementById(
+            "fullImage"
+        );
+
+
+    image.src = src;
+
+    modal.classList.add("show");
+
+    document.body.style.overflow =
+        "hidden";
+
 }
 
 
-/* =====================================================
+/* =========================================================
    CLOSE IMAGE
-===================================================== */
+========================================================= */
 
 function closeImage() {
-    const modal = document.getElementById("imageModal");
-    const fullImage = document.getElementById("fullImage");
-    modal.style.display = "none";
-    fullImage.src = "";
-    document.body.style.overflow = "";
+
+    const modal =
+        document.getElementById(
+            "imageModal"
+        );
+
+    const image =
+        document.getElementById(
+            "fullImage"
+        );
+
+
+    modal.classList.remove("show");
+
+    image.src = "";
+
+    document.body.style.overflow =
+        "";
+
 }
 
 
-/* =====================================================
-   CLOSE WHEN CLICKING OUTSIDE IMAGE
-===================================================== */
+/* Click outside image */
 
-document.getElementById("imageModal").addEventListener("click", function(event) {
-    if (event.target === this) {
-        closeImage();
-    }
-});
+document
+    .getElementById("imageModal")
+    .addEventListener("click", function (event) {
 
+        if (
+            event.target === this
+        ) {
 
-/* =====================================================
-   ESC KEY
-===================================================== */
+            closeImage();
 
-document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape") {
-        closeImage();
-    }
-});
+        }
 
-
-/* =====================================================
-   HAMBURGER MENU TOGGLE
-===================================================== */
-
-function initMobileNav() {
-    const navToggle = document.getElementById("navToggle");
-    const mainNav = document.getElementById("mainNav");
-
-    if (!navToggle || !mainNav) return;
-
-    navToggle.addEventListener("click", function() {
-        const isOpen = mainNav.classList.toggle("active");
-        navToggle.setAttribute("aria-expanded", isOpen);
     });
-}
 
 
-/* =====================================================
-   INITIALIZATION
-===================================================== */
+/* ESC key */
 
-document.addEventListener("DOMContentLoaded", function() {
-    selectStory("2026");
-    initMobileNav();
-    initSmoothScroll();
-    startAutoSlide();
-});
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeImage();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE WEBSITE
+========================================================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        loadGallery();
+
+        loadStoryCovers();
+
+        selectStory("2026");
+
+    }
+);
