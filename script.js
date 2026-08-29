@@ -39,7 +39,7 @@ if (themeToggleBtn) {
 ===================================================== */
 
 const photoAlbums = [
-    { title: "Photo 29", cover: "photo29.jpg", images: ["photo29.jpg"] },
+    { title: "Photo 29", cover: "photo29.jpg", images: ["photo29.jpg"] }, // Photo 29 at first
     { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
     { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
     { title: "Photo 3", cover: "photo3.jpg", images: ["photo3.jpg"] },
@@ -67,7 +67,6 @@ const photoAlbums = [
     { title: "Photo 30", cover: "photo30.jpg", images: ["photo30.jpg"] },
     { title: "Photo 31", cover: "photo31.jpg", images: ["photo31.jpg"] },
     { title: "Photo 32", cover: "photo32.jpg", images: ["photo32.jpg"] },
-    // photo33 සහ photo34 ඇතුළත් නව Album එක:
     {
         title: "New Album",
         cover: "photo33.jpg",
@@ -101,7 +100,7 @@ function loadPhotos() {
         if (album.images.length > 1) {
             const badge = document.createElement("div");
             badge.className = "album-badge";
-            badge.innerText = `+${album.images.length - 1} photos`;
+            badge.innerText = `+${album.images.length - 1}`;
             imageContainer.appendChild(badge);
         }
 
@@ -241,7 +240,7 @@ function startAutoSlide() {
             currentPhotoIndex = (currentPhotoIndex + 1) % images.length;
             renderStory();
         }
-    }, 5000); // 5 Seconds
+    }, 5000);
 }
 
 function resetAutoSlide() {
