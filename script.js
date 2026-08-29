@@ -67,8 +67,9 @@ const photoAlbums = [
     { title: "Photo 30", cover: "photo30.jpg", images: ["photo30.jpg"] },
     { title: "Photo 31", cover: "photo31.jpg", images: ["photo31.jpg"] },
     { title: "Photo 32", cover: "photo32.jpg", images: ["photo32.jpg"] },
+    // photo33 සහ photo34 ඇල්බමයක් ලෙස මෙහි එකතු කර ඇත:
     {
-        title: "New Album",
+        title: "Album Photo 33 & 34",
         cover: "photo33.jpg",
         images: ["photo33.jpg", "photo34.jpg"]
     }
@@ -100,7 +101,7 @@ function loadPhotos() {
         if (album.images.length > 1) {
             const badge = document.createElement("div");
             badge.className = "album-badge";
-            badge.innerText = `+${album.images.length - 1}`;
+            badge.innerText = `+${album.images.length - 1} photos`;
             imageContainer.appendChild(badge);
         }
 
@@ -240,7 +241,7 @@ function startAutoSlide() {
             currentPhotoIndex = (currentPhotoIndex + 1) % images.length;
             renderStory();
         }
-    }, 5000);
+    }, 5000); // 5 Seconds
 }
 
 function resetAutoSlide() {
