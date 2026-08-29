@@ -549,6 +549,20 @@ h2 {
     cursor: pointer;
 }
 
+/* SKELETON LOADING */
+.skeleton-card {
+    height: 360px;
+    border-radius: 18px;
+    background: linear-gradient(90deg, var(--bg-card-sub) 25%, var(--border-color) 50%, var(--bg-card-sub) 75%);
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.5s infinite;
+}
+
+@keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
 /* CONTACT SECTION */
 .contact {
     background: var(--bg-secondary);
@@ -733,11 +747,51 @@ h2 {
     display: flex;
 }
 
-.full-image {
+.lightbox-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 95%;
     max-height: 90vh;
+}
+
+.full-image {
+    max-width: 100%;
+    max-height: 80vh;
     object-fit: contain;
     border-radius: 10px;
+}
+
+.lightbox-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 12px;
+    color: white;
+}
+
+.story-caption {
+    font-size: 14px;
+    color: #cccccc;
+}
+
+.like-btn {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s;
+}
+
+.like-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
 }
 
 .close-button {
@@ -781,6 +835,18 @@ h2 {
 
 .modal-next-btn {
     right: 20px;
+}
+
+/* SCROLL FADE-IN ANIMATION */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.fade-in.appear {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 /* FOOTER */
