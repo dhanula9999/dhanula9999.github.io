@@ -67,11 +67,22 @@ const photoAlbums = [
     { title: "Photo 30", cover: "photo30.jpg", images: ["photo30.jpg"] },
     { title: "Photo 31", cover: "photo31.jpg", images: ["photo31.jpg"] },
     { title: "Photo 32", cover: "photo32.jpg", images: ["photo32.jpg"] },
-    // photo33 සහ photo34 දෙකම එකම Album එකක් ලෙස මෙතැන ඇතුළත් කර ඇත:
     {
         title: "Album 33-34",
         cover: "photo33.jpg",
         images: ["photo33.jpg", "photo34.jpg"]
+    },
+    // photo35 සිට photo51 දක්වා සියලුම පින්තූර එකම Album එකක් ලෙස එකතු කරන ලදී:
+    {
+        title: "Album 35-51",
+        cover: "photo35.jpg",
+        images: [
+            "photo35.jpg", "photo36.jpg", "photo37.jpg", "photo38.jpg",
+            "photo39.jpg", "photo40.jpg", "photo41.jpg", "photo42.jpg",
+            "photo43.jpg", "photo44.jpg", "photo45.jpg", "photo46.jpg",
+            "photo47.jpg", "photo48.jpg", "photo49.jpg", "photo50.jpg",
+            "photo51.jpg"
+        ]
     }
 ];
 
