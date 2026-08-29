@@ -39,7 +39,7 @@ if (themeToggleBtn) {
 ===================================================== */
 
 const photoAlbums = [
-    { title: "Photo 29", cover: "photo29.jpg", images: ["photo29.jpg"] }, // Photo 29 at first
+    { title: "Photo 29", cover: "photo29.jpg", images: ["photo29.jpg"] },
     { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
     { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
     { title: "Photo 3", cover: "photo3.jpg", images: ["photo3.jpg"] },
