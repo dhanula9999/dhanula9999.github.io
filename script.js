@@ -39,7 +39,7 @@ if (themeToggleBtn) {
 ===================================================== */
 
 const photoAlbums = [
-    { title: "Photo 29", cover: "photo29.jpg", images: ["photo29.jpg"] }, // photo29.jpg මුලටම ඇතුළත් කරන ලදී
+    { title: "Photo 29", cover: "photo29.jpg", images: ["photo29.jpg"] },
     { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
     { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
     { title: "Photo 3", cover: "photo3.jpg", images: ["photo3.jpg"] },
@@ -63,7 +63,11 @@ const photoAlbums = [
     { title: "Photo 25", cover: "photo25.jpg", images: ["photo25.jpg"] },
     { title: "Photo 26", cover: "photo26.jpg", images: ["photo26.jpg"] },
     { title: "Photo 27", cover: "photo27.jpg", images: ["photo27.jpg"] },
-    { title: "Photo 28", cover: "photo28.jpg", images: ["photo28.jpg"] }
+    { title: "Photo 28", cover: "photo28.jpg", images: ["photo28.jpg"] },
+    // photo30 සිට photo32 දක්වා පින්තූර අවසානයට ඇතුළත් කරන ලදී:
+    { title: "Photo 30", cover: "photo30.jpg", images: ["photo30.jpg"] },
+    { title: "Photo 31", cover: "photo31.jpg", images: ["photo31.jpg"] },
+    { title: "Photo 32", cover: "photo32.jpg", images: ["photo32.jpg"] }
 ];
 
 function loadPhotos() {
