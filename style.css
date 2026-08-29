@@ -841,11 +841,12 @@ footer p {
     }
 
     .memory-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
 
     .memory-card {
-        height: 420px;
+        height: 250px;
     }
 
     .story-highlights {
@@ -894,11 +895,16 @@ footer p {
     }
 
     .selected-memory {
-        padding: 18px;
+        padding: 15px;
+    }
+
+    .memory-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .memory-card {
-        height: 380px;
+        height: 200px;
     }
 
     .story-gallery-grid {
