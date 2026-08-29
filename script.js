@@ -72,7 +72,6 @@ const photoAlbums = [
         cover: "photo33.jpg",
         images: ["photo33.jpg", "photo34.jpg"]
     },
-    // photo35 සිට photo51 දක්වා සියලුම පින්තූර එකම Album එකක් ලෙස එකතු කරන ලදී:
     {
         title: "Album 35-51",
         cover: "photo35.jpg",
@@ -99,7 +98,7 @@ function loadPhotos() {
 
     photoAlbums.forEach((album, index) => {
         const card = document.createElement("div");
-        card.className = "photo-card";
+        card.className = "photo-card fade-in";
 
         const imageContainer = document.createElement("div");
         imageContainer.className = "photo-image";
@@ -135,6 +134,7 @@ function loadPhotos() {
     });
 
     if (loading) loading.style.display = "none";
+    initScrollAnimations();
 }
 
 /* =====================================================
@@ -143,16 +143,8 @@ function loadPhotos() {
 
 const storyData = {
     "2026": [
-        "story1.jpg",
-        "story2.jpg",
-        "story3.jpg",
-        "story4.jpg",
-        "story5.jpg",
-        "story6.jpg",
-        "story7.jpg",
-        "story8.jpg",
-        "story9.jpg",
-        "story10.jpg"
+        "story1.jpg", "story2.jpg", "story3.jpg", "story4.jpg", "story5.jpg",
+        "story6.jpg", "story7.jpg", "story8.jpg", "story9.jpg", "story10.jpg"
     ],
     "2025": []
 };
@@ -305,11 +297,12 @@ function closeStoryGallery() {
 }
 
 /* =====================================================
-   LIGHTBOX IMAGE SLIDER
+   LIGHTBOX SLIDER WITH LIKES & CAPTIONS
 ===================================================== */
 
 let currentSliderList = [];
 let currentSliderIndex = 0;
+let likesData = JSON.parse(localStorage.getItem('photo_likes') || '{}');
 
 function openImageSlider(imageList, startIndex) {
     currentSliderList = imageList;
@@ -323,12 +316,44 @@ function openImageSlider(imageList, startIndex) {
 
 function updateModalImage() {
     const fullImage = document.getElementById("fullImage");
+    const captionEl = document.getElementById("storyCaption");
+    const currentUrl = currentSliderList[currentSliderIndex];
+
     fullImage.style.display = "block";
-    fullImage.src = currentSliderList[currentSliderIndex];
+    fullImage.src = currentUrl;
+
+    // Caption format
+    captionEl.textContent = `Photo ${currentSliderIndex + 1} of ${currentSliderList.length}`;
+    
+    // Update Like state
+    updateLikeUI(currentUrl);
 
     fullImage.onerror = function() {
         console.warn("Image load error for: " + this.src);
     };
+}
+
+function toggleLikeCurrentPhoto() {
+    const currentUrl = currentSliderList[currentSliderIndex];
+    if (!likesData[currentUrl]) {
+        likesData[currentUrl] = { count: 1, userLiked: true };
+    } else {
+        if (likesData[currentUrl].userLiked) {
+            likesData[currentUrl].count--;
+            likesData[currentUrl].userLiked = false;
+        } else {
+            likesData[currentUrl].count++;
+            likesData[currentUrl].userLiked = true;
+        }
+    }
+    localStorage.setItem('photo_likes', JSON.stringify(likesData));
+    updateLikeUI(currentUrl);
+}
+
+function updateLikeUI(url) {
+    const data = likesData[url] || { count: 0, userLiked: false };
+    document.getElementById("likeCount").textContent = data.count;
+    document.getElementById("likeHeart").textContent = data.userLiked ? "❤️" : "🤍";
 }
 
 function nextModalImage() {
@@ -369,6 +394,22 @@ document.addEventListener("keydown", function(event) {
 });
 
 /* =====================================================
+   SCROLL FADE-IN ANIMATION OBSERVER
+===================================================== */
+
+function initScrollAnimations() {
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('appear');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+}
+
+/* =====================================================
    OTHER HANDLERS & INITIALIZATION
 ===================================================== */
 
@@ -405,4 +446,5 @@ document.addEventListener("DOMContentLoaded", function() {
     loadPhotos();
     renderStory();
     startAutoSlide();
+    initScrollAnimations();
 });
