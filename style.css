@@ -33,7 +33,7 @@ body {
 }
 
 main {
-    max-width: 935px; /* Instagram Standard Desktop Width */
+    max-width: 935px;
     margin: 0 auto;
     padding: 20px 10px;
 }
@@ -74,7 +74,7 @@ nav a {
 }
 
 /* =====================================================
-   INSTAGRAM STYLE PHOTO GALLERY (3x3 GRID)
+   PHOTOS SECTION (INSTAGRAM STYLE 3x3 GRID)
 ===================================================== */
 #photos {
     margin-bottom: 40px;
@@ -93,7 +93,7 @@ nav a {
 .photo-card {
     position: relative;
     width: 100%;
-    aspect-ratio: 1 / 1; /* Instagram 1:1 Square Ratio */
+    aspect-ratio: 1 / 1; /* Square Layout */
     overflow: hidden;
     border-radius: 4px;
     background-color: var(--card-bg);
@@ -108,7 +108,7 @@ nav a {
 .photo-card img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Fits images inside square smoothly */
+    object-fit: cover;
     display: block;
     cursor: pointer;
     transition: transform 0.2s ease-in-out, filter 0.2s ease;
@@ -132,10 +132,10 @@ nav a {
     font-weight: 600;
 }
 
-/* Mobile Responsiveness for Gallery */
+/* Mobile Screen Layout */
 @media (max-width: 768px) {
     #gallery {
-        grid-template-columns: repeat(3, 1fr); /* Maintains 3x3 Grid on Mobile */
+        grid-template-columns: repeat(3, 1fr); /* Phone එකෙත් පේළියට 3 බැගින් */
         gap: 3px;
     }
 
