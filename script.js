@@ -64,13 +64,15 @@ const photoAlbums = [
     { title: "Photo 26", cover: "photo26.jpg", images: ["photo26.jpg"] },
     { title: "Photo 27", cover: "photo27.jpg", images: ["photo27.jpg"] },
     { title: "Photo 28", cover: "photo28.jpg", images: ["photo28.jpg"] },
-    // photo30 සිට photo32 දක්වා පින්තූර:
     { title: "Photo 30", cover: "photo30.jpg", images: ["photo30.jpg"] },
     { title: "Photo 31", cover: "photo31.jpg", images: ["photo31.jpg"] },
     { title: "Photo 32", cover: "photo32.jpg", images: ["photo32.jpg"] },
-    // photo33 සහ photo34 මෙතැනින් ඇතුළත් කරන ලදී:
-    { title: "Photo 33", cover: "photo33.jpg", images: ["photo33.jpg"] },
-    { title: "Photo 34", cover: "photo34.jpg", images: ["photo34.jpg"] }
+    // photo33 සහ photo34 දෙකම එකම Album එකක් ලෙස මෙතැන ඇතුළත් කර ඇත:
+    {
+        title: "Album 33-34",
+        cover: "photo33.jpg",
+        images: ["photo33.jpg", "photo34.jpg"]
+    }
 ];
 
 function loadPhotos() {
