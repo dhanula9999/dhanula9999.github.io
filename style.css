@@ -833,6 +833,11 @@ footer p {
 
     .gallery {
         grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .photo-image {
+        height: 250px;
     }
 
     .memory-grid {
@@ -871,11 +876,12 @@ footer p {
     }
 
     .gallery {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     .photo-image {
-        height: 430px;
+        height: 200px;
     }
 
     .story-circle {
