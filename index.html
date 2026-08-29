@@ -1,84 +1,112 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dhanula Personal Website</title>
+    <title>Dhanula - Personal Website</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Header Navigation -->
-    <header>
-        <div class="logo">Dhanula</div>
-        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme">☀️</button>
-        <button id="navToggle" class="nav-toggle">☰</button>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="logo">DHANULA</div>
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
         <nav id="mainNav">
+            <a href="#home">Home</a>
             <a href="#photos">Photos</a>
             <a href="#stories">Stories</a>
             <a href="#contact">Contact</a>
         </nav>
+        <button id="themeToggle" class="theme-btn" aria-label="Toggle Dark/Light Mode">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+        </button>
     </header>
 
-    <main>
-        <!-- Photos Section (Instagram Style Grid) -->
-        <section id="photos">
-            <h2>Gallery</h2>
-            <div id="photoLoading" style="display:none; text-align:center;">Loading photos...</div>
-            <div id="photoError" style="display:none; text-align:center; color:red;">Failed to load photos.</div>
-            
-            <!-- Gallery Grid -->
-            <div id="gallery"></div>
-        </section>
+    <!-- HERO / HOME SECTION -->
+    <section id="home" class="hero-section">
+        <div class="hero-content">
+            <h1>Welcome to My Gallery</h1>
+            <p>Capturing moments and sharing memories.</p>
+        </div>
+    </section>
 
-        <!-- Stories Section -->
-        <section id="stories">
-            <h2>Memories</h2>
-            <div class="story-tabs">
-                <span class="story-highlight active" onclick="selectStory('2026')">2026</span>
-                <span class="story-highlight" onclick="selectStory('2025')">2025</span>
+    <!-- PHOTOS SECTION -->
+    <section id="photos" class="section">
+        <h2 class="section-title">Photo Gallery</h2>
+        <div id="photoLoading" class="loading-spinner" style="display: none;">Loading photos...</div>
+        <div id="photoError" class="error-msg" style="display: none;">Failed to load photos.</div>
+        <div id="gallery" class="gallery-grid"></div>
+    </section>
+
+    <!-- STORIES SECTION -->
+    <section id="stories" class="section">
+        <div class="stories-header">
+            <h2 class="section-title">Stories & Memories</h2>
+            <div class="stories-controls">
+                <span id="selectedTitle">2026</span>
+                <span id="memoryCount" class="badge">0 memories</span>
             </div>
+        </div>
 
-            <div class="story-header">
-                <h3 id="selectedTitle">2026</h3>
-                <span id="memoryCount">0 memories</span>
-                <button onclick="openStoryGallery()" class="view-all-btn">View All</button>
+        <!-- Highlights / Year Selector -->
+        <div class="story-highlights">
+            <div class="story-highlight active" onclick="selectStory('2026')">
+                <div class="ring"><span>2026</span></div>
             </div>
-
-            <div class="memory-slider-container">
-                <button class="slider-btn prev-btn" onclick="prevPhoto()">❮</button>
-                <div id="memoryGrid" class="memory-grid"></div>
-                <button class="slider-btn next-btn" onclick="nextPhoto()">❯</button>
+            <div class="story-highlight" onclick="selectStory('2025')">
+                <div class="ring"><span>2025</span></div>
             </div>
-        </section>
+            <div class="story-highlight add-new" onclick="showNewStoryMessage()">
+                <div class="ring"><i class="fas fa-plus"></i></div>
+            </div>
+        </div>
 
-        <!-- Contact Section -->
-        <section id="contact">
-            <h2>Get In Touch</h2>
-            <form onsubmit="handleContactSubmit(event)">
-                <input type="text" placeholder="Your Name" required>
-                <input type="email" placeholder="Your Email" required>
-                <textarea placeholder="Your Message" rows="4" required></textarea>
-                <button type="submit">Send Message</button>
-            </form>
-        </section>
-    </main>
+        <!-- Memory Display Area -->
+        <div class="memory-slider-container">
+            <button class="slider-btn prev" onclick="prevPhoto()"><i class="fas fa-chevron-left"></i></button>
+            <div id="memoryGrid" class="memory-grid"></div>
+            <button class="slider-btn next" onclick="nextPhoto()"><i class="fas fa-chevron-right"></i></button>
+        </div>
 
-    <!-- Lightbox Modal for Full Image View -->
-    <div id="imageModal" class="modal">
-        <span class="close-btn" onclick="closeImage()">&times;</span>
-        <button class="modal-nav modal-prev" onclick="prevModalImage()">❮</button>
-        <img id="fullImage" class="modal-content" src="" alt="Full View">
-        <button class="modal-nav modal-next" onclick="nextModalImage()">❯</button>
+        <div class="view-all-container">
+            <button class="btn" onclick="openStoryGallery()">View All Memories</button>
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="section">
+        <h2 class="section-title">Get in Touch</h2>
+        <form class="contact-form" onsubmit="handleContactSubmit(event)">
+            <input type="text" placeholder="Your Name" required>
+            <input type="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" rows="5" required></textarea>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </section>
+
+    <!-- ALL STORIES MODAL -->
+    <div id="storyGalleryModal" class="modal">
+        <div class="modal-content modal-lg">
+            <div class="modal-header">
+                <h3 id="galleryModalTitle">All Memories</h3>
+                <span class="close-btn" onclick="closeStoryGallery()">&times;</span>
+            </div>
+            <div id="storyGalleryGrid" class="story-modal-grid"></div>
+        </div>
     </div>
 
-    <!-- View All Stories Modal -->
-    <div id="storyGalleryModal" class="modal">
-        <div class="modal-wrapper">
-            <span class="close-btn" onclick="closeStoryGallery()">&times;</span>
-            <h3 id="galleryModalTitle">Memories</h3>
-            <div id="storyGalleryGrid" class="story-gallery-grid"></div>
-        </div>
+    <!-- LIGHTBOX IMAGE SLIDER MODAL -->
+    <div id="imageModal" class="modal lightbox">
+        <span class="close-btn" onclick="closeImage()">&times;</span>
+        <button class="lightbox-btn prev" onclick="prevModalImage()"><i class="fas fa-chevron-left"></i></button>
+        <img id="fullImage" src="" alt="Full View">
+        <button class="lightbox-btn next" onclick="nextModalImage()"><i class="fas fa-chevron-right"></i></button>
     </div>
 
     <script src="script.js"></script>
