@@ -254,19 +254,20 @@ function loadPhotos() {
 
     if (!gallery) return;
     
-    // කලින් තිබූ card slideshow interval නවත්වන්න
     if (cardSlideshowInterval) clearInterval(cardSlideshowInterval);
-    
     gallery.innerHTML = "";
 
-    // Photos 6ක් පමණක් මුලින් පෙන්වීම (View More ක්ලික් කළ විට සියල්ල පෙන්වයි)
-    const photosToDisplay = showingAllPhotos ? photoAlbums : photoAlbums.slice(0, 6);
+    // View More ක්ලික් නොකළ විට මුලින් Photos 6ක් පමණක් පෙන්වයි
+    const displayCount = showingAllPhotos ? photoAlbums.length : 6;
+    let albumIndices = photoAlbums.map(() => 0);
+    let slotOffset = 0; // Grid slots මාරු කිරීමට offset එකක්
 
-    // Grid එකේ තිබෙන Photos තත්පර 5න් 5ට මාරු කිරීම සඳහා Index එකක් සකස් කිරීම
-    let albumIndices = photosToDisplay.map(() => 0);
-    let imgElements = [];
+    // initial 6 cards සාදා ගැනීම
+    let cards = [];
+    for (let i = 0; i < displayCount; i++) {
+        const albumIndex = (i + slotOffset) % photoAlbums.length;
+        const album = photoAlbums[albumIndex];
 
-    photosToDisplay.forEach((album, cardIndex) => {
         const card = document.createElement("div");
         card.className = "photo-card fade-in appear";
 
@@ -277,37 +278,49 @@ function loadPhotos() {
         img.src = getPhotoUrl(album.images[0]);
         img.alt = album.title;
         img.loading = "lazy";
-        
-        imgElements.push({ imgElement: img, album: album, cardIndex: cardIndex });
 
         imageContainer.appendChild(img);
 
-        if (album.images.length > 1) {
-            const badge = document.createElement("span");
-            badge.className = "album-badge";
-            badge.innerText = `+${album.images.length}`;
-            imageContainer.appendChild(badge);
-        }
+        const badge = document.createElement("span");
+        badge.className = "album-badge";
+        badge.style.display = album.images.length > 1 ? "block" : "none";
+        badge.innerText = `+${album.images.length}`;
+        imageContainer.appendChild(badge);
 
         imageContainer.addEventListener("click", () => {
-            const fullUrls = album.images.map(imgName => getPhotoUrl(imgName));
-            openImageModal(fullUrls, albumIndices[cardIndex], album.title);
+            const currentSlotAlbumIndex = (i + slotOffset) % photoAlbums.length;
+            const currentAlbum = photoAlbums[currentSlotAlbumIndex];
+            const fullUrls = currentAlbum.images.map(imgName => getPhotoUrl(imgName));
+            openImageModal(fullUrls, albumIndices[currentSlotAlbumIndex], currentAlbum.title);
         });
 
         card.appendChild(imageContainer);
         gallery.appendChild(card);
-    });
+
+        cards.push({ card, img, badge, slotIndex: i });
+    }
 
     if (viewMoreBtn) {
         viewMoreBtn.innerText = showingAllPhotos ? "Show Less" : "View More";
     }
 
-    // තත්පර 5න් 5ට Auto Slide වීම (Grid එකේ ඇති සියලුම Photos මාරු වේ)
+    // Grid slots වල photos සෑම තත්පර 5කට වරක් තනි තනිව (one by one) ඊළඟ photo එකට මාරු වේ
     cardSlideshowInterval = setInterval(() => {
-        imgElements.forEach(item => {
-            if (item.album.images.length > 1) {
-                albumIndices[item.cardIndex] = (albumIndices[item.cardIndex] + 1) % item.album.images.length;
-                item.imgElement.src = getPhotoUrl(item.album.images[albumIndices[item.cardIndex]]);
+        slotOffset = (slotOffset + 1) % photoAlbums.length;
+        
+        cards.forEach((item) => {
+            const currentAlbumIndex = (item.slotIndex + slotOffset) % photoAlbums.length;
+            const currentAlbum = photoAlbums[currentAlbumIndex];
+
+            // ඊළඟ photo එකට මාරු කිරීම
+            item.img.src = getPhotoUrl(currentAlbum.images[0]);
+            item.img.alt = currentAlbum.title;
+
+            if (currentAlbum.images.length > 1) {
+                item.badge.style.display = "block";
+                item.badge.innerText = `+${currentAlbum.images.length}`;
+            } else {
+                item.badge.style.display = "none";
             }
         });
     }, 5000);
@@ -321,7 +334,7 @@ function toggleViewAllPhotos() {
 }
 
 /* =====================================================
-   LIGHTBOX MODAL & SLIDESHOW FUNCTIONS
+   LIGHTBOX MODAL & SLIDESHOW FUNCTIONS (2 SECONDS FOR ALBUMS)
 ===================================================== */
 
 function openImageModal(images, index = 0, caption = "") {
@@ -337,6 +350,7 @@ function openImageModal(images, index = 0, caption = "") {
         if (captionElement) captionElement.innerText = caption;
         modal.classList.add("show");
 
+        // Album set වල images තත්පර 2න් 2ට auto-change වේ
         startSlideshow();
     }
 }
@@ -346,7 +360,7 @@ function startSlideshow() {
     if (currentModalImages.length > 1) {
         slideshowInterval = setInterval(() => {
             nextModalImage();
-        }, 5000);
+        }, 2000); // තත්පර 2 (2000ms)
     }
 }
 
