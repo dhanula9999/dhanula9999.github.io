@@ -93,7 +93,6 @@ function renderStories() {
         return;
     }
 
-    // Slider එකේ එක පාර පෙන්වන Photos 2
     const itemsToShow = memories.slice(currentStoryIndex, currentStoryIndex + 2);
 
     itemsToShow.forEach((item, idx) => {
@@ -132,7 +131,7 @@ function nextPhoto() {
     if (currentStoryIndex + 2 < memories.length) {
         currentStoryIndex += 2;
     } else {
-        currentStoryIndex = 0; // මුලට යාම
+        currentStoryIndex = 0;
     }
     renderStories();
 }
@@ -193,7 +192,7 @@ function imageError(img) {
 }
 
 /* =====================================================
-   PHOTOS SECTION (INDIVIDUAL & ALBUM COLLECTIONS)
+   PHOTOS SECTION (AUTOMATIC SLIDESHOW & INITIAL 6 PHOTOS)
 ===================================================== */
 
 const photoAlbums = [
@@ -247,18 +246,27 @@ let showingAllPhotos = false;
 let currentModalImages = [];
 let currentModalIndex = 0;
 let slideshowInterval = null;
+let cardSlideshowInterval = null;
 
 function loadPhotos() {
     const gallery = document.getElementById("gallery");
     const viewMoreBtn = document.getElementById("viewMoreBtn");
 
     if (!gallery) return;
+    
+    // කලින් තිබූ card slideshow interval නවත්වන්න
+    if (cardSlideshowInterval) clearInterval(cardSlideshowInterval);
+    
     gallery.innerHTML = "";
 
-    // showingAllPhotos true නම් ඔක්කොම, නැත්නම් මුල් 9 විතරක් ගනියි
-    const photosToDisplay = showingAllPhotos ? photoAlbums : photoAlbums.slice(0, 9);
+    // Photos 6ක් පමණක් මුලින් පෙන්වීම (View More ක්ලික් කළ විට සියල්ල පෙන්වයි)
+    const photosToDisplay = showingAllPhotos ? photoAlbums : photoAlbums.slice(0, 6);
 
-    photosToDisplay.forEach((album) => {
+    // Grid එකේ තිබෙන Photos තත්පර 5න් 5ට මාරු කිරීම සඳහා Index එකක් සකස් කිරීම
+    let albumIndices = photosToDisplay.map(() => 0);
+    let imgElements = [];
+
+    photosToDisplay.forEach((album, cardIndex) => {
         const card = document.createElement("div");
         card.className = "photo-card fade-in appear";
 
@@ -266,9 +274,11 @@ function loadPhotos() {
         imageContainer.className = "photo-image";
 
         const img = document.createElement("img");
-        img.src = getPhotoUrl(album.cover);
+        img.src = getPhotoUrl(album.images[0]);
         img.alt = album.title;
         img.loading = "lazy";
+        
+        imgElements.push({ imgElement: img, album: album, cardIndex: cardIndex });
 
         imageContainer.appendChild(img);
 
@@ -281,7 +291,7 @@ function loadPhotos() {
 
         imageContainer.addEventListener("click", () => {
             const fullUrls = album.images.map(imgName => getPhotoUrl(imgName));
-            openImageModal(fullUrls, 0, album.title);
+            openImageModal(fullUrls, albumIndices[cardIndex], album.title);
         });
 
         card.appendChild(imageContainer);
@@ -291,6 +301,16 @@ function loadPhotos() {
     if (viewMoreBtn) {
         viewMoreBtn.innerText = showingAllPhotos ? "Show Less" : "View More";
     }
+
+    // තත්පර 5න් 5ට Auto Slide වීම (Grid එකේ ඇති සියලුම Photos මාරු වේ)
+    cardSlideshowInterval = setInterval(() => {
+        imgElements.forEach(item => {
+            if (item.album.images.length > 1) {
+                albumIndices[item.cardIndex] = (albumIndices[item.cardIndex] + 1) % item.album.images.length;
+                item.imgElement.src = getPhotoUrl(item.album.images[albumIndices[item.cardIndex]]);
+            }
+        });
+    }, 5000);
 
     initScrollObserver();
 }
@@ -317,7 +337,6 @@ function openImageModal(images, index = 0, caption = "") {
         if (captionElement) captionElement.innerText = caption;
         modal.classList.add("show");
 
-        // තත්පර 5 Auto Slideshow ආරම්භ කිරීම
         startSlideshow();
     }
 }
@@ -378,7 +397,7 @@ function handleContactSubmit(e) {
     alert("Message sent successfully!");
 }
 
-// Page එක Load වන විට Stories සහ Photos දෙකම හරියටම Load වේ
+// DOM Fully Loaded
 document.addEventListener("DOMContentLoaded", () => {
     renderStories();
     loadPhotos();
