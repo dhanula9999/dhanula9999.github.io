@@ -1,6 +1,6 @@
 /* =====================================================
    DHANULA PERSONAL WEBSITE
-   SUPABASE STORAGE CONFIGURATION
+   COMPLETE SCRIPT IMPLEMENTATION
 ===================================================== */
 
 const SUPABASE_URL = "https://widutbgygnamjlkaovrk.supabase.co";
@@ -35,7 +35,7 @@ if (themeToggleBtn) {
 }
 
 /* =====================================================
-   MOBILE NAVIGATION TOGGLE
+   MOBILE NAVIGATION TOGGLE & AUTO-CLOSE
 ===================================================== */
 
 const navToggle = document.getElementById('navToggle');
@@ -45,10 +45,16 @@ if (navToggle && mainNav) {
     navToggle.addEventListener('click', () => {
         mainNav.classList.toggle('show');
     });
+
+    mainNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mainNav.classList.remove('show');
+        });
+    });
 }
 
 /* =====================================================
-   STORIES & MEMORIES DATA
+   STORIES & MEMORIES DATA & RENDERING (4 SECONDS AUTOPLAY)
 ===================================================== */
 
 const storiesData = {
@@ -73,6 +79,7 @@ const storiesData = {
 
 let currentYear = "2026";
 let currentStoryIndex = 0;
+let storyAutoPlayInterval = null;
 
 function renderStories() {
     const memoryGrid = document.getElementById("memoryGrid");
@@ -89,7 +96,7 @@ function renderStories() {
     memoryGrid.innerHTML = "";
 
     if (memories.length === 0) {
-        memoryGrid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-secondary);'>No memories added for this year yet.</p>";
+        memoryGrid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-secondary); padding: 40px;'>No memories added for this year yet.</p>";
         return;
     }
 
@@ -115,35 +122,54 @@ function renderStories() {
     });
 }
 
+function startStoryAutoPlay() {
+    stopStoryAutoPlay();
+    storyAutoPlayInterval = setInterval(() => {
+        nextPhotoOneByOne();
+    }, 4000); // තත්පර 4න් 4ට මාරු වේ
+}
+
+function stopStoryAutoPlay() {
+    if (storyAutoPlayInterval) {
+        clearInterval(storyAutoPlayInterval);
+        storyAutoPlayInterval = null;
+    }
+}
+
+function nextPhotoOneByOne() {
+    const memories = storiesData[currentYear] || [];
+    if (memories.length <= 1) return;
+
+    currentStoryIndex = (currentStoryIndex + 1) % memories.length;
+    renderStories();
+}
+
 function selectStory(year) {
     currentYear = year;
     currentStoryIndex = 0;
 
     document.querySelectorAll(".story-highlight").forEach(el => el.classList.remove("active"));
-    const activeEl = event.currentTarget;
-    if (activeEl) activeEl.classList.add("active");
+    
+    if (window.event && window.event.currentTarget) {
+        window.event.currentTarget.classList.add("active");
+    }
 
     renderStories();
+    startStoryAutoPlay();
 }
 
 function nextPhoto() {
-    const memories = storiesData[currentYear] || [];
-    if (currentStoryIndex + 2 < memories.length) {
-        currentStoryIndex += 2;
-    } else {
-        currentStoryIndex = 0;
-    }
-    renderStories();
+    nextPhotoOneByOne();
+    startStoryAutoPlay(); // Manual click කළ පසු තත්පර 4 ටයිමරය reset වේ
 }
 
 function prevPhoto() {
     const memories = storiesData[currentYear] || [];
-    if (currentStoryIndex - 2 >= 0) {
-        currentStoryIndex -= 2;
-    } else {
-        currentStoryIndex = Math.max(0, memories.length - (memories.length % 2 || 2));
-    }
+    if (memories.length === 0) return;
+
+    currentStoryIndex = (currentStoryIndex - 1 + memories.length) % memories.length;
     renderStories();
+    startStoryAutoPlay();
 }
 
 function openStoryGallery() {
@@ -164,6 +190,7 @@ function openStoryGallery() {
         const img = document.createElement("img");
         img.src = item.url;
         img.alt = item.caption;
+        img.onerror = function() { imageError(this); };
 
         thumb.appendChild(img);
         thumb.addEventListener("click", () => {
@@ -192,7 +219,7 @@ function imageError(img) {
 }
 
 /* =====================================================
-   PHOTOS SECTION (AUTOMATIC SLIDESHOW & INITIAL 6 PHOTOS)
+   PHOTOS GALLERY SECTION & CYCLING SLIDESHOW
 ===================================================== */
 
 const photoAlbums = [
@@ -257,12 +284,9 @@ function loadPhotos() {
     if (cardSlideshowInterval) clearInterval(cardSlideshowInterval);
     gallery.innerHTML = "";
 
-    // View More ක්ලික් නොකළ විට මුලින් Photos 6ක් පමණක් පෙන්වයි
     const displayCount = showingAllPhotos ? photoAlbums.length : 6;
-    let albumIndices = photoAlbums.map(() => 0);
-    let slotOffset = 0; // Grid slots මාරු කිරීමට offset එකක්
+    let slotOffset = 0;
 
-    // initial 6 cards සාදා ගැනීම
     let cards = [];
     for (let i = 0; i < displayCount; i++) {
         const albumIndex = (i + slotOffset) % photoAlbums.length;
@@ -278,6 +302,7 @@ function loadPhotos() {
         img.src = getPhotoUrl(album.images[0]);
         img.alt = album.title;
         img.loading = "lazy";
+        img.onerror = function() { imageError(this); };
 
         imageContainer.appendChild(img);
 
@@ -291,7 +316,7 @@ function loadPhotos() {
             const currentSlotAlbumIndex = (i + slotOffset) % photoAlbums.length;
             const currentAlbum = photoAlbums[currentSlotAlbumIndex];
             const fullUrls = currentAlbum.images.map(imgName => getPhotoUrl(imgName));
-            openImageModal(fullUrls, albumIndices[currentSlotAlbumIndex], currentAlbum.title);
+            openImageModal(fullUrls, 0, currentAlbum.title);
         });
 
         card.appendChild(imageContainer);
@@ -304,7 +329,6 @@ function loadPhotos() {
         viewMoreBtn.innerText = showingAllPhotos ? "Show Less" : "View More";
     }
 
-    // Grid slots වල photos සෑම තත්පර 5කට වරක් තනි තනිව (one by one) ඊළඟ photo එකට මාරු වේ
     cardSlideshowInterval = setInterval(() => {
         slotOffset = (slotOffset + 1) % photoAlbums.length;
         
@@ -312,7 +336,6 @@ function loadPhotos() {
             const currentAlbumIndex = (item.slotIndex + slotOffset) % photoAlbums.length;
             const currentAlbum = photoAlbums[currentAlbumIndex];
 
-            // ඊළඟ photo එකට මාරු කිරීම
             item.img.src = getPhotoUrl(currentAlbum.images[0]);
             item.img.alt = currentAlbum.title;
 
@@ -334,8 +357,10 @@ function toggleViewAllPhotos() {
 }
 
 /* =====================================================
-   LIGHTBOX MODAL & SLIDESHOW FUNCTIONS (2 SECONDS FOR ALBUMS)
+   LIGHTBOX MODAL, SLIDESHOW & LIKE SYSTEM
 ===================================================== */
+
+let photoLikes = JSON.parse(localStorage.getItem('photoLikes') || '{}');
 
 function openImageModal(images, index = 0, caption = "") {
     currentModalImages = images;
@@ -347,10 +372,11 @@ function openImageModal(images, index = 0, caption = "") {
 
     if (modal && fullImg) {
         fullImg.src = currentModalImages[currentModalIndex];
-        if (captionElement) captionElement.innerText = caption;
+        if (captionElement) captionElement.innerText = caption || "";
+        
+        updateLikeUI();
         modal.classList.add("show");
 
-        // Album set වල images තත්පර 2න් 2ට auto-change වේ
         startSlideshow();
     }
 }
@@ -360,7 +386,7 @@ function startSlideshow() {
     if (currentModalImages.length > 1) {
         slideshowInterval = setInterval(() => {
             nextModalImage();
-        }, 2000); // තත්පර 2 (2000ms)
+        }, 2000);
     }
 }
 
@@ -381,16 +407,49 @@ function nextModalImage() {
     if (currentModalImages.length <= 1) return;
     currentModalIndex = (currentModalIndex + 1) % currentModalImages.length;
     document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
+    updateLikeUI();
 }
 
 function prevModalImage() {
     if (currentModalImages.length <= 1) return;
     currentModalIndex = (currentModalIndex - 1 + currentModalImages.length) % currentModalImages.length;
     document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
+    updateLikeUI();
+}
+
+function toggleLikeCurrentPhoto() {
+    const currentSrc = currentModalImages[currentModalIndex];
+    if (!currentSrc) return;
+
+    if (!photoLikes[currentSrc]) {
+        photoLikes[currentSrc] = { liked: true, count: 1 };
+    } else {
+        photoLikes[currentSrc].liked = !photoLikes[currentSrc].liked;
+        photoLikes[currentSrc].count += photoLikes[currentSrc].liked ? 1 : -1;
+    }
+
+    localStorage.setItem('photoLikes', JSON.stringify(photoLikes));
+    updateLikeUI();
+}
+
+function updateLikeUI() {
+    const currentSrc = currentModalImages[currentModalIndex];
+    const likeBtn = document.getElementById("likeBtn");
+    const likeHeart = document.getElementById("likeHeart");
+    const likeCount = document.getElementById("likeCount");
+
+    if (!likeBtn || !likeCount || !currentSrc) return;
+
+    const state = photoLikes[currentSrc] || { liked: false, count: 0 };
+
+    likeCount.innerText = state.count;
+    if (likeHeart) {
+        likeHeart.innerText = state.liked ? "❤️" : "🤍";
+    }
 }
 
 /* =====================================================
-   SCROLL FADE-IN ANIMATION OBSERVER
+   INTERSECTION OBSERVER & FORM HANDLER
 ===================================================== */
 
 function initScrollObserver() {
@@ -409,10 +468,33 @@ function initScrollObserver() {
 function handleContactSubmit(e) {
     e.preventDefault();
     alert("Message sent successfully!");
+    e.target.reset();
 }
 
-// DOM Fully Loaded
+/* =====================================================
+   INITIALIZATION & KEYBOARD CONTROLS
+===================================================== */
+
 document.addEventListener("DOMContentLoaded", () => {
     renderStories();
+    startStoryAutoPlay(); // Stories තත්පර 4න් 4ට වෙනස් වීම ආරම්භ වේ
     loadPhotos();
+    initScrollObserver();
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+            closeImage();
+            closeStoryGallery();
+        } else if (e.key === "ArrowRight") {
+            const imageModal = document.getElementById("imageModal");
+            if (imageModal && imageModal.classList.contains("show")) {
+                nextModalImage();
+            }
+        } else if (e.key === "ArrowLeft") {
+            const imageModal = document.getElementById("imageModal");
+            if (imageModal && imageModal.classList.contains("show")) {
+                prevModalImage();
+            }
+        }
+    });
 });
