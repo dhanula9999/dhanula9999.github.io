@@ -98,11 +98,14 @@ const photoAlbums = [
     }
 ];
 
+let showingAllPhotos = false;
 let currentModalImages = [];
 let currentModalIndex = 0;
+let slideshowInterval = null;
 
 function loadPhotos() {
     const gallery = document.getElementById("gallery");
+    const viewMoreBtn = document.getElementById("viewMoreBtn");
     const loading = document.getElementById("photoLoading");
     const errorBox = document.getElementById("photoError");
 
@@ -112,9 +115,12 @@ function loadPhotos() {
     if (loading) loading.style.display = "none";
     if (errorBox) errorBox.style.display = "none";
 
-    photoAlbums.forEach((album) => {
+    // showingAllPhotos true නම් ඔක්කොම, නැත්නම් මුල් 9 විතරක් පෙන්වයි
+    const photosToDisplay = showingAllPhotos ? photoAlbums : photoAlbums.slice(0, 9);
+
+    photosToDisplay.forEach((album) => {
         const card = document.createElement("div");
-        card.className = "photo-card fade-in";
+        card.className = "photo-card fade-in appear";
 
         const imageContainer = document.createElement("div");
         imageContainer.className = "photo-image";
@@ -126,7 +132,6 @@ function loadPhotos() {
 
         imageContainer.appendChild(img);
 
-        // Album Badge එකක් එකතු කිරීම
         if (album.images.length > 1) {
             const badge = document.createElement("span");
             badge.className = "album-badge";
@@ -143,11 +148,20 @@ function loadPhotos() {
         gallery.appendChild(card);
     });
 
+    if (viewMoreBtn) {
+        viewMoreBtn.innerText = showingAllPhotos ? "Show Less" : "View More";
+    }
+
     initScrollObserver();
 }
 
+function toggleViewAllPhotos() {
+    showingAllPhotos = !showingAllPhotos;
+    loadPhotos();
+}
+
 /* =====================================================
-   LIGHTBOX MODAL FUNCTIONS
+   LIGHTBOX MODAL & SLIDESHOW FUNCTIONS
 ===================================================== */
 
 function openImageModal(images, index = 0, caption = "") {
@@ -162,12 +176,32 @@ function openImageModal(images, index = 0, caption = "") {
         fullImg.src = currentModalImages[currentModalIndex];
         if (captionElement) captionElement.innerText = caption;
         modal.classList.add("show");
+
+        // තත්පර 5 Auto Slideshow එක ආරම්භ කිරීම
+        startSlideshow();
+    }
+}
+
+function startSlideshow() {
+    stopSlideshow();
+    if (currentModalImages.length > 1) {
+        slideshowInterval = setInterval(() => {
+            nextModalImage();
+        }, 5000);
+    }
+}
+
+function stopSlideshow() {
+    if (slideshowInterval) {
+        clearInterval(slideshowInterval);
+        slideshowInterval = null;
     }
 }
 
 function closeImage() {
     const modal = document.getElementById("imageModal");
     if (modal) modal.classList.remove("show");
+    stopSlideshow();
 }
 
 function nextModalImage() {
@@ -199,7 +233,13 @@ function initScrollObserver() {
     fadeElements.forEach(el => observer.observe(el));
 }
 
-// Page එක Load වෙද්දී Photos Load කිරීම
+// Contact form placeholder handler
+function handleContactSubmit(e) {
+    e.preventDefault();
+    alert("Message sent successfully!");
+}
+
+// DOM fully loaded
 document.addEventListener("DOMContentLoaded", () => {
     loadPhotos();
 });
