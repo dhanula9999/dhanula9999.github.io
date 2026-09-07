@@ -35,6 +35,19 @@ if (themeToggleBtn) {
 }
 
 /* =====================================================
+   MOBILE NAVIGATION TOGGLE
+===================================================== */
+
+const navToggle = document.getElementById('navToggle');
+const mainNav = document.getElementById('mainNav');
+
+if (navToggle && mainNav) {
+    navToggle.addEventListener('click', () => {
+        mainNav.classList.toggle('show');
+    });
+}
+
+/* =====================================================
    PHOTOS SECTION (INDIVIDUAL & ALBUM COLLECTIONS)
 ===================================================== */
 
@@ -85,18 +98,21 @@ const photoAlbums = [
     }
 ];
 
+let currentModalImages = [];
+let currentModalIndex = 0;
+
 function loadPhotos() {
     const gallery = document.getElementById("gallery");
     const loading = document.getElementById("photoLoading");
     const errorBox = document.getElementById("photoError");
 
+    if (!gallery) return;
+
     gallery.innerHTML = "";
-    if (loading) loading.style.display = "block";
+    if (loading) loading.style.display = "none";
     if (errorBox) errorBox.style.display = "none";
 
-    const allGalleryCovers = photoAlbums.map(album => getPhotoUrl(album.cover));
-
-    photoAlbums.forEach((album, index) => {
+    photoAlbums.forEach((album) => {
         const card = document.createElement("div");
         card.className = "photo-card fade-in";
 
@@ -108,296 +124,70 @@ function loadPhotos() {
         img.alt = album.title;
         img.loading = "lazy";
 
+        imageContainer.appendChild(img);
+
+        // Album Badge එකක් එකතු කිරීම
         if (album.images.length > 1) {
-            const badge = document.createElement("div");
+            const badge = document.createElement("span");
             badge.className = "album-badge";
-            badge.innerText = `+${album.images.length - 1} photos`;
+            badge.innerText = `+${album.images.length}`;
             imageContainer.appendChild(badge);
         }
 
-        img.onclick = function () {
-            if (album.images.length > 1) {
-                const albumUrls = album.images.map(f => getPhotoUrl(f));
-                openImageSlider(albumUrls, 0);
-            } else {
-                openImageSlider(allGalleryCovers, index);
-            }
-        };
+        imageContainer.addEventListener("click", () => {
+            const fullUrls = album.images.map(imgName => getPhotoUrl(imgName));
+            openImageModal(fullUrls, 0, album.title);
+        });
 
-        img.onerror = function () {
-            console.error("Failed to load photo:", this.src);
-        };
-
-        imageContainer.appendChild(img);
         card.appendChild(imageContainer);
         gallery.appendChild(card);
     });
 
-    if (loading) loading.style.display = "none";
-    initScrollAnimations();
+    initScrollObserver();
 }
 
 /* =====================================================
-   STORIES SECTION
+   LIGHTBOX MODAL FUNCTIONS
 ===================================================== */
 
-const storyData = {
-    "2026": [
-        "story1.jpg", "story2.jpg", "story3.jpg", "story4.jpg", "story5.jpg",
-        "story6.jpg", "story7.jpg", "story8.jpg", "story9.jpg", "story10.jpg"
-    ],
-    "2025": []
-};
-
-let currentYear = "2026";
-let currentPhotoIndex = 0;
-let autoSlideTimer = null;
-
-function selectStory(year) {
-    currentYear = year;
-    currentPhotoIndex = 0;
-
-    document.querySelectorAll(".story-highlight").forEach((item) => {
-        item.classList.remove("active");
-    });
-
-    const selected = document.querySelector(`.story-highlight[onclick="selectStory('${year}')"]`);
-    if (selected) {
-        selected.classList.add("active");
-    }
-
-    document.getElementById("selectedTitle").textContent = year;
-
-    renderStory();
-    resetAutoSlide();
-}
-
-function renderStory() {
-    const grid = document.getElementById("memoryGrid");
-    const images = storyData[currentYear] || [];
-
-    grid.innerHTML = "";
-
-    document.getElementById("memoryCount").textContent =
-        `${images.length} ${images.length === 1 ? "memory" : "memories"}`;
-
-    if (images.length === 0) {
-        grid.innerHTML = `
-            <div style="grid-column:1/-1; text-align:center; padding:60px; color:var(--text-secondary);">
-                No memories available for ${currentYear}.
-            </div>
-        `;
-        return;
-    }
-
-    const first = currentPhotoIndex % images.length;
-    const second = (currentPhotoIndex + 1) % images.length;
-    const indexes = images.length === 1 ? [first] : [first, second];
-
-    indexes.forEach((index) => {
-        const fileName = images[index];
-
-        const card = document.createElement("div");
-        card.className = "memory-card";
-
-        const img = document.createElement("img");
-        img.src = getStoryUrl(fileName);
-        img.alt = `${currentYear} memory`;
-        img.loading = "lazy";
-
-        img.onclick = function () {
-            const storyUrls = images.map(f => getStoryUrl(f));
-            openImageSlider(storyUrls, index);
-        };
-
-        img.onerror = function () {
-            this.style.display = "none";
-        };
-
-        card.appendChild(img);
-        grid.appendChild(card);
-    });
-}
-
-function nextPhoto() {
-    const images = storyData[currentYear] || [];
-    if (images.length <= 1) return;
-
-    currentPhotoIndex = (currentPhotoIndex + 1) % images.length;
-    renderStory();
-    resetAutoSlide();
-}
-
-function prevPhoto() {
-    const images = storyData[currentYear] || [];
-    if (images.length <= 1) return;
-
-    currentPhotoIndex = (currentPhotoIndex - 1 + images.length) % images.length;
-    renderStory();
-    resetAutoSlide();
-}
-
-function startAutoSlide() {
-    autoSlideTimer = setInterval(() => {
-        const images = storyData[currentYear] || [];
-        if (images.length > 1) {
-            currentPhotoIndex = (currentPhotoIndex + 1) % images.length;
-            renderStory();
-        }
-    }, 5000); // 5 Seconds
-}
-
-function resetAutoSlide() {
-    clearInterval(autoSlideTimer);
-    startAutoSlide();
-}
-
-/* =====================================================
-   VIEW ALL STORIES GALLERY MODAL
-===================================================== */
-
-function openStoryGallery() {
-    const modal = document.getElementById("storyGalleryModal");
-    const grid = document.getElementById("storyGalleryGrid");
-    const title = document.getElementById("galleryModalTitle");
-    const images = storyData[currentYear] || [];
-
-    title.textContent = `${currentYear} - All Memories`;
-    grid.innerHTML = "";
-
-    if (images.length === 0) {
-        grid.innerHTML = `<p style="color:var(--text-secondary); text-align:center; grid-column:1/-1;">No memories found.</p>`;
-    } else {
-        images.forEach((fileName, index) => {
-            const thumb = document.createElement("div");
-            thumb.className = "gallery-thumb";
-
-            const img = document.createElement("img");
-            img.src = getStoryUrl(fileName);
-            img.alt = `${currentYear} memory ${index + 1}`;
-
-            thumb.onclick = function () {
-                const storyUrls = images.map(f => getStoryUrl(f));
-                openImageSlider(storyUrls, index);
-            };
-
-            thumb.appendChild(img);
-            grid.appendChild(thumb);
-        });
-    }
-
-    modal.classList.add("show");
-    document.body.style.overflow = "hidden";
-}
-
-function closeStoryGallery() {
-    const modal = document.getElementById("storyGalleryModal");
-    modal.classList.remove("show");
-    document.body.style.overflow = "";
-}
-
-/* =====================================================
-   LIGHTBOX SLIDER WITH LIKES & CAPTIONS
-===================================================== */
-
-let currentSliderList = [];
-let currentSliderIndex = 0;
-let likesData = JSON.parse(localStorage.getItem('photo_likes') || '{}');
-
-function openImageSlider(imageList, startIndex) {
-    currentSliderList = imageList;
-    currentSliderIndex = startIndex;
+function openImageModal(images, index = 0, caption = "") {
+    currentModalImages = images;
+    currentModalIndex = index;
 
     const modal = document.getElementById("imageModal");
-    updateModalImage();
-    modal.classList.add("show");
-    document.body.style.overflow = "hidden";
-}
+    const fullImg = document.getElementById("fullImage");
+    const captionElement = document.getElementById("storyCaption");
 
-function updateModalImage() {
-    const fullImage = document.getElementById("fullImage");
-    const captionEl = document.getElementById("storyCaption");
-    const currentUrl = currentSliderList[currentSliderIndex];
-
-    fullImage.style.display = "block";
-    fullImage.src = currentUrl;
-
-    // Caption format
-    captionEl.textContent = `Photo ${currentSliderIndex + 1} of ${currentSliderList.length}`;
-    
-    // Update Like state
-    updateLikeUI(currentUrl);
-
-    fullImage.onerror = function() {
-        console.warn("Image load error for: " + this.src);
-    };
-}
-
-function toggleLikeCurrentPhoto() {
-    const currentUrl = currentSliderList[currentSliderIndex];
-    if (!likesData[currentUrl]) {
-        likesData[currentUrl] = { count: 1, userLiked: true };
-    } else {
-        if (likesData[currentUrl].userLiked) {
-            likesData[currentUrl].count--;
-            likesData[currentUrl].userLiked = false;
-        } else {
-            likesData[currentUrl].count++;
-            likesData[currentUrl].userLiked = true;
-        }
+    if (modal && fullImg) {
+        fullImg.src = currentModalImages[currentModalIndex];
+        if (captionElement) captionElement.innerText = caption;
+        modal.classList.add("show");
     }
-    localStorage.setItem('photo_likes', JSON.stringify(likesData));
-    updateLikeUI(currentUrl);
-}
-
-function updateLikeUI(url) {
-    const data = likesData[url] || { count: 0, userLiked: false };
-    document.getElementById("likeCount").textContent = data.count;
-    document.getElementById("likeHeart").textContent = data.userLiked ? "❤️" : "🤍";
-}
-
-function nextModalImage() {
-    if (currentSliderList.length === 0) return;
-    currentSliderIndex = (currentSliderIndex + 1) % currentSliderList.length;
-    updateModalImage();
-}
-
-function prevModalImage() {
-    if (currentSliderList.length === 0) return;
-    currentSliderIndex = (currentSliderIndex - 1 + currentSliderList.length) % currentSliderList.length;
-    updateModalImage();
 }
 
 function closeImage() {
     const modal = document.getElementById("imageModal");
-    modal.classList.remove("show");
-    if (!document.getElementById("storyGalleryModal").classList.contains("show")) {
-        document.body.style.overflow = "";
-    }
+    if (modal) modal.classList.remove("show");
 }
 
-document.getElementById("imageModal").addEventListener("click", function(event) {
-    if (event.target === this) {
-        closeImage();
-    }
-});
+function nextModalImage() {
+    if (currentModalImages.length <= 1) return;
+    currentModalIndex = (currentModalIndex + 1) % currentModalImages.length;
+    document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
+}
 
-document.addEventListener("keydown", function(event) {
-    if (event.key === "Escape") {
-        closeImage();
-        closeStoryGallery();
-    } else if (event.key === "ArrowRight") {
-        nextModalImage();
-    } else if (event.key === "ArrowLeft") {
-        prevModalImage();
-    }
-});
+function prevModalImage() {
+    if (currentModalImages.length <= 1) return;
+    currentModalIndex = (currentModalIndex - 1 + currentModalImages.length) % currentModalImages.length;
+    document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
+}
 
 /* =====================================================
    SCROLL FADE-IN ANIMATION OBSERVER
 ===================================================== */
 
-function initScrollAnimations() {
+function initScrollObserver() {
+    const fadeElements = document.querySelectorAll('.fade-in');
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -406,45 +196,10 @@ function initScrollAnimations() {
         });
     }, { threshold: 0.1 });
 
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    fadeElements.forEach(el => observer.observe(el));
 }
 
-/* =====================================================
-   OTHER HANDLERS & INITIALIZATION
-===================================================== */
-
-function handleContactSubmit(event) {
-    event.preventDefault();
-    alert("Thank you for your message! I will get back to you soon.");
-    event.target.reset();
-}
-
-function showNewStoryMessage() {
-    alert("You can add a new year and its photos to the Stories section.");
-}
-
-function imageError(image) {
-    image.style.display = "none";
-}
-
-const navToggle = document.getElementById("navToggle");
-const mainNav = document.getElementById("mainNav");
-
-if (navToggle && mainNav) {
-    navToggle.addEventListener("click", function() {
-        mainNav.classList.toggle("show");
-    });
-
-    document.querySelectorAll("#mainNav a").forEach((link) => {
-        link.addEventListener("click", function() {
-            mainNav.classList.remove("show");
-        });
-    });
-}
-
-document.addEventListener("DOMContentLoaded", function() {
+// Page එක Load වෙද්දී Photos Load කිරීම
+document.addEventListener("DOMContentLoaded", () => {
     loadPhotos();
-    renderStory();
-    startAutoSlide();
-    initScrollAnimations();
 });
