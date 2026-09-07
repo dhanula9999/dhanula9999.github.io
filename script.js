@@ -48,6 +48,151 @@ if (navToggle && mainNav) {
 }
 
 /* =====================================================
+   STORIES & MEMORIES DATA
+===================================================== */
+
+const storiesData = {
+    "2026": [
+        { url: getStoryUrl("story1.jpg"), caption: "New Year Celebration 2026" },
+        { url: getStoryUrl("story2.jpg"), caption: "Trip to Nuwara Eliya" },
+        { url: getStoryUrl("story3.jpg"), caption: "Gathering with Friends" },
+        { url: getStoryUrl("story4.jpg"), caption: "Special Moment" },
+        { url: getStoryUrl("story5.jpg"), caption: "Weekend Vibes" },
+        { url: getStoryUrl("story6.jpg"), caption: "Road Trip" },
+        { url: getStoryUrl("story7.jpg"), caption: "Evening Sunset" },
+        { url: getStoryUrl("story8.jpg"), caption: "Memorable Night" },
+        { url: getStoryUrl("story9.jpg"), caption: "Fun Times" },
+        { url: getStoryUrl("story10.jpg"), caption: "Chilling Out" }
+    ],
+    "2025": [
+        { url: getPhotoUrl("photo2.jpg"), caption: "Birthday Celebration 2025" },
+        { url: getPhotoUrl("photo3.jpg"), caption: "Beach Day" },
+        { url: getPhotoUrl("photo4.jpg"), caption: "Catching up with mates" }
+    ]
+};
+
+let currentYear = "2026";
+let currentStoryIndex = 0;
+
+function renderStories() {
+    const memoryGrid = document.getElementById("memoryGrid");
+    const selectedTitle = document.getElementById("selectedTitle");
+    const memoryCount = document.getElementById("memoryCount");
+
+    if (!memoryGrid) return;
+
+    const memories = storiesData[currentYear] || [];
+    
+    if (selectedTitle) selectedTitle.innerText = currentYear;
+    if (memoryCount) memoryCount.innerText = `${memories.length} memories`;
+
+    memoryGrid.innerHTML = "";
+
+    if (memories.length === 0) {
+        memoryGrid.innerHTML = "<p style='grid-column: 1/-1; text-align: center; color: var(--text-secondary);'>No memories added for this year yet.</p>";
+        return;
+    }
+
+    // Slider එකේ එක පාර පෙන්වන Photos 2
+    const itemsToShow = memories.slice(currentStoryIndex, currentStoryIndex + 2);
+
+    itemsToShow.forEach((item, idx) => {
+        const card = document.createElement("div");
+        card.className = "memory-card fade-in appear";
+
+        const img = document.createElement("img");
+        img.src = item.url;
+        img.alt = item.caption;
+        img.onerror = function() { imageError(this); };
+
+        card.appendChild(img);
+
+        card.addEventListener("click", () => {
+            const urls = memories.map(m => m.url);
+            openImageModal(urls, currentStoryIndex + idx, item.caption);
+        });
+
+        memoryGrid.appendChild(card);
+    });
+}
+
+function selectStory(year) {
+    currentYear = year;
+    currentStoryIndex = 0;
+
+    document.querySelectorAll(".story-highlight").forEach(el => el.classList.remove("active"));
+    const activeEl = event.currentTarget;
+    if (activeEl) activeEl.classList.add("active");
+
+    renderStories();
+}
+
+function nextPhoto() {
+    const memories = storiesData[currentYear] || [];
+    if (currentStoryIndex + 2 < memories.length) {
+        currentStoryIndex += 2;
+    } else {
+        currentStoryIndex = 0; // මුලට යාම
+    }
+    renderStories();
+}
+
+function prevPhoto() {
+    const memories = storiesData[currentYear] || [];
+    if (currentStoryIndex - 2 >= 0) {
+        currentStoryIndex -= 2;
+    } else {
+        currentStoryIndex = Math.max(0, memories.length - (memories.length % 2 || 2));
+    }
+    renderStories();
+}
+
+function openStoryGallery() {
+    const modal = document.getElementById("storyGalleryModal");
+    const title = document.getElementById("galleryModalTitle");
+    const grid = document.getElementById("storyGalleryGrid");
+    const memories = storiesData[currentYear] || [];
+
+    if (!modal || !grid) return;
+
+    if (title) title.innerText = `${currentYear} All Memories`;
+    grid.innerHTML = "";
+
+    memories.forEach((item, index) => {
+        const thumb = document.createElement("div");
+        thumb.className = "gallery-thumb";
+
+        const img = document.createElement("img");
+        img.src = item.url;
+        img.alt = item.caption;
+
+        thumb.appendChild(img);
+        thumb.addEventListener("click", () => {
+            closeStoryGallery();
+            const urls = memories.map(m => m.url);
+            openImageModal(urls, index, item.caption);
+        });
+
+        grid.appendChild(thumb);
+    });
+
+    modal.classList.add("show");
+}
+
+function closeStoryGallery() {
+    const modal = document.getElementById("storyGalleryModal");
+    if (modal) modal.classList.remove("show");
+}
+
+function showNewStoryMessage() {
+    alert("Add Year functionality allows you to create new archives.");
+}
+
+function imageError(img) {
+    img.src = "https://via.placeholder.com/400x300?text=Image+Not+Found";
+}
+
+/* =====================================================
    PHOTOS SECTION (INDIVIDUAL & ALBUM COLLECTIONS)
 ===================================================== */
 
@@ -106,16 +251,11 @@ let slideshowInterval = null;
 function loadPhotos() {
     const gallery = document.getElementById("gallery");
     const viewMoreBtn = document.getElementById("viewMoreBtn");
-    const loading = document.getElementById("photoLoading");
-    const errorBox = document.getElementById("photoError");
 
     if (!gallery) return;
-
     gallery.innerHTML = "";
-    if (loading) loading.style.display = "none";
-    if (errorBox) errorBox.style.display = "none";
 
-    // showingAllPhotos true නම් ඔක්කොම, නැත්නම් මුල් 9 විතරක් පෙන්වයි
+    // showingAllPhotos true නම් ඔක්කොම, නැත්නම් මුල් 9 විතරක් ගනියි
     const photosToDisplay = showingAllPhotos ? photoAlbums : photoAlbums.slice(0, 9);
 
     photosToDisplay.forEach((album) => {
@@ -177,7 +317,7 @@ function openImageModal(images, index = 0, caption = "") {
         if (captionElement) captionElement.innerText = caption;
         modal.classList.add("show");
 
-        // තත්පර 5 Auto Slideshow එක ආරම්භ කිරීම
+        // තත්පර 5 Auto Slideshow ආරම්භ කිරීම
         startSlideshow();
     }
 }
@@ -233,13 +373,13 @@ function initScrollObserver() {
     fadeElements.forEach(el => observer.observe(el));
 }
 
-// Contact form placeholder handler
 function handleContactSubmit(e) {
     e.preventDefault();
     alert("Message sent successfully!");
 }
 
-// DOM fully loaded
+// Page එක Load වන විට Stories සහ Photos දෙකම හරියටම Load වේ
 document.addEventListener("DOMContentLoaded", () => {
+    renderStories();
     loadPhotos();
 });
