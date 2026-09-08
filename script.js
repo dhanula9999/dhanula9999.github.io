@@ -1,6 +1,6 @@
 /* =====================================================
-   DHANULA PERSONAL WEBSITE
-   COMPLETE SCRIPT IMPLEMENTATION
+    DHANULA PERSONAL WEBSITE
+    OPTIMIZED & UPDATED SCRIPT
 ===================================================== */
 
 const SUPABASE_URL = "https://widutbgygnamjlkaovrk.supabase.co";
@@ -14,7 +14,7 @@ function getStoryUrl(fileName) {
 }
 
 /* =====================================================
-   DARK / LIGHT MODE SYSTEM
+    DARK / LIGHT MODE SYSTEM
 ===================================================== */
 
 const themeToggleBtn = document.getElementById('themeToggle');
@@ -35,7 +35,7 @@ if (themeToggleBtn) {
 }
 
 /* =====================================================
-   MOBILE NAVIGATION TOGGLE & AUTO-CLOSE
+    MOBILE NAVIGATION TOGGLE & AUTO-CLOSE
 ===================================================== */
 
 const navToggle = document.getElementById('navToggle');
@@ -54,7 +54,7 @@ if (navToggle && mainNav) {
 }
 
 /* =====================================================
-   STORIES & MEMORIES DATA & RENDERING (4 SECONDS AUTOPLAY)
+    STORIES & MEMORIES DATA & RENDERING
 ===================================================== */
 
 const storiesData = {
@@ -68,7 +68,10 @@ const storiesData = {
         { url: getStoryUrl("story7.jpg"), caption: "Evening Sunset" },
         { url: getStoryUrl("story8.jpg"), caption: "Memorable Night" },
         { url: getStoryUrl("story9.jpg"), caption: "Fun Times" },
-        { url: getStoryUrl("story10.jpg"), caption: "Chilling Out" }
+        { url: getStoryUrl("story10.jpg"), caption: "Chilling Out" },
+        { url: getStoryUrl("story11.jpg"), caption: "Awesome Memories" },
+        { url: getStoryUrl("story12.jpg"), caption: "Good Times" },
+        { url: getStoryUrl("story13.jpg"), caption: "Unforgettable Moments" }
     ],
     "2025": [
         { url: getPhotoUrl("photo2.jpg"), caption: "Birthday Celebration 2025" },
@@ -102,6 +105,11 @@ function renderStories() {
 
     const itemsToShow = memories.slice(currentStoryIndex, currentStoryIndex + 2);
 
+    // If only 1 item available at end of list, wrap around to show seamlessly
+    if (itemsToShow.length < 2 && memories.length > 1) {
+        itemsToShow.push(memories[0]);
+    }
+
     itemsToShow.forEach((item, idx) => {
         const card = document.createElement("div");
         card.className = "memory-card fade-in appear";
@@ -113,9 +121,11 @@ function renderStories() {
 
         card.appendChild(img);
 
+        const targetIndex = (currentStoryIndex + idx) % memories.length;
+
         card.addEventListener("click", () => {
             const urls = memories.map(m => m.url);
-            openImageModal(urls, currentStoryIndex + idx, item.caption);
+            openImageModal(urls, targetIndex, memories[targetIndex].caption);
         });
 
         memoryGrid.appendChild(card);
@@ -126,7 +136,7 @@ function startStoryAutoPlay() {
     stopStoryAutoPlay();
     storyAutoPlayInterval = setInterval(() => {
         nextPhotoOneByOne();
-    }, 4000); // තත්පර 4න් 4ට මාරු වේ
+    }, 4000);
 }
 
 function stopStoryAutoPlay() {
@@ -160,7 +170,7 @@ function selectStory(year) {
 
 function nextPhoto() {
     nextPhotoOneByOne();
-    startStoryAutoPlay(); // Manual click කළ පසු තත්පර 4 ටයිමරය reset වේ
+    startStoryAutoPlay();
 }
 
 function prevPhoto() {
@@ -211,7 +221,7 @@ function closeStoryGallery() {
 }
 
 function showNewStoryMessage() {
-    alert("Add Year functionality allows you to create new archives.");
+    alert("Add Year feature coming soon! You will be able to archive new years.");
 }
 
 function imageError(img) {
@@ -219,7 +229,7 @@ function imageError(img) {
 }
 
 /* =====================================================
-   PHOTOS GALLERY SECTION & CYCLING SLIDESHOW
+    PHOTOS GALLERY SECTION & SLIDESHOW
 ===================================================== */
 
 const photoAlbums = [
@@ -274,6 +284,7 @@ let currentModalImages = [];
 let currentModalIndex = 0;
 let slideshowInterval = null;
 let cardSlideshowInterval = null;
+let slotOffset = 0;
 
 function loadPhotos() {
     const gallery = document.getElementById("gallery");
@@ -285,12 +296,11 @@ function loadPhotos() {
     gallery.innerHTML = "";
 
     const displayCount = showingAllPhotos ? photoAlbums.length : 6;
-    let slotOffset = 0;
+    let cardsData = [];
 
-    let cards = [];
     for (let i = 0; i < displayCount; i++) {
-        const albumIndex = (i + slotOffset) % photoAlbums.length;
-        const album = photoAlbums[albumIndex];
+        const initialAlbumIndex = (i + slotOffset) % photoAlbums.length;
+        const album = photoAlbums[initialAlbumIndex];
 
         const card = document.createElement("div");
         card.className = "photo-card fade-in appear";
@@ -312,6 +322,8 @@ function loadPhotos() {
         badge.innerText = `+${album.images.length}`;
         imageContainer.appendChild(badge);
 
+        cardsData.push({ img, badge, slotIndex: i });
+
         imageContainer.addEventListener("click", () => {
             const currentSlotAlbumIndex = (i + slotOffset) % photoAlbums.length;
             const currentAlbum = photoAlbums[currentSlotAlbumIndex];
@@ -321,18 +333,17 @@ function loadPhotos() {
 
         card.appendChild(imageContainer);
         gallery.appendChild(card);
-
-        cards.push({ card, img, badge, slotIndex: i });
     }
 
     if (viewMoreBtn) {
         viewMoreBtn.innerText = showingAllPhotos ? "Show Less" : "View More";
     }
 
+    // Auto rotate grid items smoothly
     cardSlideshowInterval = setInterval(() => {
         slotOffset = (slotOffset + 1) % photoAlbums.length;
         
-        cards.forEach((item) => {
+        cardsData.forEach((item) => {
             const currentAlbumIndex = (item.slotIndex + slotOffset) % photoAlbums.length;
             const currentAlbum = photoAlbums[currentAlbumIndex];
 
@@ -353,11 +364,12 @@ function loadPhotos() {
 
 function toggleViewAllPhotos() {
     showingAllPhotos = !showingAllPhotos;
+    slotOffset = 0; // Reset offset on view toggle
     loadPhotos();
 }
 
 /* =====================================================
-   LIGHTBOX MODAL, SLIDESHOW & LIKE SYSTEM
+    LIGHTBOX MODAL, SLIDESHOW & LIKE SYSTEM
 ===================================================== */
 
 let photoLikes = JSON.parse(localStorage.getItem('photoLikes') || '{}');
@@ -386,7 +398,7 @@ function startSlideshow() {
     if (currentModalImages.length > 1) {
         slideshowInterval = setInterval(() => {
             nextModalImage();
-        }, 2000);
+        }, 3000); // 3-second delay for lightbox autoplay
     }
 }
 
@@ -449,7 +461,7 @@ function updateLikeUI() {
 }
 
 /* =====================================================
-   INTERSECTION OBSERVER & FORM HANDLER
+    INTERSECTION OBSERVER & FORM HANDLER
 ===================================================== */
 
 function initScrollObserver() {
@@ -467,34 +479,33 @@ function initScrollObserver() {
 
 function handleContactSubmit(e) {
     e.preventDefault();
-    alert("Message sent successfully!");
+    alert("Thank you! Your message has been sent successfully.");
     e.target.reset();
 }
 
 /* =====================================================
-   INITIALIZATION & KEYBOARD CONTROLS
+    INITIALIZATION & KEYBOARD CONTROLS
 ===================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
     renderStories();
-    startStoryAutoPlay(); // Stories තත්පර 4න් 4ට වෙනස් වීම ආරම්භ වේ
+    startStoryAutoPlay();
     loadPhotos();
     initScrollObserver();
 
     document.addEventListener("keydown", (e) => {
+        const imageModal = document.getElementById("imageModal");
+        const isModalOpen = imageModal && imageModal.classList.contains("show");
+
         if (e.key === "Escape") {
             closeImage();
             closeStoryGallery();
-        } else if (e.key === "ArrowRight") {
-            const imageModal = document.getElementById("imageModal");
-            if (imageModal && imageModal.classList.contains("show")) {
-                nextModalImage();
-            }
-        } else if (e.key === "ArrowLeft") {
-            const imageModal = document.getElementById("imageModal");
-            if (imageModal && imageModal.classList.contains("show")) {
-                prevModalImage();
-            }
+        } else if (e.key === "ArrowRight" && isModalOpen) {
+            nextModalImage();
+            startSlideshow(); // Reset timer on manual click/navigation
+        } else if (e.key === "ArrowLeft" && isModalOpen) {
+            prevModalImage();
+            startSlideshow();
         }
     });
 });
