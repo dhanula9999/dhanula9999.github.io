@@ -60,6 +60,14 @@ if (navToggle && mainNav) {
 // Stories: Latest uploaded images placed at the top/beginning
 const storiesData = {
     "2026": [
+        { url: getStoryUrl("story21.jpg") },
+        { url: getStoryUrl("story20.jpg") },
+        { url: getStoryUrl("story19.jpg") },
+        { url: getStoryUrl("story18.jpg") },
+        { url: getStoryUrl("story17.jpg") },
+        { url: getStoryUrl("story16.jpg") },
+        { url: getStoryUrl("story15.jpg") },
+        { url: getStoryUrl("story14.jpg") },
         { url: getStoryUrl("story13.jpg") },
         { url: getStoryUrl("story12.jpg") },
         { url: getStoryUrl("story11.jpg") },
