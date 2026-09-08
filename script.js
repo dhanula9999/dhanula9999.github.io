@@ -57,26 +57,27 @@ if (navToggle && mainNav) {
     STORIES & MEMORIES DATA & RENDERING
 ===================================================== */
 
+// Stories: Latest uploaded images placed at the top/beginning
 const storiesData = {
     "2026": [
-        { url: getStoryUrl("story1.jpg"), caption: "New Year Celebration 2026" },
-        { url: getStoryUrl("story2.jpg"), caption: "Trip to Nuwara Eliya" },
-        { url: getStoryUrl("story3.jpg"), caption: "Gathering with Friends" },
-        { url: getStoryUrl("story4.jpg"), caption: "Special Moment" },
-        { url: getStoryUrl("story5.jpg"), caption: "Weekend Vibes" },
-        { url: getStoryUrl("story6.jpg"), caption: "Road Trip" },
-        { url: getStoryUrl("story7.jpg"), caption: "Evening Sunset" },
-        { url: getStoryUrl("story8.jpg"), caption: "Memorable Night" },
-        { url: getStoryUrl("story9.jpg"), caption: "Fun Times" },
-        { url: getStoryUrl("story10.jpg"), caption: "Chilling Out" },
-        { url: getStoryUrl("story11.jpg"), caption: "Awesome Memories" },
-        { url: getStoryUrl("story12.jpg"), caption: "Good Times" },
-        { url: getStoryUrl("story13.jpg"), caption: "Unforgettable Moments" }
+        { url: getStoryUrl("story13.jpg") },
+        { url: getStoryUrl("story12.jpg") },
+        { url: getStoryUrl("story11.jpg") },
+        { url: getStoryUrl("story10.jpg") },
+        { url: getStoryUrl("story9.jpg") },
+        { url: getStoryUrl("story8.jpg") },
+        { url: getStoryUrl("story7.jpg") },
+        { url: getStoryUrl("story6.jpg") },
+        { url: getStoryUrl("story5.jpg") },
+        { url: getStoryUrl("story4.jpg") },
+        { url: getStoryUrl("story3.jpg") },
+        { url: getStoryUrl("story2.jpg") },
+        { url: getStoryUrl("story1.jpg") }
     ],
     "2025": [
-        { url: getPhotoUrl("photo2.jpg"), caption: "Birthday Celebration 2025" },
-        { url: getPhotoUrl("photo3.jpg"), caption: "Beach Day" },
-        { url: getPhotoUrl("photo4.jpg"), caption: "Catching up with mates" }
+        { url: getPhotoUrl("photo4.jpg") },
+        { url: getPhotoUrl("photo3.jpg") },
+        { url: getPhotoUrl("photo2.jpg") }
     ]
 };
 
@@ -116,7 +117,7 @@ function renderStories() {
 
         const img = document.createElement("img");
         img.src = item.url;
-        img.alt = item.caption;
+        img.alt = "Memory Image";
         img.onerror = function() { imageError(this); };
 
         card.appendChild(img);
@@ -125,7 +126,7 @@ function renderStories() {
 
         card.addEventListener("click", () => {
             const urls = memories.map(m => m.url);
-            openImageModal(urls, targetIndex, memories[targetIndex].caption);
+            openImageModal(urls, targetIndex);
         });
 
         memoryGrid.appendChild(card);
@@ -199,14 +200,14 @@ function openStoryGallery() {
 
         const img = document.createElement("img");
         img.src = item.url;
-        img.alt = item.caption;
+        img.alt = "Gallery Thumbnail";
         img.onerror = function() { imageError(this); };
 
         thumb.appendChild(img);
         thumb.addEventListener("click", () => {
             closeStoryGallery();
             const urls = memories.map(m => m.url);
-            openImageModal(urls, index, item.caption);
+            openImageModal(urls, index);
         });
 
         grid.appendChild(thumb);
@@ -232,51 +233,52 @@ function imageError(img) {
     PHOTOS GALLERY SECTION & SLIDESHOW
 ===================================================== */
 
+// Photos: Display latest items first
 const photoAlbums = [
-    { title: "Photo 29", cover: "photo29.jpg", images: ["photo29.jpg"] },
-    { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] },
-    { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
-    { title: "Photo 3", cover: "photo3.jpg", images: ["photo3.jpg"] },
-    { title: "Photo 4", cover: "photo4.jpg", images: ["photo4.jpg"] },
-    { title: "Photo 5", cover: "photo5.jpg", images: ["photo5.jpg"] },
-    { title: "Photo 22", cover: "photo22.jpg", images: ["photo22.jpg"] },
-    { title: "Photo 6", cover: "photo6.jpg", images: ["photo6.jpg"] },
-    {
-        title: "Special Album",
-        cover: "photo7.jpg",
-        images: [
-            "photo7.jpg",  "photo8.jpg",  "photo9.jpg",  "photo10.jpg",
-            "photo11.jpg", "photo12.jpg", "photo13.jpg", "photo14.jpg",
-            "photo15.jpg", "photo16.jpg", "photo17.jpg", "photo18.jpg",
-            "photo19.jpg", "photo20.jpg"
-        ]
-    },
-    { title: "Photo 21", cover: "photo21.jpg", images: ["photo21.jpg"] },
-    { title: "Photo 23", cover: "photo23.jpg", images: ["photo23.jpg"] },
-    { title: "Photo 24", cover: "photo24.jpg", images: ["photo24.jpg"] },
-    { title: "Photo 25", cover: "photo25.jpg", images: ["photo25.jpg"] },
-    { title: "Photo 26", cover: "photo26.jpg", images: ["photo26.jpg"] },
-    { title: "Photo 27", cover: "photo27.jpg", images: ["photo27.jpg"] },
-    { title: "Photo 28", cover: "photo28.jpg", images: ["photo28.jpg"] },
-    { title: "Photo 30", cover: "photo30.jpg", images: ["photo30.jpg"] },
-    { title: "Photo 31", cover: "photo31.jpg", images: ["photo31.jpg"] },
-    { title: "Photo 32", cover: "photo32.jpg", images: ["photo32.jpg"] },
-    {
-        title: "Album 33-34",
-        cover: "photo33.jpg",
-        images: ["photo33.jpg", "photo34.jpg"]
-    },
     {
         title: "Album 35-51",
         cover: "photo35.jpg",
         images: [
-            "photo35.jpg", "photo36.jpg", "photo37.jpg", "photo38.jpg",
-            "photo39.jpg", "photo40.jpg", "photo41.jpg", "photo42.jpg",
-            "photo43.jpg", "photo44.jpg", "photo45.jpg", "photo46.jpg",
-            "photo47.jpg", "photo48.jpg", "photo49.jpg", "photo50.jpg",
-            "photo51.jpg"
+            "photo51.jpg", "photo50.jpg", "photo49.jpg", "photo48.jpg",
+            "photo47.jpg", "photo46.jpg", "photo45.jpg", "photo44.jpg",
+            "photo43.jpg", "photo42.jpg", "photo41.jpg", "photo40.jpg",
+            "photo39.jpg", "photo38.jpg", "photo37.jpg", "photo36.jpg",
+            "photo35.jpg"
         ]
-    }
+    },
+    {
+        title: "Album 33-34",
+        cover: "photo34.jpg",
+        images: ["photo34.jpg", "photo33.jpg"]
+    },
+    { title: "Photo 32", cover: "photo32.jpg", images: ["photo32.jpg"] },
+    { title: "Photo 31", cover: "photo31.jpg", images: ["photo31.jpg"] },
+    { title: "Photo 30", cover: "photo30.jpg", images: ["photo30.jpg"] },
+    { title: "Photo 29", cover: "photo29.jpg", images: ["photo29.jpg"] },
+    { title: "Photo 28", cover: "photo28.jpg", images: ["photo28.jpg"] },
+    { title: "Photo 27", cover: "photo27.jpg", images: ["photo27.jpg"] },
+    { title: "Photo 26", cover: "photo26.jpg", images: ["photo26.jpg"] },
+    { title: "Photo 25", cover: "photo25.jpg", images: ["photo25.jpg"] },
+    { title: "Photo 24", cover: "photo24.jpg", images: ["photo24.jpg"] },
+    { title: "Photo 23", cover: "photo23.jpg", images: ["photo23.jpg"] },
+    { title: "Photo 22", cover: "photo22.jpg", images: ["photo22.jpg"] },
+    { title: "Photo 21", cover: "photo21.jpg", images: ["photo21.jpg"] },
+    {
+        title: "Special Album",
+        cover: "photo20.jpg",
+        images: [
+            "photo20.jpg", "photo19.jpg", "photo18.jpg", "photo17.jpg",
+            "photo16.jpg", "photo15.jpg", "photo14.jpg", "photo13.jpg",
+            "photo12.jpg", "photo11.jpg", "photo10.jpg", "photo9.jpg",
+            "photo8.jpg",  "photo7.jpg"
+        ]
+    },
+    { title: "Photo 6", cover: "photo6.jpg", images: ["photo6.jpg"] },
+    { title: "Photo 5", cover: "photo5.jpg", images: ["photo5.jpg"] },
+    { title: "Photo 4", cover: "photo4.jpg", images: ["photo4.jpg"] },
+    { title: "Photo 3", cover: "photo3.jpg", images: ["photo3.jpg"] },
+    { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
+    { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] }
 ];
 
 let showingAllPhotos = false;
@@ -328,7 +330,7 @@ function loadPhotos() {
             const currentSlotAlbumIndex = (i + slotOffset) % photoAlbums.length;
             const currentAlbum = photoAlbums[currentSlotAlbumIndex];
             const fullUrls = currentAlbum.images.map(imgName => getPhotoUrl(imgName));
-            openImageModal(fullUrls, 0, currentAlbum.title);
+            openImageModal(fullUrls, 0);
         });
 
         card.appendChild(imageContainer);
@@ -369,12 +371,10 @@ function toggleViewAllPhotos() {
 }
 
 /* =====================================================
-    LIGHTBOX MODAL, SLIDESHOW & LIKE SYSTEM
+    LIGHTBOX MODAL & SLIDESHOW
 ===================================================== */
 
-let photoLikes = JSON.parse(localStorage.getItem('photoLikes') || '{}');
-
-function openImageModal(images, index = 0, caption = "") {
+function openImageModal(images, index = 0) {
     currentModalImages = images;
     currentModalIndex = index;
 
@@ -382,13 +382,13 @@ function openImageModal(images, index = 0, caption = "") {
     const fullImg = document.getElementById("fullImage");
     const captionElement = document.getElementById("storyCaption");
 
+    if (captionElement) {
+        captionElement.innerText = ""; // Hide caption
+    }
+
     if (modal && fullImg) {
         fullImg.src = currentModalImages[currentModalIndex];
-        if (captionElement) captionElement.innerText = caption || "";
-        
-        updateLikeUI();
         modal.classList.add("show");
-
         startSlideshow();
     }
 }
@@ -419,45 +419,12 @@ function nextModalImage() {
     if (currentModalImages.length <= 1) return;
     currentModalIndex = (currentModalIndex + 1) % currentModalImages.length;
     document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
-    updateLikeUI();
 }
 
 function prevModalImage() {
     if (currentModalImages.length <= 1) return;
     currentModalIndex = (currentModalIndex - 1 + currentModalImages.length) % currentModalImages.length;
     document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
-    updateLikeUI();
-}
-
-function toggleLikeCurrentPhoto() {
-    const currentSrc = currentModalImages[currentModalIndex];
-    if (!currentSrc) return;
-
-    if (!photoLikes[currentSrc]) {
-        photoLikes[currentSrc] = { liked: true, count: 1 };
-    } else {
-        photoLikes[currentSrc].liked = !photoLikes[currentSrc].liked;
-        photoLikes[currentSrc].count += photoLikes[currentSrc].liked ? 1 : -1;
-    }
-
-    localStorage.setItem('photoLikes', JSON.stringify(photoLikes));
-    updateLikeUI();
-}
-
-function updateLikeUI() {
-    const currentSrc = currentModalImages[currentModalIndex];
-    const likeBtn = document.getElementById("likeBtn");
-    const likeHeart = document.getElementById("likeHeart");
-    const likeCount = document.getElementById("likeCount");
-
-    if (!likeBtn || !likeCount || !currentSrc) return;
-
-    const state = photoLikes[currentSrc] || { liked: false, count: 0 };
-
-    likeCount.innerText = state.count;
-    if (likeHeart) {
-        likeHeart.innerText = state.liked ? "❤️" : "🤍";
-    }
 }
 
 /* =====================================================
