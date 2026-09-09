@@ -60,6 +60,7 @@ if (navToggle && mainNav) {
 // Stories: Latest uploaded images placed at the top/beginning
 const storiesData = {
     "2026": [
+        { url: getStoryUrl("story22.jpg") },
         { url: getStoryUrl("story21.jpg") },
         { url: getStoryUrl("story20.jpg") },
         { url: getStoryUrl("story19.jpg") },
