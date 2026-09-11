@@ -57,7 +57,6 @@ if (navToggle && mainNav) {
     STORIES & MEMORIES DATA & RENDERING
 ===================================================== */
 
-// Stories: Latest uploaded images placed at the top/beginning
 const storiesData = {
     "2026": [
         { url: getStoryUrl("story22.jpg") },
@@ -115,7 +114,6 @@ function renderStories() {
 
     const itemsToShow = memories.slice(currentStoryIndex, currentStoryIndex + 2);
 
-    // If only 1 item available at end of list, wrap around to show seamlessly
     if (itemsToShow.length < 2 && memories.length > 1) {
         itemsToShow.push(memories[0]);
     }
@@ -239,10 +237,9 @@ function imageError(img) {
 }
 
 /* =====================================================
-    PHOTOS GALLERY SECTION & SLIDESHOW
+    PHOTOS GALLERY SECTION (STATIC GRID LOAD)
 ===================================================== */
 
-// Photos: Display latest items first
 const photoAlbums = [
     {
         title: "Album 35-51",
@@ -294,8 +291,6 @@ let showingAllPhotos = false;
 let currentModalImages = [];
 let currentModalIndex = 0;
 let slideshowInterval = null;
-let cardSlideshowInterval = null;
-let slotOffset = 0;
 
 function loadPhotos() {
     const gallery = document.getElementById("gallery");
@@ -303,15 +298,12 @@ function loadPhotos() {
 
     if (!gallery) return;
     
-    if (cardSlideshowInterval) clearInterval(cardSlideshowInterval);
     gallery.innerHTML = "";
 
     const displayCount = showingAllPhotos ? photoAlbums.length : 6;
-    let cardsData = [];
 
     for (let i = 0; i < displayCount; i++) {
-        const initialAlbumIndex = (i + slotOffset) % photoAlbums.length;
-        const album = photoAlbums[initialAlbumIndex];
+        const album = photoAlbums[i];
 
         const card = document.createElement("div");
         card.className = "photo-card fade-in appear";
@@ -333,12 +325,8 @@ function loadPhotos() {
         badge.innerText = `+${album.images.length}`;
         imageContainer.appendChild(badge);
 
-        cardsData.push({ img, badge, slotIndex: i });
-
         imageContainer.addEventListener("click", () => {
-            const currentSlotAlbumIndex = (i + slotOffset) % photoAlbums.length;
-            const currentAlbum = photoAlbums[currentSlotAlbumIndex];
-            const fullUrls = currentAlbum.images.map(imgName => getPhotoUrl(imgName));
+            const fullUrls = album.images.map(imgName => getPhotoUrl(imgName));
             openImageModal(fullUrls, 0);
         });
 
@@ -350,38 +338,44 @@ function loadPhotos() {
         viewMoreBtn.innerText = showingAllPhotos ? "Show Less" : "View More";
     }
 
-    // Auto rotate grid items smoothly
-    cardSlideshowInterval = setInterval(() => {
-        slotOffset = (slotOffset + 1) % photoAlbums.length;
-        
-        cardsData.forEach((item) => {
-            const currentAlbumIndex = (item.slotIndex + slotOffset) % photoAlbums.length;
-            const currentAlbum = photoAlbums[currentAlbumIndex];
-
-            item.img.src = getPhotoUrl(currentAlbum.images[0]);
-            item.img.alt = currentAlbum.title;
-
-            if (currentAlbum.images.length > 1) {
-                item.badge.style.display = "block";
-                item.badge.innerText = `+${currentAlbum.images.length}`;
-            } else {
-                item.badge.style.display = "none";
-            }
-        });
-    }, 5000);
-
     initScrollObserver();
 }
 
 function toggleViewAllPhotos() {
     showingAllPhotos = !showingAllPhotos;
-    slotOffset = 0; // Reset offset on view toggle
     loadPhotos();
 }
 
 /* =====================================================
     LIGHTBOX MODAL & SLIDESHOW
 ===================================================== */
+
+let likesState = {};
+
+function toggleLikeCurrentPhoto() {
+    const currentUrl = currentModalImages[currentModalIndex];
+    if (!currentUrl) return;
+
+    if (!likesState[currentUrl]) {
+        likesState[currentUrl] = { liked: true, count: 1 };
+    } else {
+        likesState[currentUrl].liked = !likesState[currentUrl].liked;
+        likesState[currentUrl].count += likesState[currentUrl].liked ? 1 : -1;
+    }
+
+    updateLikeUI();
+}
+
+function updateLikeUI() {
+    const currentUrl = currentModalImages[currentModalIndex];
+    const likeCountEl = document.getElementById("likeCount");
+    const likeHeartEl = document.getElementById("likeHeart");
+
+    const state = likesState[currentUrl] || { liked: false, count: 0 };
+
+    if (likeCountEl) likeCountEl.innerText = state.count;
+    if (likeHeartEl) likeHeartEl.innerText = state.liked ? "❤️" : "🤍";
+}
 
 function openImageModal(images, index = 0) {
     currentModalImages = images;
@@ -392,12 +386,13 @@ function openImageModal(images, index = 0) {
     const captionElement = document.getElementById("storyCaption");
 
     if (captionElement) {
-        captionElement.innerText = ""; // Hide caption
+        captionElement.innerText = "";
     }
 
     if (modal && fullImg) {
         fullImg.src = currentModalImages[currentModalIndex];
         modal.classList.add("show");
+        updateLikeUI();
         startSlideshow();
     }
 }
@@ -407,7 +402,7 @@ function startSlideshow() {
     if (currentModalImages.length > 1) {
         slideshowInterval = setInterval(() => {
             nextModalImage();
-        }, 3000); // 3-second delay for lightbox autoplay
+        }, 3000);
     }
 }
 
@@ -428,12 +423,14 @@ function nextModalImage() {
     if (currentModalImages.length <= 1) return;
     currentModalIndex = (currentModalIndex + 1) % currentModalImages.length;
     document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
+    updateLikeUI();
 }
 
 function prevModalImage() {
     if (currentModalImages.length <= 1) return;
     currentModalIndex = (currentModalIndex - 1 + currentModalImages.length) % currentModalImages.length;
     document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
+    updateLikeUI();
 }
 
 /* =====================================================
@@ -478,7 +475,7 @@ document.addEventListener("DOMContentLoaded", () => {
             closeStoryGallery();
         } else if (e.key === "ArrowRight" && isModalOpen) {
             nextModalImage();
-            startSlideshow(); // Reset timer on manual click/navigation
+            startSlideshow();
         } else if (e.key === "ArrowLeft" && isModalOpen) {
             prevModalImage();
             startSlideshow();
