@@ -59,6 +59,7 @@ if (navToggle && mainNav) {
 
 const storiesData = {
     "2026": [
+        { url: getStoryUrl("story23.jpg") },
         { url: getStoryUrl("story22.jpg") },
         { url: getStoryUrl("story21.jpg") },
         { url: getStoryUrl("story20.jpg") },
@@ -312,7 +313,6 @@ function loadPhotos() {
         imageContainer.className = "photo-image";
 
         const img = document.createElement("img");
-        // FIX: Always load the cover photo specified in the album configuration
         img.src = getPhotoUrl(album.cover);
         img.alt = album.title;
         img.loading = "lazy";
