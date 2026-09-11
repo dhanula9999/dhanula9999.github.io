@@ -351,33 +351,6 @@ function toggleViewAllPhotos() {
     LIGHTBOX MODAL & SLIDESHOW
 ===================================================== */
 
-let likesState = {};
-
-function toggleLikeCurrentPhoto() {
-    const currentUrl = currentModalImages[currentModalIndex];
-    if (!currentUrl) return;
-
-    if (!likesState[currentUrl]) {
-        likesState[currentUrl] = { liked: true, count: 1 };
-    } else {
-        likesState[currentUrl].liked = !likesState[currentUrl].liked;
-        likesState[currentUrl].count += likesState[currentUrl].liked ? 1 : -1;
-    }
-
-    updateLikeUI();
-}
-
-function updateLikeUI() {
-    const currentUrl = currentModalImages[currentModalIndex];
-    const likeCountEl = document.getElementById("likeCount");
-    const likeHeartEl = document.getElementById("likeHeart");
-
-    const state = likesState[currentUrl] || { liked: false, count: 0 };
-
-    if (likeCountEl) likeCountEl.innerText = state.count;
-    if (likeHeartEl) likeHeartEl.innerText = state.liked ? "❤️" : "🤍";
-}
-
 function openImageModal(images, index = 0) {
     currentModalImages = images;
     currentModalIndex = index;
@@ -393,7 +366,6 @@ function openImageModal(images, index = 0) {
     if (modal && fullImg) {
         fullImg.src = currentModalImages[currentModalIndex];
         modal.classList.add("show");
-        updateLikeUI();
         startSlideshow();
     }
 }
@@ -424,14 +396,12 @@ function nextModalImage() {
     if (currentModalImages.length <= 1) return;
     currentModalIndex = (currentModalIndex + 1) % currentModalImages.length;
     document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
-    updateLikeUI();
 }
 
 function prevModalImage() {
     if (currentModalImages.length <= 1) return;
     currentModalIndex = (currentModalIndex - 1 + currentModalImages.length) % currentModalImages.length;
     document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
-    updateLikeUI();
 }
 
 /* =====================================================
