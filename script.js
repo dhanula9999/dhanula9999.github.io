@@ -272,12 +272,12 @@ const photoAlbums = [
     { title: "Photo 21", cover: "photo21.jpg", images: ["photo21.jpg"] },
     {
         title: "Special Album",
-        cover: "photo20.jpg",
+        cover: "photo7.jpg",
         images: [
-            "photo20.jpg", "photo19.jpg", "photo18.jpg", "photo17.jpg",
-            "photo16.jpg", "photo15.jpg", "photo14.jpg", "photo13.jpg",
-            "photo12.jpg", "photo11.jpg", "photo10.jpg", "photo9.jpg",
-            "photo8.jpg",  "photo7.jpg"
+            "photo7.jpg", "photo8.jpg", "photo9.jpg", "photo10.jpg",
+            "photo11.jpg", "photo12.jpg", "photo13.jpg", "photo14.jpg",
+            "photo15.jpg", "photo16.jpg", "photo17.jpg", "photo18.jpg",
+            "photo19.jpg", "photo20.jpg"
         ]
     },
     { title: "Photo 6", cover: "photo6.jpg", images: ["photo6.jpg"] },
