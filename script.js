@@ -255,8 +255,8 @@ const photoAlbums = [
     },
     {
         title: "Album 33-34",
-        cover: "photo34.jpg",
-        images: ["photo34.jpg", "photo33.jpg"]
+        cover: "photo33.jpg",
+        images: ["photo33.jpg", "photo34.jpg"]
     },
     { title: "Photo 32", cover: "photo32.jpg", images: ["photo32.jpg"] },
     { title: "Photo 31", cover: "photo31.jpg", images: ["photo31.jpg"] },
