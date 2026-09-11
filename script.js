@@ -237,7 +237,7 @@ function imageError(img) {
 }
 
 /* =====================================================
-    PHOTOS GALLERY SECTION (STATIC GRID LOAD)
+    PHOTOS GALLERY SECTION (FIXED FIRST COVER IMAGE)
 ===================================================== */
 
 const photoAlbums = [
@@ -245,11 +245,11 @@ const photoAlbums = [
         title: "Album 35-51",
         cover: "photo35.jpg",
         images: [
-            "photo51.jpg", "photo50.jpg", "photo49.jpg", "photo48.jpg",
-            "photo47.jpg", "photo46.jpg", "photo45.jpg", "photo44.jpg",
-            "photo43.jpg", "photo42.jpg", "photo41.jpg", "photo40.jpg",
-            "photo39.jpg", "photo38.jpg", "photo37.jpg", "photo36.jpg",
-            "photo35.jpg"
+            "photo35.jpg", "photo36.jpg", "photo37.jpg", "photo38.jpg",
+            "photo39.jpg", "photo40.jpg", "photo41.jpg", "photo42.jpg",
+            "photo43.jpg", "photo44.jpg", "photo45.jpg", "photo46.jpg",
+            "photo47.jpg", "photo48.jpg", "photo49.jpg", "photo50.jpg",
+            "photo51.jpg"
         ]
     },
     {
@@ -312,7 +312,8 @@ function loadPhotos() {
         imageContainer.className = "photo-image";
 
         const img = document.createElement("img");
-        img.src = getPhotoUrl(album.images[0]);
+        // FIX: Always load the cover photo specified in the album configuration
+        img.src = getPhotoUrl(album.cover);
         img.alt = album.title;
         img.loading = "lazy";
         img.onerror = function() { imageError(this); };
