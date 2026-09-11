@@ -348,7 +348,7 @@ function toggleViewAllPhotos() {
 }
 
 /* =====================================================
-    LIGHTBOX MODAL & SLIDESHOW
+    LIGHTBOX MODAL & SLIDESHOW (No Like Button Code)
 ===================================================== */
 
 function openImageModal(images, index = 0) {
