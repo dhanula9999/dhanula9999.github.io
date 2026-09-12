@@ -4,491 +4,720 @@
 
 <head>
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Dhanula | My Personal Website</title>
+    <title>Dhanula | My Personal Website</title>
 
-<meta property="og:title" content="Dhanula | Personal Portfolio & Gallery">
-<meta property="og:description" content="Welcome to Dhanula's personal website containing stories, albums, and portfolio.">
-<meta property="og:image" content="https://widutbgygnamjlkaovrk.supabase.co/storage/v1/object/public/photos/photo1.jpg">
-<meta property="og:type" content="website">
+    <meta property="og:title" content="Dhanula | Personal Portfolio & Gallery">
 
-<link rel="stylesheet" href="style.css">
-```
+    <meta property="og:description"
+        content="Welcome to Dhanula's personal website containing stories, albums, and portfolio.">
+
+    <meta property="og:image"
+        content="https://widutbgygnamjlkaovrk.supabase.co/storage/v1/object/public/photos/photo1.jpg">
+
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 <body>
 
-```
-<header class="navbar">
-    <div class="nav-container">
+    <!-- NAVBAR -->
 
-        <a href="#home" class="logo">Dhanula</a>
+    <header class="navbar">
 
-        <div class="nav-right">
+        <div class="nav-container">
 
-            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
-                <span class="sun-icon">☀️</span>
-                <span class="moon-icon">🌙</span>
-            </button>
-
-            <button class="nav-toggle" id="navToggle" aria-label="Toggle Navigation">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
-        </div>
-
-        <nav id="mainNav" class="main-nav">
-            <a href="#home" class="active">Home</a>
-            <a href="#about">About Me</a>
-            <a href="#stories">Stories</a>
-            <a href="#photos">My Photos</a>
-            <a href="#contact">Contact</a>
-        </nav>
-
-    </div>
-</header>
+            <a href="#home" class="logo">Dhanula</a>
 
 
-<section id="home" class="home">
+            <nav id="mainNav" class="main-nav">
 
-    <div class="home-content">
+                <a href="#home" class="active">Home</a>
 
-        <p class="small-title">WELCOME TO MY WORLD</p>
+                <a href="#about">About Me</a>
 
-        <h1>Hi, I'm <span>Dhanula</span></h1>
+                <a href="#stories">Stories</a>
 
-        <p>Capturing life's best moments and sharing my journey through memories and stories.</p>
+                <a href="#photos">My Photos</a>
 
-        <a href="#stories" class="button">Explore Memories</a>
+                <a href="#contact">Contact</a>
 
-    </div>
-
-</section>
+            </nav>
 
 
-<section id="about" class="about">
+            <div class="nav-right">
 
-    <div class="section-container">
+                <button
+                    class="theme-toggle"
+                    id="themeToggle"
+                    aria-label="Toggle Theme"
+                    type="button">
 
-        <p class="section-label">GET TO KNOW ME</p>
+                    <span class="sun-icon">☀️</span>
 
-        <h2>About Me</h2>
+                    <span class="moon-icon">🌙</span>
 
-        <p class="about-text">
-            Welcome to my personal archive. Here you'll find collections of moments, thoughts, and memories that I've gathered along the way.
-        </p>
-
-        <div class="about-boxes">
-
-            <div class="about-box fade-in">
-
-                <div class="about-icon">📷</div>
-
-                <h3>Photography</h3>
-
-                <p>Capturing memories through photos that tell unique stories.</p>
-
-            </div>
+                </button>
 
 
-            <div class="about-box fade-in">
+                <button
+                    class="nav-toggle"
+                    id="navToggle"
+                    aria-label="Toggle Navigation"
+                    type="button">
 
-                <div class="about-icon">📖</div>
+                    <span></span>
 
-                <h3>Stories</h3>
+                    <span></span>
 
-                <p>Documenting life events, milestones, and unforgettable experiences.</p>
+                    <span></span>
 
-            </div>
-
-
-            <div class="about-box fade-in">
-
-                <div class="about-icon">✨</div>
-
-                <h3>Passions</h3>
-
-                <p>Exploring new places, learning new things, and enjoying every day.</p>
+                </button>
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
+    </header>
 
 
-<section id="stories" class="stories">
+    <!-- HOME -->
 
-    <div class="stories-container">
+    <section id="home" class="home">
 
-        <div class="stories-heading">
+        <div class="home-content">
 
-            <p class="section-label">TIMELINE</p>
-
-            <h2>Stories & Memories</h2>
-
-            <p>Select a year to view selected memories.</p>
-
-        </div>
+            <p class="small-title">
+                WELCOME TO MY WORLD
+            </p>
 
 
-        <div class="story-highlights">
-
-            <div class="story-highlight active" onclick="selectStory('2026', event)">
-
-                <div class="story-circle">
-
-                    <img src="https://widutbgygnamjlkaovrk.supabase.co/storage/v1/object/public/stories/story1.jpg"
-                        alt="2026 Stories">
-
-                </div>
-
-                <span>2026</span>
-
-            </div>
+            <h1>
+                Hi, I'm <span>Dhanula</span>
+            </h1>
 
 
-            <div class="story-highlight" onclick="selectStory('2025', event)">
-
-                <div class="story-circle">
-
-                    <img src="https://widutbgygnamjlkaovrk.supabase.co/storage/v1/object/public/photos/photo2.jpg"
-                        alt="2025 Stories"
-                        onerror="imageError(this)">
-
-                </div>
-
-                <span>2025</span>
-
-            </div>
+            <p>
+                Capturing life's best moments and sharing my journey through memories and stories.
+            </p>
 
 
-            <div class="story-highlight" onclick="showNewStoryMessage()">
-
-                <div class="story-circle new-circle">
-
-                    <span class="plus">+</span>
-
-                </div>
-
-                <span>Add Year</span>
-
-            </div>
+            <a href="#stories" class="button">
+                Explore Memories
+            </a>
 
         </div>
 
+    </section>
 
-        <div class="selected-memory fade-in">
 
-            <div class="selected-header">
+    <!-- ABOUT -->
 
-                <div>
+    <section id="about" class="about">
 
-                    <small>FEATURED MEMORIES</small>
+        <div class="section-container">
 
-                    <h3 id="selectedTitle">2026</h3>
+            <p class="section-label">
+                GET TO KNOW ME
+            </p>
+
+
+            <h2>
+                About Me
+            </h2>
+
+
+            <p class="about-text">
+                Welcome to my personal archive. Here you'll find collections of moments,
+                thoughts, and memories that I've gathered along the way.
+            </p>
+
+
+            <div class="about-boxes">
+
+
+                <div class="about-box fade-in">
+
+                    <div class="about-icon">
+                        📷
+                    </div>
+
+                    <h3>
+                        Photography
+                    </h3>
+
+                    <p>
+                        Capturing memories through photos that tell unique stories.
+                    </p>
 
                 </div>
 
 
-                <div class="memory-count-box">
+                <div class="about-box fade-in">
 
-                    <span id="memoryCount" class="memory-count">10 memories</span>
+                    <div class="about-icon">
+                        📖
+                    </div>
 
-                    <button class="view-all-btn" onclick="openStoryGallery()">
-                        View All
+                    <h3>
+                        Stories
+                    </h3>
+
+                    <p>
+                        Documenting life events, milestones, and unforgettable experiences.
+                    </p>
+
+                </div>
+
+
+                <div class="about-box fade-in">
+
+                    <div class="about-icon">
+                        ✨
+                    </div>
+
+                    <h3>
+                        Passions
+                    </h3>
+
+                    <p>
+                        Exploring new places, learning new things, and enjoying every day.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- STORIES -->
+
+    <section id="stories" class="stories">
+
+        <div class="stories-container">
+
+
+            <div class="stories-heading">
+
+                <p class="section-label">
+                    TIMELINE
+                </p>
+
+                <h2>
+                    Stories & Memories
+                </h2>
+
+                <p>
+                    Select a year to view selected memories.
+                </p>
+
+            </div>
+
+
+            <!-- STORY YEARS -->
+
+            <div class="story-highlights">
+
+
+                <div
+                    class="story-highlight active"
+                    onclick="selectStory('2026', event)">
+
+                    <div class="story-circle">
+
+                        <img
+                            src="https://widutbgygnamjlkaovrk.supabase.co/storage/v1/object/public/stories/story1.jpg"
+                            alt="2026 Stories"
+                            onerror="imageError(this)">
+
+                    </div>
+
+                    <span>
+                        2026
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="story-highlight"
+                    onclick="selectStory('2025', event)">
+
+                    <div class="story-circle">
+
+                        <img
+                            src="https://widutbgygnamjlkaovrk.supabase.co/storage/v1/object/public/photos/photo2.jpg"
+                            alt="2025 Stories"
+                            onerror="imageError(this)">
+
+                    </div>
+
+                    <span>
+                        2025
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="story-highlight"
+                    onclick="showNewStoryMessage()">
+
+                    <div class="story-circle new-circle">
+
+                        <span class="plus">
+                            +
+                        </span>
+
+                    </div>
+
+                    <span>
+                        Add Year
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- SELECTED MEMORY -->
+
+            <div class="selected-memory fade-in">
+
+
+                <div class="selected-header">
+
+                    <div>
+
+                        <small>
+                            FEATURED MEMORIES
+                        </small>
+
+                        <h3 id="selectedTitle">
+                            2026
+                        </h3>
+
+                    </div>
+
+
+                    <div class="memory-count-box">
+
+                        <span
+                            id="memoryCount"
+                            class="memory-count">
+
+                            0 memories
+
+                        </span>
+
+
+                        <button
+                            class="view-all-btn"
+                            onclick="openStoryGallery()"
+                            type="button">
+
+                            View All
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="slider-container">
+
+
+                    <button
+                        class="slide-btn prev-btn"
+                        onclick="prevPhoto()"
+                        aria-label="Previous Photo"
+                        type="button">
+
+                        &#8249;
+
                     </button>
 
+
+                    <div
+                        id="memoryGrid"
+                        class="memory-grid">
+
+                    </div>
+
+
+                    <button
+                        class="slide-btn next-btn"
+                        onclick="nextPhoto()"
+                        aria-label="Next Photo"
+                        type="button">
+
+                        &#8250;
+
+                    </button>
+
+
                 </div>
-
-            </div>
-
-
-            <div class="slider-container">
-
-                <button class="slide-btn prev-btn"
-                    onclick="prevPhoto()"
-                    aria-label="Previous Photo">
-                    &#8249;
-                </button>
-
-
-                <div id="memoryGrid" class="memory-grid">
-                </div>
-
-
-                <button class="slide-btn next-btn"
-                    onclick="nextPhoto()"
-                    aria-label="Next Photo">
-                    &#8250;
-                </button>
 
             </div>
 
         </div>
 
-    </div>
-
-</section>
+    </section>
 
 
-<section id="photos" class="photos">
+    <!-- PHOTOS -->
 
-    <div class="section-container">
+    <section id="photos" class="photos">
 
-        <p class="section-label">GALLERY</p>
+        <div class="section-container">
 
-        <h2>My Photos</h2>
 
-        <p class="section-description">
-            A collection of moments captured over time.
+            <p class="section-label">
+                GALLERY
+            </p>
+
+
+            <h2>
+                My Photos
+            </h2>
+
+
+            <p class="section-description">
+                A collection of moments captured over time.
+            </p>
+
+
+            <div
+                id="photoLoading"
+                class="loading"
+                style="display: none;">
+
+                Loading photo gallery...
+
+            </div>
+
+
+            <div
+                id="photoError"
+                class="photo-error"
+                style="display: none;">
+
+                <h3>
+                    Could not load photos
+                </h3>
+
+                <p>
+                    Please check your connection and try again.
+                </p>
+
+                <button
+                    onclick="loadPhotos()"
+                    type="button">
+
+                    Retry
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="gallery"
+                class="gallery">
+
+            </div>
+
+
+            <div
+                style="text-align: center; margin-top: 35px;">
+
+                <button
+                    id="viewMoreBtn"
+                    class="button"
+                    onclick="toggleViewAllPhotos()"
+                    type="button">
+
+                    View More
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <!-- CONTACT -->
+
+    <section id="contact" class="contact">
+
+        <div class="section-container">
+
+
+            <p class="section-label">
+                GET IN TOUCH
+            </p>
+
+
+            <h2>
+                Contact
+            </h2>
+
+
+            <div class="contact-wrapper">
+
+
+                <div class="contact-info">
+
+
+                    <div class="info-item">
+
+                        <span class="info-icon">
+                            📧
+                        </span>
+
+                        <div>
+
+                            <h4>
+                                Email
+                            </h4>
+
+                            <p>
+                                contact@dhanula.com
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="info-item">
+
+                        <span class="info-icon">
+                            📍
+                        </span>
+
+                        <div>
+
+                            <h4>
+                                Location
+                            </h4>
+
+                            <p>
+                                Sri Lanka
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="social-links">
+
+                        <a href="#" target="_blank">
+                            Instagram
+                        </a>
+
+                        <a href="#" target="_blank">
+                            Facebook
+                        </a>
+
+                        <a href="#" target="_blank">
+                            LinkedIn
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <form
+                    class="contact-form"
+                    onsubmit="handleContactSubmit(event)">
+
+                    <input
+                        type="text"
+                        placeholder="Your Name"
+                        required>
+
+
+                    <input
+                        type="email"
+                        placeholder="Your Email"
+                        required>
+
+
+                    <textarea
+                        rows="5"
+                        placeholder="Your Message"
+                        required></textarea>
+
+
+                    <button
+                        type="submit"
+                        class="button">
+
+                        Send Message
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <h3>
+            Dhanula
+        </h3>
+
+        <p>
+            © 2026 Dhanula. All rights reserved.
         </p>
 
-
-        <div id="photoLoading"
-            class="loading"
-            style="display: none;">
-
-            Loading photo gallery...
-
-        </div>
+    </footer>
 
 
-        <div id="photoError"
-            class="photo-error"
-            style="display: none;">
+    <!-- STORY GALLERY MODAL -->
 
-            <h3>Could not load photos</h3>
+    <div
+        id="storyGalleryModal"
+        class="story-gallery-modal">
 
-            <p>Please check your connection and try again.</p>
-
-            <button onclick="loadPhotos()">Retry</button>
-
-        </div>
+        <div class="gallery-modal-content">
 
 
-        <div id="gallery" class="gallery">
-        </div>
+            <div class="gallery-modal-header">
+
+                <h3 id="galleryModalTitle">
+                    All Memories
+                </h3>
 
 
-        <div style="text-align: center; margin-top: 35px;">
+                <button
+                    class="close-gallery-btn"
+                    onclick="closeStoryGallery()"
+                    type="button">
 
-            <button id="viewMoreBtn"
-                class="button"
-                onclick="toggleViewAllPhotos()">
+                    &times;
 
-                View More
-
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<section id="contact" class="contact">
-
-    <div class="section-container">
-
-        <p class="section-label">GET IN TOUCH</p>
-
-        <h2>Contact</h2>
-
-
-        <div class="contact-wrapper">
-
-
-            <div class="contact-info">
-
-                <div class="info-item">
-
-                    <span class="info-icon">📧</span>
-
-                    <div>
-
-                        <h4>Email</h4>
-
-                        <p>contact@dhanula.com</p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                    <span class="info-icon">📍</span>
-
-                    <div>
-
-                        <h4>Location</h4>
-
-                        <p>Sri Lanka</p>
-
-                    </div>
-
-                </div>
-
-
-                <div class="social-links">
-
-                    <a href="#" target="_blank">Instagram</a>
-
-                    <a href="#" target="_blank">Facebook</a>
-
-                    <a href="#" target="_blank">LinkedIn</a>
-
-                </div>
+                </button>
 
             </div>
 
 
-            <form class="contact-form"
-                onsubmit="handleContactSubmit(event)">
+            <div
+                id="storyGalleryGrid"
+                class="story-gallery-grid">
 
-                <input type="text"
-                    placeholder="Your Name"
-                    required>
+            </div>
 
-                <input type="email"
-                    placeholder="Your Email"
-                    required>
 
-                <textarea rows="5"
-                    placeholder="Your Message"
-                    required></textarea>
+        </div>
 
-                <button type="submit"
-                    class="button">
+    </div>
 
-                    Send Message
+
+    <!-- IMAGE MODAL -->
+
+    <div
+        id="imageModal"
+        class="image-modal">
+
+
+        <button
+            class="close-button"
+            onclick="closeImage()"
+            type="button">
+
+            &times;
+
+        </button>
+
+
+        <button
+            class="modal-nav-btn modal-prev-btn"
+            onclick="prevModalImage()"
+            type="button">
+
+            &#8249;
+
+        </button>
+
+
+        <div class="lightbox-content">
+
+
+            <img
+                id="fullImage"
+                class="full-image"
+                src=""
+                alt="Full view">
+
+
+            <div class="lightbox-footer">
+
+
+                <span
+                    id="storyCaption"
+                    class="story-caption">
+
+                </span>
+
+
+                <button
+                    class="like-btn"
+                    id="likeBtn"
+                    onclick="toggleLikeCurrentPhoto()"
+                    type="button">
+
+                    <span id="likeHeart">
+                        ❤️
+                    </span>
+
+                    <span id="likeCount">
+                        0
+                    </span>
 
                 </button>
 
-            </form>
 
-        </div>
-
-    </div>
-
-</section>
-
-
-<footer>
-
-    <h3>Dhanula</h3>
-
-    <p>© 2026 Dhanula. All rights reserved.</p>
-
-</footer>
-
-
-<!-- STORY GALLERY MODAL -->
-
-<div id="storyGalleryModal"
-    class="story-gallery-modal">
-
-    <div class="gallery-modal-content">
-
-        <div class="gallery-modal-header">
-
-            <h3 id="galleryModalTitle">
-                All Memories
-            </h3>
-
-            <button class="close-gallery-btn"
-                onclick="closeStoryGallery()">
-
-                &times;
-
-            </button>
+            </div>
 
         </div>
 
 
-        <div id="storyGalleryGrid"
-            class="story-gallery-grid">
+        <button
+            class="modal-nav-btn modal-next-btn"
+            onclick="nextModalImage()"
+            type="button">
 
-        </div>
+            &#8250;
 
-    </div>
+        </button>
 
-</div>
-
-
-<!-- IMAGE MODAL -->
-
-<div id="imageModal"
-    class="image-modal">
-
-    <button class="close-button"
-        onclick="closeImage()">
-
-        &times;
-
-    </button>
-
-
-    <button class="modal-nav-btn modal-prev-btn"
-        onclick="prevModalImage()">
-
-        &#8249;
-
-    </button>
-
-
-    <div class="lightbox-content">
-
-        <img id="fullImage"
-            class="full-image"
-            src=""
-            alt="Full view">
-
-
-        <div class="lightbox-footer">
-
-            <span id="storyCaption"
-                class="story-caption">
-
-            </span>
-
-
-            <button class="like-btn"
-                id="likeBtn"
-                onclick="toggleLikeCurrentPhoto()">
-
-                <span id="likeHeart">❤️</span>
-
-                <span id="likeCount">0</span>
-
-            </button>
-
-        </div>
 
     </div>
 
 
-    <button class="modal-nav-btn modal-next-btn"
-        onclick="nextModalImage()">
-
-        &#8250;
-
-    </button>
-
-</div>
-
-
-<script src="script.js"></script>
-```
+    <script src="script.js"></script>
 
 </body>
 
