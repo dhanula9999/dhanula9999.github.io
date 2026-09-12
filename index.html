@@ -3,72 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dhanula Personal Website</title>
+    <title>Dhanula | Personal Portfolio & Memories</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Liquid Glass Floating Nav Bar -->
-    <header class="header-container">
-        <nav class="main-nav" id="mainNav">
+    <!-- Header & Navigation Bar -->
+    <header>
+        <div class="logo">DHANULA</div>
+        <nav id="mainNav">
             <a href="#home" class="active">Home</a>
             <a href="#about">About Me</a>
             <a href="#stories">Stories</a>
             <a href="#photos">My Photos</a>
             <a href="#contact">Contact</a>
         </nav>
-        <button id="themeToggle" class="theme-btn" aria-label="Toggle Theme">🌙</button>
-        <button id="navToggle" class="nav-toggle" aria-label="Toggle Navigation">☰</button>
+        <div class="header-right">
+            <button id="themeToggle" class="theme-btn" aria-label="Toggle dark/light theme">
+                <i class="fas fa-moon"></i>
+            </button>
+            <button id="navToggle" class="nav-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
     </header>
 
-    <!-- Main Content Container -->
-    <main class="container">
-        <!-- Stories / Memories Section -->
-        <section id="stories" class="section">
-            <div class="section-header">
+    <!-- Hero / Home Section -->
+    <section id="home" class="hero fade-in">
+        <div class="hero-content">
+            <h1>Hi, I'm <span class="highlight">Dhanula</span></h1>
+            <p>Welcome to my personal space where I archive my journey, thoughts, and memories.</p>
+            <div class="hero-buttons">
+                <a href="#photos" class="btn btn-primary">Explore Gallery</a>
+                <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="section container fade-in">
+        <h2 class="section-title">About Me</h2>
+        <div class="about-grid">
+            <div class="about-text">
+                <p>Hello! I'm Dhanula. I am passionate about technology, creative photography, and exploring new experiences.</p>
+                <p>This website serves as my digital memory capsule—a place where I store my favorite moments, photographic journeys, and ongoing stories.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stories & Memories Section -->
+    <section id="stories" class="section container fade-in">
+        <div class="section-header">
+            <div>
                 <h2>Stories & Memories</h2>
-                <div class="story-highlights">
-                    <button class="story-highlight active" onclick="selectStory('2026', event)">2026</button>
-                    <button class="story-highlight" onclick="selectStory('2025', event)">2025</button>
-                </div>
+                <p class="section-subtitle">Highlights and updates sorted by year</p>
             </div>
-
-            <div class="memory-status">
-                <span id="selectedTitle">2026</span> - <span id="memoryCount">0 memories</span>
-                <div class="memory-controls">
-                    <button onclick="prevPhoto()">❮ Prev</button>
-                    <button onclick="nextPhoto()">Next ❯</button>
-                    <button onclick="openStoryGallery()">View All</button>
-                </div>
+            <div class="story-highlights">
+                <button class="story-highlight active" onclick="selectStory('2026', event)">2026</button>
+                <button class="story-highlight" onclick="selectStory('2025', event)">2025</button>
+                <button class="add-story-btn" onclick="showNewStoryMessage()">+ Add Year</button>
             </div>
+        </div>
 
-            <div id="memoryGrid" class="memory-grid"></div>
-        </section>
+        <div class="memory-status">
+            <span id="selectedTitle">2026</span> - <span id="memoryCount">0 memories</span>
+            <div class="memory-controls">
+                <button onclick="prevPhoto()"><i class="fas fa-chevron-left"></i> Prev</button>
+                <button onclick="nextPhoto()">Next <i class="fas fa-chevron-right"></i></button>
+                <button onclick="openStoryGallery()"><i class="fas fa-th"></i> View All</button>
+            </div>
+        </div>
 
-        <!-- Photos Section -->
-        <section id="photos" class="section">
-            <div class="section-header">
+        <div id="memoryGrid" class="memory-grid"></div>
+    </section>
+
+    <!-- Photos Section -->
+    <section id="photos" class="section container fade-in">
+        <div class="section-header">
+            <div>
                 <h2>My Photos</h2>
-                <button id="viewMoreBtn" class="glass-btn" onclick="toggleViewAllPhotos()">View More</button>
+                <p class="section-subtitle">A collection of moments captured through my lens</p>
             </div>
-            <div id="gallery" class="photo-gallery"></div>
-        </section>
-    </main>
+            <button id="viewMoreBtn" class="btn btn-secondary" onclick="toggleViewAllPhotos()">View More</button>
+        </div>
+        <div id="gallery" class="photo-gallery"></div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section container fade-in">
+        <h2 class="section-title">Contact Me</h2>
+        <div class="contact-wrapper">
+            <form class="contact-form" onsubmit="handleContactSubmit(event)">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" required placeholder="Your Name">
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="Your Email">
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" rows="5" required placeholder="Your Message"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Dhanula. All rights reserved.</p>
+    </footer>
 
     <!-- Image Lightbox Modal -->
     <div id="imageModal" class="modal">
         <span class="close-modal" onclick="closeImage()">&times;</span>
-        <button class="modal-nav prev" onclick="prevModalImage()">❮</button>
+        <button class="modal-nav prev" onclick="prevModalImage()"><i class="fas fa-chevron-left"></i></button>
         <div class="modal-content-wrapper">
             <img id="fullImage" class="modal-content" src="" alt="Full View">
             <p id="storyCaption"></p>
         </div>
-        <button class="modal-nav next" onclick="nextModalImage()">❯</button>
+        <button class="modal-nav next" onclick="nextModalImage()"><i class="fas fa-chevron-right"></i></button>
     </div>
 
     <!-- Story Gallery Modal -->
     <div id="storyGalleryModal" class="modal">
-        <div class="modal-body glass-panel">
+        <div class="modal-body">
             <span class="close-modal" onclick="closeStoryGallery()">&times;</span>
             <h3 id="galleryModalTitle">Memories</h3>
             <div id="storyGalleryGrid" class="story-gallery-grid"></div>
