@@ -241,6 +241,117 @@ const storiesData = {
 };
 
 
+/* =====================================================
+   AUTO UPDATE STORY YEAR COVER IMAGES
+===================================================== */
+
+function updateStoryCoverImages() {
+
+    Object.keys(storiesData).forEach(
+        year => {
+
+            const stories =
+                storiesData[year];
+
+
+            if (
+                !stories ||
+                stories.length === 0
+            ) {
+
+                return;
+
+            }
+
+
+            const latestStory =
+                stories[0];
+
+
+            const coverImage =
+                document.getElementById(
+                    `storyYear${year}Image`
+                );
+
+
+            if (coverImage) {
+
+                coverImage.src =
+                    latestStory.url;
+
+
+                coverImage.onerror =
+                    function () {
+
+                        imageError(this);
+
+                    };
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ADD NEW STORY
+   NEW STORY AUTOMATICALLY BECOMES COVER IMAGE
+===================================================== */
+
+function addNewStory(
+    year,
+    fileName
+) {
+
+    if (
+        !year ||
+        !fileName
+    ) {
+
+        return;
+
+    }
+
+
+    if (!storiesData[year]) {
+
+        storiesData[year] = [];
+
+    }
+
+
+    storiesData[year].unshift({
+
+        url:
+            getStoryUrl(fileName)
+
+    });
+
+
+    updateStoryCoverImages();
+
+
+    if (
+        currentYear === year
+    ) {
+
+        currentStoryIndex = 0;
+
+        renderStories();
+
+        startStoryAutoPlay();
+
+    }
+
+}
+
+
+/* =====================================================
+   CURRENT STORY SETTINGS
+===================================================== */
+
 let currentYear = "2026";
 
 let currentStoryIndex = 0;
@@ -1709,6 +1820,9 @@ document.addEventListener(
 document.addEventListener(
     "DOMContentLoaded",
     () => {
+
+        updateStoryCoverImages();
+
 
         renderStories();
 
