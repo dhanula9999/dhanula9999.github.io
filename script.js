@@ -1,24 +1,17 @@
 /* =====================================================
-    DHANULA PERSONAL WEBSITE
-    OPTIMIZED & UPDATED SCRIPT
+   DHANULA PERSONAL WEBSITE - OPTIMIZED SCRIPT
 ===================================================== */
 
 const SUPABASE_URL = "https://widutbgygnamjlkaovrk.supabase.co";
 
-function getPhotoUrl(fileName) {
-    return `${SUPABASE_URL}/storage/v1/object/public/photos/${fileName}`;
-}
-
-function getStoryUrl(fileName) {
-    return `${SUPABASE_URL}/storage/v1/object/public/stories/${fileName}`;
-}
+const getPhotoUrl = (fileName) => `${SUPABASE_URL}/storage/v1/object/public/photos/${fileName}`;
+const getStoryUrl = (fileName) => `${SUPABASE_URL}/storage/v1/object/public/stories/${fileName}`;
 
 /* =====================================================
-    DARK / LIGHT MODE SYSTEM
+   DARK / LIGHT MODE SYSTEM
 ===================================================== */
 
 const themeToggleBtn = document.getElementById('themeToggle');
-
 const savedTheme = localStorage.getItem('theme') || 
     (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
@@ -26,8 +19,8 @@ document.documentElement.setAttribute('data-theme', savedTheme);
 
 if (themeToggleBtn) {
     themeToggleBtn.addEventListener('click', () => {
-        let currentTheme = document.documentElement.getAttribute('data-theme');
-        let newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
@@ -35,7 +28,7 @@ if (themeToggleBtn) {
 }
 
 /* =====================================================
-    MOBILE NAVIGATION TOGGLE & AUTO-CLOSE
+   MOBILE NAVIGATION TOGGLE & AUTO-CLOSE
 ===================================================== */
 
 const navToggle = document.getElementById('navToggle');
@@ -54,11 +47,16 @@ if (navToggle && mainNav) {
 }
 
 /* =====================================================
-    STORIES & MEMORIES DATA & RENDERING
+   STORIES & MEMORIES DATA & RENDERING
 ===================================================== */
 
 const storiesData = {
     "2026": [
+        { url: getStoryUrl("story28.jpg") },
+        { url: getStoryUrl("story27.jpg") },
+        { url: getStoryUrl("story26.jpg") },
+        { url: getStoryUrl("story25.jpg") },
+        { url: getStoryUrl("story24.jpg") },
         { url: getStoryUrl("story23.jpg") },
         { url: getStoryUrl("story22.jpg") },
         { url: getStoryUrl("story21.jpg") },
@@ -103,8 +101,8 @@ function renderStories() {
 
     const memories = storiesData[currentYear] || [];
     
-    if (selectedTitle) selectedTitle.innerText = currentYear;
-    if (memoryCount) memoryCount.innerText = `${memories.length} memories`;
+    if (selectedTitle) selectedTitle.textContent = currentYear;
+    if (memoryCount) memoryCount.textContent = `${memories.length} memories`;
 
     memoryGrid.innerHTML = "";
 
@@ -125,7 +123,7 @@ function renderStories() {
 
         const img = document.createElement("img");
         img.src = item.url;
-        img.alt = "Memory Image";
+        img.alt = `Memory Image ${idx + 1}`;
         img.onerror = function() { imageError(this); };
 
         card.appendChild(img);
@@ -163,14 +161,14 @@ function nextPhotoOneByOne() {
     renderStories();
 }
 
-function selectStory(year) {
+function selectStory(year, event) {
     currentYear = year;
     currentStoryIndex = 0;
 
     document.querySelectorAll(".story-highlight").forEach(el => el.classList.remove("active"));
     
-    if (window.event && window.event.currentTarget) {
-        window.event.currentTarget.classList.add("active");
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add("active");
     }
 
     renderStories();
@@ -199,7 +197,7 @@ function openStoryGallery() {
 
     if (!modal || !grid) return;
 
-    if (title) title.innerText = `${currentYear} All Memories`;
+    if (title) title.textContent = `${currentYear} All Memories`;
     grid.innerHTML = "";
 
     memories.forEach((item, index) => {
@@ -238,54 +236,35 @@ function imageError(img) {
 }
 
 /* =====================================================
-    PHOTOS GALLERY SECTION (FIXED FIRST COVER IMAGE)
+   PHOTOS GALLERY SECTION
 ===================================================== */
 
 const photoAlbums = [
     {
         title: "Album 35-51",
         cover: "photo35.jpg",
-        images: [
-            "photo35.jpg", "photo36.jpg", "photo37.jpg", "photo38.jpg",
-            "photo39.jpg", "photo40.jpg", "photo41.jpg", "photo42.jpg",
-            "photo43.jpg", "photo44.jpg", "photo45.jpg", "photo46.jpg",
-            "photo47.jpg", "photo48.jpg", "photo49.jpg", "photo50.jpg",
-            "photo51.jpg"
-        ]
+        images: Array.from({ length: 17 }, (_, i) => `photo${35 + i}.jpg`)
     },
     {
         title: "Album 33-34",
         cover: "photo33.jpg",
         images: ["photo33.jpg", "photo34.jpg"]
     },
-    { title: "Photo 32", cover: "photo32.jpg", images: ["photo32.jpg"] },
-    { title: "Photo 31", cover: "photo31.jpg", images: ["photo31.jpg"] },
-    { title: "Photo 30", cover: "photo30.jpg", images: ["photo30.jpg"] },
-    { title: "Photo 29", cover: "photo29.jpg", images: ["photo29.jpg"] },
-    { title: "Photo 28", cover: "photo28.jpg", images: ["photo28.jpg"] },
-    { title: "Photo 27", cover: "photo27.jpg", images: ["photo27.jpg"] },
-    { title: "Photo 26", cover: "photo26.jpg", images: ["photo26.jpg"] },
-    { title: "Photo 25", cover: "photo25.jpg", images: ["photo25.jpg"] },
-    { title: "Photo 24", cover: "photo24.jpg", images: ["photo24.jpg"] },
-    { title: "Photo 23", cover: "photo23.jpg", images: ["photo23.jpg"] },
-    { title: "Photo 22", cover: "photo22.jpg", images: ["photo22.jpg"] },
-    { title: "Photo 21", cover: "photo21.jpg", images: ["photo21.jpg"] },
+    ...Array.from({ length: 12 }, (_, i) => ({
+        title: `Photo ${32 - i}`,
+        cover: `photo${32 - i}.jpg`,
+        images: [`photo${32 - i}.jpg`]
+    })),
     {
         title: "Special Album",
         cover: "photo7.jpg",
-        images: [
-            "photo7.jpg", "photo8.jpg", "photo9.jpg", "photo10.jpg",
-            "photo11.jpg", "photo12.jpg", "photo13.jpg", "photo14.jpg",
-            "photo15.jpg", "photo16.jpg", "photo17.jpg", "photo18.jpg",
-            "photo19.jpg", "photo20.jpg"
-        ]
+        images: Array.from({ length: 14 }, (_, i) => `photo${7 + i}.jpg`)
     },
-    { title: "Photo 6", cover: "photo6.jpg", images: ["photo6.jpg"] },
-    { title: "Photo 5", cover: "photo5.jpg", images: ["photo5.jpg"] },
-    { title: "Photo 4", cover: "photo4.jpg", images: ["photo4.jpg"] },
-    { title: "Photo 3", cover: "photo3.jpg", images: ["photo3.jpg"] },
-    { title: "Photo 2", cover: "photo2.jpg", images: ["photo2.jpg"] },
-    { title: "Photo 1", cover: "photo1.jpg", images: ["photo1.jpg"] }
+    ...Array.from({ length: 6 }, (_, i) => ({
+        title: `Photo ${6 - i}`,
+        cover: `photo${6 - i}.jpg`,
+        images: [`photo${6 - i}.jpg`]
+    }))
 ];
 
 let showingAllPhotos = false;
@@ -323,7 +302,7 @@ function loadPhotos() {
         const badge = document.createElement("span");
         badge.className = "album-badge";
         badge.style.display = album.images.length > 1 ? "block" : "none";
-        badge.innerText = `+${album.images.length}`;
+        badge.textContent = `+${album.images.length}`;
         imageContainer.appendChild(badge);
 
         imageContainer.addEventListener("click", () => {
@@ -336,7 +315,7 @@ function loadPhotos() {
     }
 
     if (viewMoreBtn) {
-        viewMoreBtn.innerText = showingAllPhotos ? "Show Less" : "View More";
+        viewMoreBtn.textContent = showingAllPhotos ? "Show Less" : "View More";
     }
 
     initScrollObserver();
@@ -348,7 +327,7 @@ function toggleViewAllPhotos() {
 }
 
 /* =====================================================
-    LIGHTBOX MODAL & SLIDESHOW
+   LIGHTBOX MODAL & SLIDESHOW
 ===================================================== */
 
 function openImageModal(images, index = 0) {
@@ -359,14 +338,21 @@ function openImageModal(images, index = 0) {
     const fullImg = document.getElementById("fullImage");
     const captionElement = document.getElementById("storyCaption");
 
-    if (captionElement) {
-        captionElement.innerText = "";
-    }
+    if (captionElement) captionElement.textContent = "";
 
     if (modal && fullImg) {
         fullImg.src = currentModalImages[currentModalIndex];
         modal.classList.add("show");
         startSlideshow();
+        preloadNextImage();
+    }
+}
+
+function preloadNextImage() {
+    if (currentModalImages.length > 1) {
+        const nextIndex = (currentModalIndex + 1) % currentModalImages.length;
+        const img = new Image();
+        img.src = currentModalImages[nextIndex];
     }
 }
 
@@ -375,7 +361,7 @@ function startSlideshow() {
     if (currentModalImages.length > 1) {
         slideshowInterval = setInterval(() => {
             nextModalImage();
-        }, 3000);
+        }, 3500);
     }
 }
 
@@ -396,6 +382,7 @@ function nextModalImage() {
     if (currentModalImages.length <= 1) return;
     currentModalIndex = (currentModalIndex + 1) % currentModalImages.length;
     document.getElementById("fullImage").src = currentModalImages[currentModalIndex];
+    preloadNextImage();
 }
 
 function prevModalImage() {
@@ -405,7 +392,35 @@ function prevModalImage() {
 }
 
 /* =====================================================
-    INTERSECTION OBSERVER & FORM HANDLER
+   TOUCH SWIPE SUPPORT FOR MODAL
+===================================================== */
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+function handleTouchStart(e) {
+    touchStartX = e.changedTouches[0].screenX;
+}
+
+function handleTouchEnd(e) {
+    touchEndX = e.changedTouches[0].screenX;
+    handleSwipe();
+}
+
+function handleSwipe() {
+    const threshold = 50;
+    if (touchEndX < touchStartX - threshold) {
+        nextModalImage();
+        startSlideshow();
+    }
+    if (touchEndX > touchStartX + threshold) {
+        prevModalImage();
+        startSlideshow();
+    }
+}
+
+/* =====================================================
+   INTERSECTION OBSERVER & FORM HANDLER
 ===================================================== */
 
 function initScrollObserver() {
@@ -428,7 +443,7 @@ function handleContactSubmit(e) {
 }
 
 /* =====================================================
-    INITIALIZATION & KEYBOARD CONTROLS
+   INITIALIZATION & KEYBOARD CONTROLS
 ===================================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -437,8 +452,13 @@ document.addEventListener("DOMContentLoaded", () => {
     loadPhotos();
     initScrollObserver();
 
+    const imageModal = document.getElementById("imageModal");
+    if (imageModal) {
+        imageModal.addEventListener('touchstart', handleTouchStart, { passive: true });
+        imageModal.addEventListener('touchend', handleTouchEnd, { passive: true });
+    }
+
     document.addEventListener("keydown", (e) => {
-        const imageModal = document.getElementById("imageModal");
         const isModalOpen = imageModal && imageModal.classList.contains("show");
 
         if (e.key === "Escape") {
