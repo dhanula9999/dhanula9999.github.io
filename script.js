@@ -198,7 +198,6 @@ const storiesData = {
 
     "2026": [
 
-        { url: getStoryUrl("story33.jpg") },
         { url: getStoryUrl("story32.jpg") },
         { url: getStoryUrl("story31.jpg") },
         { url: getStoryUrl("story30.jpg") },
@@ -865,13 +864,13 @@ function imageError(img) {
 const photoAlbums = [
 
     {
-        title: "Album 52-57",
+        title: "Album 52-58",
 
         cover: "photo52.jpg",
 
         images:
             Array.from(
-                { length: 6 },
+                { length: 7 },
                 (_, i) =>
                     `photo${52 + i}.jpg`
             )
