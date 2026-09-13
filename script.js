@@ -864,13 +864,24 @@ function imageError(img) {
 const photoAlbums = [
 
     {
-        title: "Album 52-58",
+        title: "Photo 58",
+
+        cover: "photo58.jpg",
+
+        images: [
+            "photo58.jpg"
+        ]
+    },
+
+
+    {
+        title: "Album 52-57",
 
         cover: "photo52.jpg",
 
         images:
             Array.from(
-                { length: 7 },
+                { length: 6 },
                 (_, i) =>
                     `photo${52 + i}.jpg`
             )
