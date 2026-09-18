@@ -1,6 +1,7 @@
 /* =====================================================
    DHANULA PERSONAL WEBSITE
-   FULLY FIXED SCRIPT
+   FULLY COMPLETED SCRIPT
+   Existing functionality preserved
 ===================================================== */
 
 
@@ -31,9 +32,7 @@ const themeToggleBtn =
 const savedTheme =
     localStorage.getItem("theme") ||
     (
-        window.matchMedia(
-            "(prefers-color-scheme: dark)"
-        ).matches
+        window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
             : "light"
     );
@@ -133,9 +132,7 @@ function updateActiveNav() {
 
 
     const navLinks =
-        document.querySelectorAll(
-            "#mainNav a"
-        );
+        document.querySelectorAll("#mainNav a");
 
 
     let currentSection = "";
@@ -251,95 +248,75 @@ const storiesData = {
 
 function updateStoryCoverImages() {
 
-    Object.keys(storiesData).forEach(
-        year => {
+    Object.keys(storiesData).forEach(year => {
 
-            const stories =
-                storiesData[year];
-
-
-            if (
-                !stories ||
-                stories.length === 0
-            ) {
-
-                return;
-
-            }
+        const stories =
+            storiesData[year];
 
 
-            const latestStory =
-                stories[0];
+        if (
+            !stories ||
+            stories.length === 0
+        ) {
+            return;
+        }
 
 
-            const coverImage =
-                document.getElementById(
-                    `storyYear${year}Image`
-                );
+        const latestStory =
+            stories[0];
 
 
-            if (coverImage) {
+        const coverImage =
+            document.getElementById(
+                `storyYear${year}Image`
+            );
 
-                coverImage.src =
-                    latestStory.url;
+
+        if (coverImage) {
+
+            coverImage.src =
+                latestStory.url;
 
 
-                coverImage.onerror =
-                    function () {
+            coverImage.onerror =
+                function () {
 
-                        imageError(this);
+                    imageError(this);
 
-                    };
-
-            }
+                };
 
         }
-    );
+
+    });
 
 }
 
 
 /* =====================================================
    ADD NEW STORY
-   NEW STORY AUTOMATICALLY BECOMES COVER IMAGE
 ===================================================== */
 
-function addNewStory(
-    year,
-    fileName
-) {
+function addNewStory(year, fileName) {
 
-    if (
-        !year ||
-        !fileName
-    ) {
-
+    if (!year || !fileName) {
         return;
-
     }
 
 
     if (!storiesData[year]) {
-
         storiesData[year] = [];
-
     }
 
 
     storiesData[year].unshift({
-
-        url:
-            getStoryUrl(fileName)
-
+        url: getStoryUrl(fileName)
     });
 
 
     updateStoryCoverImages();
 
 
-    if (
-        currentYear === year
-    ) {
+    if (currentYear === year) {
 
         currentStoryIndex = 0;
 
@@ -382,9 +359,7 @@ function renderStories() {
 
 
     if (!memoryGrid) {
-
         return;
-
     }
 
 
@@ -474,10 +449,8 @@ function renderStories() {
 
             img.src = item.url;
 
-
             img.alt =
                 `Memory ${idx + 1}`;
-
 
             img.loading =
                 "lazy";
@@ -542,9 +515,7 @@ function startStoryAutoPlay() {
 
 
     if (memories.length <= 1) {
-
         return;
-
     }
 
 
@@ -584,9 +555,7 @@ function nextPhotoOneByOne() {
 
 
     if (memories.length <= 1) {
-
         return;
-
     }
 
 
@@ -605,10 +574,7 @@ function nextPhotoOneByOne() {
    SELECT STORY YEAR
 ===================================================== */
 
-function selectStory(
-    year,
-    event
-) {
+function selectStory(year, event) {
 
     currentYear = year;
 
@@ -616,14 +582,10 @@ function selectStory(
 
 
     document
-        .querySelectorAll(
-            ".story-highlight"
-        )
+        .querySelectorAll(".story-highlight")
         .forEach(el => {
 
-            el.classList.remove(
-                "active"
-            );
+            el.classList.remove("active");
 
         });
 
@@ -641,7 +603,6 @@ function selectStory(
 
 
     renderStories();
-
 
     startStoryAutoPlay();
 
@@ -668,9 +629,7 @@ function prevPhoto() {
 
 
     if (memories.length === 0) {
-
         return;
-
     }
 
 
@@ -683,7 +642,6 @@ function prevPhoto() {
 
 
     renderStories();
-
 
     startStoryAutoPlay();
 
@@ -719,9 +677,7 @@ function openStoryGallery() {
 
 
     if (!modal || !grid) {
-
         return;
-
     }
 
 
@@ -865,9 +821,7 @@ const photoAlbums = [
 
     {
         title: "Photo 58",
-
         cover: "photo58.jpg",
-
         images: [
             "photo58.jpg"
         ]
@@ -876,9 +830,7 @@ const photoAlbums = [
 
     {
         title: "Album 52-57",
-
         cover: "photo52.jpg",
-
         images:
             Array.from(
                 { length: 6 },
@@ -890,9 +842,7 @@ const photoAlbums = [
 
     {
         title: "Album 35-51",
-
         cover: "photo35.jpg",
-
         images:
             Array.from(
                 { length: 17 },
@@ -904,9 +854,7 @@ const photoAlbums = [
 
     {
         title: "Album 33-34",
-
         cover: "photo33.jpg",
-
         images: [
             "photo33.jpg",
             "photo34.jpg"
@@ -1001,9 +949,7 @@ function loadPhotos() {
 
 
     if (!gallery) {
-
         return;
-
     }
 
 
@@ -1046,9 +992,7 @@ function loadPhotos() {
 
 
         if (!album) {
-
             continue;
-
         }
 
 
@@ -1202,9 +1146,7 @@ function toggleViewAllPhotos() {
     setTimeout(
         () => {
 
-            if (
-                !showingAllPhotos
-            ) {
+            if (!showingAllPhotos) {
 
                 const photosSection =
                     document.getElementById(
@@ -1320,9 +1262,7 @@ function openImageModal(
 
         preloadNextImage();
 
-
         updateLikeDisplay();
-
 
         startSlideshow();
 
@@ -1480,7 +1420,6 @@ function nextModalImage() {
 
     preloadNextImage();
 
-
     updateLikeDisplay();
 
 }
@@ -1559,9 +1498,7 @@ function toggleLikeCurrentPhoto() {
 
 
     if (!key) {
-
         return;
-
     }
 
 
@@ -1601,9 +1538,7 @@ function updateLikeDisplay() {
 
 
     if (!key) {
-
         return;
-
     }
 
 
@@ -1769,6 +1704,126 @@ function initScrollObserver() {
 
 
 /* =====================================================
+   CONTACT
+   GMAIL
+===================================================== */
+
+function openGmail() {
+
+    window.open(
+        "https://mail.google.com/mail/?view=cm&fs=1&to=dhanularajakaruna9999@gmail.com",
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+}
+
+
+/* =====================================================
+   CONTACT
+   WHATSAPP
+===================================================== */
+
+function openWhatsApp() {
+
+    const message =
+        "Hi Dhanula, I found your personal website and would like to get in touch with you.";
+
+
+    const whatsappUrl =
+        `https://wa.me/94766551179?text=${encodeURIComponent(message)}`;
+
+
+    window.open(
+        whatsappUrl,
+        "_blank",
+        "noopener,noreferrer"
+    );
+
+}
+
+
+/* =====================================================
+   CONTACT
+   WECHAT
+===================================================== */
+
+function openWeChat() {
+
+    const wechatNumber =
+        "+86 166 1161 4319";
+
+
+    if (
+        navigator.clipboard &&
+        window.isSecureContext
+    ) {
+
+        navigator.clipboard
+            .writeText(wechatNumber)
+            .catch(() => {});
+
+    } else {
+
+        const tempInput =
+            document.createElement("textarea");
+
+        tempInput.value =
+            wechatNumber;
+
+        tempInput.style.position =
+            "fixed";
+
+        tempInput.style.opacity =
+            "0";
+
+        document.body.appendChild(
+            tempInput
+        );
+
+        tempInput.select();
+
+        try {
+            document.execCommand("copy");
+        } catch (error) {
+            /* Clipboard fallback failed */
+        }
+
+        document.body.removeChild(
+            tempInput
+        );
+
+    }
+
+
+    /*
+       Try to open WeChat app.
+       Browser support depends on device/browser.
+    */
+
+    const wechatAppUrl =
+        "weixin://";
+
+
+    window.location.href =
+        wechatAppUrl;
+
+
+    setTimeout(
+        () => {
+
+            alert(
+                "WeChat number copied: +86 166 1161 4319\n\nOpen WeChat and search for this number to connect."
+            );
+
+        },
+        700
+    );
+
+}
+
+
+/* =====================================================
    CONTACT FORM
 ===================================================== */
 
@@ -1829,6 +1884,65 @@ document.addEventListener(
 
 
 /* =====================================================
+   KEYBOARD CONTROLS
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    e => {
+
+        const modal =
+            document.getElementById(
+                "imageModal"
+            );
+
+
+        const isModalOpen =
+            modal &&
+            modal.classList.contains(
+                "show"
+            );
+
+
+        if (
+            e.key === "Escape"
+        ) {
+
+            closeImage();
+
+            closeStoryGallery();
+
+        }
+
+
+        if (
+            e.key === "ArrowRight" &&
+            isModalOpen
+        ) {
+
+            nextModalImage();
+
+            startSlideshow();
+
+        }
+
+
+        if (
+            e.key === "ArrowLeft" &&
+            isModalOpen
+        ) {
+
+            prevModalImage();
+
+            startSlideshow();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
    INITIALIZATION
 ===================================================== */
 
@@ -1880,61 +1994,6 @@ document.addEventListener(
             );
 
         }
-
-
-        document.addEventListener(
-            "keydown",
-            e => {
-
-                const modal =
-                    document.getElementById(
-                        "imageModal"
-                    );
-
-
-                const isModalOpen =
-                    modal &&
-                    modal.classList.contains(
-                        "show"
-                    );
-
-
-                if (
-                    e.key === "Escape"
-                ) {
-
-                    closeImage();
-
-                    closeStoryGallery();
-
-                }
-
-
-                if (
-                    e.key === "ArrowRight" &&
-                    isModalOpen
-                ) {
-
-                    nextModalImage();
-
-                    startSlideshow();
-
-                }
-
-
-                if (
-                    e.key === "ArrowLeft" &&
-                    isModalOpen
-                ) {
-
-                    prevModalImage();
-
-                    startSlideshow();
-
-                }
-
-            }
-        );
 
     }
 );
