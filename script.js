@@ -956,6 +956,18 @@ function imageError(img) {
 ===================================================== */
 
 const photoAlbums = [
+      {
+        title: "Album 60-65",
+        cover: "photo60.jpg",
+        images: [
+            "photo60.jpg",
+            "photo61.jpg",
+            "photo62.jpg",
+            "photo63.jpg",
+            "photo64.jpg",
+            "photo65.jpg"
+        ]
+    },
 
     {
         title: "Photo 58",
