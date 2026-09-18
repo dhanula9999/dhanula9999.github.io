@@ -895,6 +895,16 @@ const photoAlbums = [
             )
     },
 
+    {
+        title: "Photo 59",
+
+        cover: "photo59.jpg",
+
+        images: [
+            "photo59.jpg"
+        ]
+    },
+
 
     ...Array.from(
         { length: 6 },
