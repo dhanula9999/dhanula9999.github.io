@@ -243,7 +243,9 @@ const storiesData = {
 
 
 /* =====================================================
-   AUTO UPDATE STORY YEAR COVER IMAGES
+   STORY COVER IMAGE
+   Instagram-style:
+   Latest story = circle cover image
 ===================================================== */
 
 function updateStoryCoverImages() {
@@ -254,25 +256,43 @@ function updateStoryCoverImages() {
             storiesData[year];
 
 
-        if (
-            !stories ||
-            stories.length === 0
-        ) {
-            return;
-        }
-
-
-        const latestStory =
-            stories[0];
-
-
         const coverImage =
             document.getElementById(
                 `storyYear${year}Image`
             );
 
 
-        if (coverImage) {
+        if (!coverImage) {
+            return;
+        }
+
+
+        if (
+            !stories ||
+            stories.length === 0
+        ) {
+
+            return;
+
+        }
+
+
+        /*
+           stories[0] is ALWAYS the latest story.
+
+           New stories are added using unshift(),
+           so the newest story automatically becomes
+           the first item in the array.
+        */
+
+        const latestStory =
+            stories[0];
+
+
+        if (
+            latestStory &&
+            latestStory.url
+        ) {
 
             coverImage.src =
                 latestStory.url;
@@ -293,7 +313,70 @@ function updateStoryCoverImages() {
 
 
 /* =====================================================
+   UPDATE ONE YEAR COVER
+   Used immediately after adding a new story
+===================================================== */
+
+function updateSingleStoryCover(year) {
+
+    if (!year) {
+        return;
+    }
+
+
+    const stories =
+        storiesData[year];
+
+
+    if (
+        !stories ||
+        stories.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    const coverImage =
+        document.getElementById(
+            `storyYear${year}Image`
+        );
+
+
+    if (!coverImage) {
+        return;
+    }
+
+
+    const latestStory =
+        stories[0];
+
+
+    if (
+        latestStory &&
+        latestStory.url
+    ) {
+
+        coverImage.src =
+            latestStory.url;
+
+
+        coverImage.onerror =
+            function () {
+
+                imageError(this);
+
+            };
+
+    }
+
+}
+
+
+/* =====================================================
    ADD NEW STORY
+   Instagram-style story addition
 ===================================================== */
 
 function addNewStory(year, fileName) {
@@ -303,24 +386,71 @@ function addNewStory(year, fileName) {
     }
 
 
+    /*
+       Create the year if it does not exist.
+    */
+
     if (!storiesData[year]) {
+
         storiesData[year] = [];
+
     }
 
 
+    /*
+       Add the newest story to the FRONT.
+
+       Example:
+
+       Before:
+       story33
+       story32
+       story31
+
+       Add story34:
+
+       story34   <-- latest
+       story33
+       story32
+       story31
+    */
+
     storiesData[year].unshift({
-        url: getStoryUrl(fileName)
+
+        url:
+            getStoryUrl(fileName)
+
     });
 
 
+    /*
+       Immediately change the circle image
+       to the newly added story.
+    */
+
+    updateSingleStoryCover(year);
+
+
+    /*
+       Also update all covers to keep the system
+       synchronized.
+    */
+
     updateStoryCoverImages();
 
+
+    /*
+       If the selected year is currently open,
+       immediately show the new story.
+    */
 
     if (currentYear === year) {
 
         currentStoryIndex = 0;
 
+
         renderStories();
+
 
         startStoryAutoPlay();
 
@@ -600,6 +730,14 @@ function selectStory(year, event) {
         );
 
     }
+
+
+    /*
+       Make sure the selected year's circle
+       always displays its latest story.
+    */
+
+    updateSingleStoryCover(year);
 
 
     renderStories();
@@ -894,6 +1032,7 @@ const photoAlbums = [
                     `photo${7 + i}.jpg`
             )
     },
+
 
     {
         title: "Photo 59",
@@ -1959,6 +2098,12 @@ document.addEventListener(
 document.addEventListener(
     "DOMContentLoaded",
     () => {
+
+        /*
+           On page load, automatically use the
+           latest story of every year as its
+           circular cover image.
+        */
 
         updateStoryCoverImages();
 
