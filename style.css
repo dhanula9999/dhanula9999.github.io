@@ -559,27 +559,30 @@ a {
 ========================================================= */
 
 .education {
-    background: var(--bg-secondary);
+    background: var(--bg-main);
 }
 
 
 .education-grid {
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
     gap: 20px;
-
-    margin-top: 40px;
 }
 
 
 .education-card {
-    position: relative;
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 20px;
 
     min-width: 0;
 
-    padding: 30px;
+    padding: 28px;
 
     border-radius: 25px;
 
@@ -607,29 +610,31 @@ a {
     width: 56px;
     height: 56px;
 
-    margin-bottom: 22px;
+    flex: 0 0 auto;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 17px;
+    border-radius: 18px;
 
     background: rgba(127, 127, 127, 0.1);
 
-    font-size: 26px;
+    font-size: 25px;
 }
 
 
 .education-content {
     min-width: 0;
+
+    flex: 1;
 }
 
 
 .education-status {
     display: inline-block;
 
-    margin-bottom: 10px;
+    margin-bottom: 9px;
 
     color: var(--text-secondary);
 
@@ -643,20 +648,23 @@ a {
 .education-card h3 {
     margin-bottom: 8px;
 
-    font-size: 20px;
+    font-size: 21px;
 
     line-height: 1.25;
+
+    letter-spacing: -0.5px;
 }
 
 
 .education-place {
     margin-bottom: 12px;
 
-    color: var(--text-secondary);
+    color: var(--text-main);
 
     font-size: 13px;
+    font-weight: 600;
 
-    font-weight: 500;
+    line-height: 1.5;
 }
 
 
@@ -666,6 +674,88 @@ a {
     font-size: 14px;
 
     line-height: 1.7;
+}
+
+
+/* =========================================================
+   CERTIFICATE
+========================================================= */
+
+.certificate-details {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+
+    margin-top: 17px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+
+    line-height: 1.5;
+}
+
+
+.certificate-actions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 20px;
+}
+
+
+.certificate-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+
+    padding: 10px 15px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 22px;
+
+    background: var(--text-main);
+    color: var(--bg-main);
+
+    font-size: 11px;
+    font-weight: 600;
+
+    transition: var(--transition);
+}
+
+
+.certificate-button:hover {
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.12);
+}
+
+
+.certificate-verify-button {
+    background: transparent;
+
+    color: var(--text-main);
+}
+
+
+.certificate-verify-button:hover {
+    background: var(--text-main);
+
+    color: var(--bg-main);
 }
 
 
@@ -911,7 +1001,8 @@ a {
 
     display: grid;
 
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
 
     gap: 15px;
 }
@@ -993,7 +1084,8 @@ a {
 .gallery {
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
 
     gap: 18px;
 }
@@ -1099,7 +1191,8 @@ a {
 .video-gallery {
     display: grid;
 
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns:
+        repeat(3, minmax(0, 1fr));
 
     gap: 18px;
 }
@@ -1153,7 +1246,7 @@ a {
     width: 100%;
     height: 100%;
 
-    object-fit: contain;
+    object-fit: cover;
 
     background: #000;
 }
@@ -1366,7 +1459,8 @@ a {
 .contact-wrapper {
     display: grid;
 
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns:
+        1fr 1fr;
 
     gap: 50px;
 
@@ -1609,7 +1703,8 @@ a {
 .contact-form textarea:focus {
     border-color: var(--text-secondary);
 
-    box-shadow: 0 0 0 3px rgba(127, 127, 127, 0.08);
+    box-shadow:
+        0 0 0 3px rgba(127, 127, 127, 0.08);
 }
 
 
@@ -1672,7 +1767,8 @@ a {
 
     border: 1px solid var(--glass-border);
 
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+    box-shadow:
+        0 30px 80px rgba(0, 0, 0, 0.35);
 }
 
 
@@ -1718,7 +1814,8 @@ a {
 .story-gallery-grid {
     display: grid;
 
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns:
+        repeat(3, 1fr);
 
     gap: 12px;
 }
@@ -1916,6 +2013,190 @@ a {
 
 .modal-next-btn {
     right: 25px;
+}
+
+
+/* =========================================================
+   CERTIFICATE PDF MODAL
+   NEW FEATURE ONLY
+========================================================= */
+
+.certificate-modal {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 4000;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 25px;
+
+    background: rgba(0, 0, 0, 0.82);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+}
+
+
+.certificate-modal.show {
+    display: flex;
+}
+
+
+.certificate-modal-content {
+    width: 100%;
+    max-width: 1000px;
+
+    height: 92vh;
+
+    display: flex;
+    flex-direction: column;
+
+    overflow: hidden;
+
+    border-radius: 28px;
+
+    background: var(--bg-card);
+
+    border: 1px solid var(--glass-border);
+
+    box-shadow:
+        0 30px 90px rgba(0, 0, 0, 0.4);
+}
+
+
+.certificate-modal-header {
+    flex: 0 0 auto;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 20px 24px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+
+.certificate-modal-header small {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: var(--text-secondary);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 2px;
+}
+
+
+.certificate-modal-header h3 {
+    font-size: 19px;
+
+    letter-spacing: -0.4px;
+}
+
+
+.certificate-close-button {
+    width: 42px;
+    height: 42px;
+
+    flex: 0 0 auto;
+
+    border: none;
+
+    border-radius: 50%;
+
+    background: rgba(127, 127, 127, 0.1);
+
+    color: var(--text-main);
+
+    font-size: 27px;
+
+    line-height: 1;
+
+    transition: var(--transition);
+}
+
+
+.certificate-close-button:hover {
+    transform: rotate(90deg);
+
+    background: rgba(127, 127, 127, 0.18);
+}
+
+
+.certificate-viewer {
+    flex: 1;
+
+    min-height: 0;
+
+    background: #111111;
+}
+
+
+.certificate-viewer iframe {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    border: none;
+
+    background: #ffffff;
+}
+
+
+.certificate-modal-footer {
+    flex: 0 0 auto;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    padding: 14px 20px;
+
+    border-top: 1px solid var(--border);
+
+    background: var(--bg-card);
+}
+
+
+.certificate-modal-link {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 40px;
+
+    padding: 10px 16px;
+
+    border-radius: 22px;
+
+    background: var(--text-main);
+    color: var(--bg-main);
+
+    font-size: 11px;
+    font-weight: 600;
+
+    transition: var(--transition);
+}
+
+
+.certificate-modal-link:hover {
+    transform: translateY(-2px);
+
+    opacity: 0.85;
 }
 
 
@@ -2190,6 +2471,23 @@ footer p {
         right: 12px;
     }
 
+
+    .certificate-modal {
+        padding: 12px;
+    }
+
+
+    .certificate-modal-content {
+        height: 94vh;
+
+        border-radius: 22px;
+    }
+
+
+    .certificate-modal-header {
+        padding: 16px;
+    }
+
 }
 
 
@@ -2269,11 +2567,6 @@ footer p {
     .about-text,
     .section-description {
         font-size: 14px;
-    }
-
-
-    .education-card {
-        padding: 24px;
     }
 
 
@@ -2410,6 +2703,61 @@ footer p {
 
     .contact-form {
         padding: 20px;
+    }
+
+
+    .education-card {
+        flex-direction: column;
+
+        padding: 22px;
+    }
+
+
+    .education-icon {
+        width: 52px;
+        height: 52px;
+    }
+
+
+    .education-card h3 {
+        font-size: 19px;
+    }
+
+
+    .certificate-actions {
+        flex-direction: column;
+    }
+
+
+    .certificate-button {
+        width: 100%;
+    }
+
+
+    .certificate-modal {
+        padding: 8px;
+    }
+
+
+    .certificate-modal-content {
+        height: 96vh;
+
+        border-radius: 18px;
+    }
+
+
+    .certificate-modal-header h3 {
+        font-size: 16px;
+    }
+
+
+    .certificate-modal-footer {
+        padding: 10px;
+    }
+
+
+    .certificate-modal-link {
+        width: 100%;
     }
 
 }
