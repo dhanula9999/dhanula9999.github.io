@@ -44,6 +44,8 @@
 
                 <a href="#photos">My Photos</a>
 
+                <a href="#videos">Videos</a>
+
                 <a href="#contact">Contact</a>
 
             </nav>
@@ -457,6 +459,90 @@
     </section>
 
 
+    <!-- VIDEOS -->
+
+    <section id="videos" class="videos">
+
+        <div class="section-container">
+
+
+            <p class="section-label">
+                VIDEO GALLERY
+            </p>
+
+
+            <h2>
+                Videos
+            </h2>
+
+
+            <p class="section-description">
+                A collection of videos and special moments captured over time.
+            </p>
+
+
+            <div
+                id="videoLoading"
+                class="loading"
+                style="display: none;">
+
+                Loading video gallery...
+
+            </div>
+
+
+            <div
+                id="videoError"
+                class="photo-error"
+                style="display: none;">
+
+                <h3>
+                    Could not load videos
+                </h3>
+
+                <p>
+                    Please check your connection and try again.
+                </p>
+
+                <button
+                    onclick="loadVideos()"
+                    type="button">
+
+                    Retry
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="videoGallery"
+                class="video-gallery">
+
+            </div>
+
+
+            <div
+                style="text-align: center; margin-top: 35px;">
+
+                <button
+                    id="viewMoreVideosBtn"
+                    class="button"
+                    onclick="toggleViewAllVideos()"
+                    type="button">
+
+                    View More
+
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
     <!-- CONTACT -->
 
     <section id="contact" class="contact">
@@ -496,7 +582,7 @@
 
                             <a
                                 class="contact-action"
-                                href="https://mail.google.com/mail/?view=cm&fs=1&to=dhanularajakaruna9999@gmail.com"
+                                href="https://mail.google.com/mail/?view=cm&fs=1&to=dhanularajakarakaruna9999@gmail.com"
                                 target="_blank"
                                 rel="noopener noreferrer">
 
