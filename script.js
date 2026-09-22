@@ -1167,9 +1167,9 @@ function toggleViewAllPhotos() {
 const videos = [
 
     {
-        title: "Video 1",
+        title: "Three friends, one ride.",
         file: "video1.mp4",
-        description: "A special moment from my journey."
+        description: "17/09/2026"
     },
 
     {
