@@ -39,7 +39,6 @@
 
                 <a href="#about">About Me</a>
 
-                <!-- NEW -->
                 <a href="#education">Education</a>
 
                 <a href="#stories">Stories</a>
@@ -192,7 +191,6 @@
 
     <!-- =====================================================
          EDUCATION & QUALIFICATIONS
-         NEW SECTION ONLY
     ====================================================== -->
 
     <section id="education" class="education">
@@ -215,7 +213,7 @@
             <div class="education-grid">
 
 
-                <!-- QUALIFICATION 1 -->
+                <!-- AI DEGREE -->
 
                 <div class="education-card fade-in">
 
@@ -247,9 +245,9 @@
                 </div>
 
 
-                <!-- QUALIFICATION 2 -->
+                <!-- AI/ML ENGINEER CERTIFICATE -->
 
-                <div class="education-card fade-in">
+                <div class="education-card education-certificate-card fade-in">
 
                     <div class="education-icon">
                         📜
@@ -258,28 +256,65 @@
                     <div class="education-content">
 
                         <span class="education-status">
-                            CERTIFICATIONS
+                            CERTIFICATE
                         </span>
 
                         <h3>
-                            Professional Certifications
+                            AI/ML Engineer – Stage 1
                         </h3>
 
                         <p class="education-place">
-                            Courses & Professional Learning
+                            Centre for Open and Distance Education,
+                            Faculty of Computing, SLIIT
                         </p>
 
                         <p class="education-description">
-                            Professional certificates and additional qualifications
-                            gained through different learning programs and courses.
+                            Certificate of completion for AI/ML Engineer – Stage 1.
                         </p>
+
+                        <div class="certificate-details">
+
+                            <span>
+                                📅 Issued: 22 September 2026
+                            </span>
+
+                            <span>
+                                🆔 Certificate ID: rs4rykx0oq
+                            </span>
+
+                        </div>
+
+
+                        <div class="certificate-actions">
+
+                            <button
+                                class="certificate-button"
+                                type="button"
+                                onclick="openCertificate()">
+
+                                📄 View Certificate
+
+                            </button>
+
+
+                            <a
+                                class="certificate-button certificate-verify-button"
+                                href="https://code.sliit.org/certificates/rs4rykx0oq"
+                                target="_blank"
+                                rel="noopener noreferrer">
+
+                                ✓ Verify Certificate
+
+                            </a>
+
+                        </div>
 
                     </div>
 
                 </div>
 
 
-                <!-- QUALIFICATION 3 -->
+                <!-- TECHNICAL LEARNING -->
 
                 <div class="education-card fade-in">
 
@@ -1002,6 +1037,77 @@
             &#8250;
 
         </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         CERTIFICATE PDF MODAL
+         NEW FEATURE ONLY
+    ====================================================== -->
+
+    <div
+        id="certificateModal"
+        class="certificate-modal"
+        aria-hidden="true">
+
+        <div class="certificate-modal-content">
+
+            <div class="certificate-modal-header">
+
+                <div>
+
+                    <small>
+                        CERTIFICATE
+                    </small>
+
+                    <h3>
+                        AI/ML Engineer – Stage 1
+                    </h3>
+
+                </div>
+
+
+                <button
+                    class="certificate-close-button"
+                    onclick="closeCertificate()"
+                    type="button"
+                    aria-label="Close Certificate">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+
+            <div class="certificate-viewer">
+
+                <iframe
+                    id="certificateFrame"
+                    title="AI/ML Engineer – Stage 1 Certificate"
+                    src=""
+                    loading="lazy">
+                </iframe>
+
+            </div>
+
+
+            <div class="certificate-modal-footer">
+
+                <a
+                    class="certificate-modal-link"
+                    href="https://code.sliit.org/certificates/rs4rykx0oq"
+                    target="_blank"
+                    rel="noopener noreferrer">
+
+                    ✓ Verify Certificate
+
+                </a>
+
+            </div>
+
+        </div>
 
     </div>
 
