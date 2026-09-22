@@ -1,157 +1,140 @@
-/* =====================================================
-   DHANULA PERSONAL WEBSITE
-   FULLY COMPLETED SCRIPT
-   Existing functionality preserved
-===================================================== */
-
-
-/* =====================================================
+/* =========================================================
    SUPABASE
-===================================================== */
+========================================================= */
 
 const SUPABASE_URL =
     "https://widutbgygnamjlkaovrk.supabase.co";
 
 
-const getPhotoUrl = (fileName) =>
-    `${SUPABASE_URL}/storage/v1/object/public/photos/${fileName}`;
+function getPhotoUrl(fileName) {
+    return `${SUPABASE_URL}/storage/v1/object/public/photos/${fileName}`;
+}
 
 
-const getStoryUrl = (fileName) =>
-    `${SUPABASE_URL}/storage/v1/object/public/stories/${fileName}`;
+function getStoryUrl(fileName) {
+    return `${SUPABASE_URL}/storage/v1/object/public/stories/${fileName}`;
+}
 
 
-/* =====================================================
-   DARK / LIGHT MODE
-===================================================== */
-
-const themeToggleBtn =
-    document.getElementById("themeToggle");
+function getVideoUrl(fileName) {
+    return `${SUPABASE_URL}/storage/v1/object/public/videos/${fileName}`;
+}
 
 
-const savedTheme =
-    localStorage.getItem("theme") ||
-    (
-        window.matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light"
+/* =========================================================
+   THEME
+========================================================= */
+
+const themeToggle = document.getElementById("themeToggle");
+
+const savedTheme = localStorage.getItem("theme");
+
+if (savedTheme) {
+
+    document.documentElement.setAttribute(
+        "data-theme",
+        savedTheme
     );
 
+} else {
 
-document.documentElement.setAttribute(
-    "data-theme",
-    savedTheme
-);
+    const prefersDark =
+        window.matchMedia &&
+        window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-
-if (themeToggleBtn) {
-
-    themeToggleBtn.addEventListener(
-        "click",
-        () => {
-
-            const currentTheme =
-                document.documentElement.getAttribute(
-                    "data-theme"
-                );
-
-
-            const newTheme =
-                currentTheme === "dark"
-                    ? "light"
-                    : "dark";
-
-
-            document.documentElement.setAttribute(
-                "data-theme",
-                newTheme
-            );
-
-
-            localStorage.setItem(
-                "theme",
-                newTheme
-            );
-
-        }
+    document.documentElement.setAttribute(
+        "data-theme",
+        prefersDark ? "dark" : "light"
     );
+}
+
+
+if (themeToggle) {
+
+    themeToggle.addEventListener("click", () => {
+
+        const currentTheme =
+            document.documentElement.getAttribute("data-theme");
+
+        const newTheme =
+            currentTheme === "dark" ? "light" : "dark";
+
+        document.documentElement.setAttribute(
+            "data-theme",
+            newTheme
+        );
+
+        localStorage.setItem(
+            "theme",
+            newTheme
+        );
+
+    });
 
 }
 
 
-/* =====================================================
+/* =========================================================
    MOBILE NAVIGATION
-===================================================== */
+========================================================= */
 
-const navToggle =
-    document.getElementById("navToggle");
-
-
-const mainNav =
-    document.getElementById("mainNav");
+const navToggle = document.getElementById("navToggle");
+const mainNav = document.getElementById("mainNav");
 
 
 if (navToggle && mainNav) {
 
-    navToggle.addEventListener(
-        "click",
-        () => {
+    navToggle.addEventListener("click", () => {
 
-            mainNav.classList.toggle("show");
+        mainNav.classList.toggle("show");
 
-        }
-    );
+    });
 
 
-    mainNav
-        .querySelectorAll("a")
-        .forEach(link => {
+    mainNav.querySelectorAll("a").forEach(link => {
 
-            link.addEventListener(
-                "click",
-                () => {
+        link.addEventListener("click", () => {
 
-                    mainNav.classList.remove("show");
-
-                }
-            );
+            mainNav.classList.remove("show");
 
         });
+
+    });
 
 }
 
 
-/* =====================================================
+/* =========================================================
    ACTIVE NAVIGATION
-===================================================== */
+========================================================= */
 
 function updateActiveNav() {
 
-    const sections =
-        document.querySelectorAll("section");
+    const sections = document.querySelectorAll(
+        "section[id]"
+    );
 
-
-    const navLinks =
-        document.querySelectorAll("#mainNav a");
-
+    const navLinks = document.querySelectorAll(
+        ".main-nav a"
+    );
 
     let currentSection = "";
+
+    const scrollPosition =
+        window.scrollY + 180;
 
 
     sections.forEach(section => {
 
         const sectionTop =
-            section.offsetTop - 150;
-
+            section.offsetTop;
 
         const sectionHeight =
             section.offsetHeight;
 
-
         if (
-            window.scrollY >= sectionTop &&
-            window.scrollY <
-            sectionTop + sectionHeight
+            scrollPosition >= sectionTop &&
+            scrollPosition < sectionTop + sectionHeight
         ) {
 
             currentSection =
@@ -166,10 +149,11 @@ function updateActiveNav() {
 
         link.classList.remove("active");
 
+        const href =
+            link.getAttribute("href");
 
         if (
-            link.getAttribute("href") ===
-            `#${currentSection}`
+            href === `#${currentSection}`
         ) {
 
             link.classList.add("active");
@@ -187,302 +171,171 @@ window.addEventListener(
 );
 
 
-/* =====================================================
+/* =========================================================
    STORIES DATA
-===================================================== */
+========================================================= */
 
-const storiesData = {
+const stories = {
 
     "2026": [
-
-        { url: getStoryUrl("story32.jpg") },
-        { url: getStoryUrl("story31.jpg") },
-        { url: getStoryUrl("story30.jpg") },
-        { url: getStoryUrl("story29.jpg") },
-        { url: getStoryUrl("story28.jpg") },
-        { url: getStoryUrl("story27.jpg") },
-        { url: getStoryUrl("story26.jpg") },
-        { url: getStoryUrl("story25.jpg") },
-        { url: getStoryUrl("story24.jpg") },
-        { url: getStoryUrl("story23.jpg") },
-        { url: getStoryUrl("story22.jpg") },
-        { url: getStoryUrl("story21.jpg") },
-        { url: getStoryUrl("story20.jpg") },
-        { url: getStoryUrl("story19.jpg") },
-        { url: getStoryUrl("story18.jpg") },
-        { url: getStoryUrl("story17.jpg") },
-        { url: getStoryUrl("story16.jpg") },
-        { url: getStoryUrl("story15.jpg") },
-        { url: getStoryUrl("story14.jpg") },
-        { url: getStoryUrl("story13.jpg") },
-        { url: getStoryUrl("story12.jpg") },
-        { url: getStoryUrl("story11.jpg") },
-        { url: getStoryUrl("story10.jpg") },
-        { url: getStoryUrl("story9.jpg") },
-        { url: getStoryUrl("story8.jpg") },
-        { url: getStoryUrl("story7.jpg") },
-        { url: getStoryUrl("story6.jpg") },
-        { url: getStoryUrl("story5.jpg") },
-        { url: getStoryUrl("story4.jpg") },
-        { url: getStoryUrl("story3.jpg") },
-        { url: getStoryUrl("story2.jpg") },
-        { url: getStoryUrl("story1.jpg") }
-
+        "story32.jpg",
+        "story31.jpg",
+        "story30.jpg",
+        "story29.jpg",
+        "story28.jpg",
+        "story27.jpg",
+        "story26.jpg",
+        "story25.jpg",
+        "story24.jpg",
+        "story23.jpg",
+        "story22.jpg",
+        "story21.jpg",
+        "story20.jpg",
+        "story19.jpg",
+        "story18.jpg",
+        "story17.jpg",
+        "story16.jpg",
+        "story15.jpg",
+        "story14.jpg",
+        "story13.jpg",
+        "story12.jpg",
+        "story11.jpg",
+        "story10.jpg",
+        "story9.jpg",
+        "story8.jpg",
+        "story7.jpg",
+        "story6.jpg",
+        "story5.jpg",
+        "story4.jpg",
+        "story3.jpg",
+        "story2.jpg",
+        "story1.jpg"
     ],
 
-
     "2025": [
-
-        { url: getPhotoUrl("photo4.jpg") },
-        { url: getPhotoUrl("photo3.jpg") },
-        { url: getPhotoUrl("photo2.jpg") }
-
+        "photo4.jpg",
+        "photo3.jpg",
+        "photo2.jpg"
     ]
 
 };
 
 
-/* =====================================================
-   STORY COVER IMAGE
-   Instagram-style:
-   Latest story = circle cover image
-===================================================== */
-
-function updateStoryCoverImages() {
-
-    Object.keys(storiesData).forEach(year => {
-
-        const stories =
-            storiesData[year];
-
-
-        const coverImage =
-            document.getElementById(
-                `storyYear${year}Image`
-            );
-
-
-        if (!coverImage) {
-            return;
-        }
-
-
-        if (
-            !stories ||
-            stories.length === 0
-        ) {
-
-            return;
-
-        }
-
-
-        /*
-           stories[0] is ALWAYS the latest story.
-
-           New stories are added using unshift(),
-           so the newest story automatically becomes
-           the first item in the array.
-        */
-
-        const latestStory =
-            stories[0];
-
-
-        if (
-            latestStory &&
-            latestStory.url
-        ) {
-
-            coverImage.src =
-                latestStory.url;
-
-
-            coverImage.onerror =
-                function () {
-
-                    imageError(this);
-
-                };
-
-        }
-
-    });
-
-}
-
-
-/* =====================================================
-   UPDATE ONE YEAR COVER
-   Used immediately after adding a new story
-===================================================== */
-
-function updateSingleStoryCover(year) {
-
-    if (!year) {
-        return;
-    }
-
-
-    const stories =
-        storiesData[year];
-
-
-    if (
-        !stories ||
-        stories.length === 0
-    ) {
-
-        return;
-
-    }
-
-
-    const coverImage =
-        document.getElementById(
-            `storyYear${year}Image`
-        );
-
-
-    if (!coverImage) {
-        return;
-    }
-
-
-    const latestStory =
-        stories[0];
-
-
-    if (
-        latestStory &&
-        latestStory.url
-    ) {
-
-        coverImage.src =
-            latestStory.url;
-
-
-        coverImage.onerror =
-            function () {
-
-                imageError(this);
-
-            };
-
-    }
-
-}
-
-
-/* =====================================================
-   ADD NEW STORY
-   Instagram-style story addition
-===================================================== */
-
-function addNewStory(year, fileName) {
-
-    if (!year || !fileName) {
-        return;
-    }
-
-
-    /*
-       Create the year if it does not exist.
-    */
-
-    if (!storiesData[year]) {
-
-        storiesData[year] = [];
-
-    }
-
-
-    /*
-       Add the newest story to the FRONT.
-
-       Example:
-
-       Before:
-       story33
-       story32
-       story31
-
-       Add story34:
-
-       story34   <-- latest
-       story33
-       story32
-       story31
-    */
-
-    storiesData[year].unshift({
-
-        url:
-            getStoryUrl(fileName)
-
-    });
-
-
-    /*
-       Immediately change the circle image
-       to the newly added story.
-    */
-
-    updateSingleStoryCover(year);
-
-
-    /*
-       Also update all covers to keep the system
-       synchronized.
-    */
-
-    updateStoryCoverImages();
-
-
-    /*
-       If the selected year is currently open,
-       immediately show the new story.
-    */
-
-    if (currentYear === year) {
-
-        currentStoryIndex = 0;
-
-
-        renderStories();
-
-
-        startStoryAutoPlay();
-
-    }
-
-}
-
-
-/* =====================================================
-   CURRENT STORY SETTINGS
-===================================================== */
+/* =========================================================
+   STORY STATE
+========================================================= */
 
 let currentYear = "2026";
 
 let currentStoryIndex = 0;
 
-let storyAutoPlayInterval = null;
+let storyAutoplayInterval = null;
 
 
-/* =====================================================
+/* =========================================================
+   STORY COVER
+========================================================= */
+
+function updateStoryCoverImages() {
+
+    Object.keys(stories).forEach(year => {
+
+        updateSingleStoryCover(year);
+
+    });
+
+}
+
+
+function updateSingleStoryCover(year) {
+
+    const storyHighlight =
+        document.querySelector(
+            `.story-highlight[onclick*="'${year}'"]`
+        );
+
+    if (!storyHighlight) {
+        return;
+    }
+
+
+    const image =
+        storyHighlight.querySelector("img");
+
+    if (!image) {
+        return;
+    }
+
+
+    const yearStories =
+        stories[year];
+
+    if (
+        !yearStories ||
+        yearStories.length === 0
+    ) {
+        return;
+    }
+
+
+    /*
+       Always show the newest story as
+       the year-circle cover.
+    */
+
+    image.src =
+        year === "2026"
+            ? getStoryUrl(yearStories[0])
+            : getPhotoUrl(yearStories[0]);
+
+}
+
+
+/* =========================================================
+   ADD NEW STORY
+========================================================= */
+
+function addNewStory(year, fileName) {
+
+    if (!stories[year]) {
+
+        stories[year] = [];
+
+    }
+
+
+    /*
+       New story becomes the latest story.
+    */
+
+    stories[year].unshift(fileName);
+
+
+    updateSingleStoryCover(year);
+
+
+    if (currentYear === year) {
+
+        currentStoryIndex = 0;
+
+        renderStories();
+
+    }
+
+}
+
+
+/* =========================================================
    RENDER STORIES
-===================================================== */
+========================================================= */
 
 function renderStories() {
 
     const memoryGrid =
         document.getElementById("memoryGrid");
 
-
     const selectedTitle =
         document.getElementById("selectedTitle");
-
 
     const memoryCount =
         document.getElementById("memoryCount");
@@ -493,8 +346,8 @@ function renderStories() {
     }
 
 
-    const memories =
-        storiesData[currentYear] || [];
+    const currentStories =
+        stories[currentYear] || [];
 
 
     if (selectedTitle) {
@@ -508,7 +361,11 @@ function renderStories() {
     if (memoryCount) {
 
         memoryCount.textContent =
-            `${memories.length} memories`;
+            `${currentStories.length} ${
+                currentStories.length === 1
+                    ? "memory"
+                    : "memories"
+            }`;
 
     }
 
@@ -516,17 +373,17 @@ function renderStories() {
     memoryGrid.innerHTML = "";
 
 
-    if (memories.length === 0) {
+    if (currentStories.length === 0) {
 
         memoryGrid.innerHTML = `
-            <p style="
+            <div style="
                 grid-column: 1 / -1;
+                padding: 40px;
                 text-align: center;
                 color: var(--text-secondary);
-                padding: 40px;
             ">
-                No memories added for this year yet.
-            </p>
+                No memories available.
+            </div>
         `;
 
         return;
@@ -534,239 +391,192 @@ function renderStories() {
     }
 
 
-    const itemsToShow = [];
+    /*
+       Display up to 2 memories in the
+       selected memory area.
+    */
+
+    const total =
+        currentStories.length;
+
+    const firstIndex =
+        currentStoryIndex % total;
+
+    const indexes = [
+        firstIndex
+    ];
 
 
-    if (memories.length === 1) {
+    if (total > 1) {
 
-        itemsToShow.push(
-            memories[0]
+        indexes.push(
+            (firstIndex + 1) % total
         );
-
-    } else {
-
-        for (let i = 0; i < 2; i++) {
-
-            const index =
-                (
-                    currentStoryIndex + i
-                ) % memories.length;
-
-
-            itemsToShow.push(
-                memories[index]
-            );
-
-        }
 
     }
 
 
-    itemsToShow.forEach(
-        (item, idx) => {
+    indexes.forEach(index => {
 
-            const card =
-                document.createElement("div");
+        const fileName =
+            currentStories[index];
 
-
-            card.className =
-                "memory-card fade-in appear";
-
-
-            const img =
-                document.createElement("img");
+        const imageUrl =
+            currentYear === "2026"
+                ? getStoryUrl(fileName)
+                : getPhotoUrl(fileName);
 
 
-            img.src = item.url;
+        const card =
+            document.createElement("div");
 
-            img.alt =
-                `Memory ${idx + 1}`;
-
-            img.loading =
-                "lazy";
+        card.className =
+            "memory-card fade-in visible";
 
 
-            img.onerror =
-                function () {
+        const img =
+            document.createElement("img");
 
-                    imageError(this);
+        img.src =
+            imageUrl;
 
-                };
+        img.alt =
+            `${currentYear} Memory`;
 
+        img.loading =
+            "lazy";
 
-            card.appendChild(img);
-
-
-            const targetIndex =
-                (
-                    currentStoryIndex + idx
-                ) % memories.length;
-
-
-            card.addEventListener(
-                "click",
-                () => {
-
-                    const urls =
-                        memories.map(
-                            memory =>
-                                memory.url
-                        );
+        img.onerror =
+            function () {
+                imageError(this);
+            };
 
 
-                    openImageModal(
-                        urls,
-                        targetIndex
-                    );
-
-                }
-            );
+        card.appendChild(img);
 
 
-            memoryGrid.appendChild(card);
+        card.addEventListener(
+            "click",
+            () => {
 
-        }
-    );
+                openImageModal(
+                    currentStories.map(file =>
+
+                        currentYear === "2026"
+                            ? getStoryUrl(file)
+                            : getPhotoUrl(file)
+
+                    ),
+                    index,
+                    `${currentYear} Memory`
+                );
+
+            }
+        );
+
+
+        memoryGrid.appendChild(card);
+
+    });
 
 }
 
 
-/* =====================================================
-   STORY AUTO PLAY
-===================================================== */
+/* =========================================================
+   SELECT STORY
+========================================================= */
 
-function startStoryAutoPlay() {
+function selectStory(year, event) {
 
-    stopStoryAutoPlay();
+    if (event) {
+
+        event.stopPropagation();
+
+    }
 
 
-    const memories =
-        storiesData[currentYear] || [];
-
-
-    if (memories.length <= 1) {
+    if (!stories[year]) {
         return;
     }
 
 
-    storyAutoPlayInterval =
-        setInterval(
-            () => {
+    currentYear =
+        year;
 
-                nextPhotoOneByOne();
-
-            },
-            4000
-        );
-
-}
+    currentStoryIndex =
+        0;
 
 
-function stopStoryAutoPlay() {
+    document
+        .querySelectorAll(".story-highlight")
+        .forEach(item => {
 
-    if (storyAutoPlayInterval) {
+            item.classList.remove("active");
 
-        clearInterval(
-            storyAutoPlayInterval
-        );
+        });
 
 
-        storyAutoPlayInterval = null;
+    if (event && event.currentTarget) {
+
+        event.currentTarget.classList.add("active");
+
+    } else {
+
+        const selected =
+            document.querySelector(
+                `.story-highlight[onclick*="'${year}'"]`
+            );
+
+        if (selected) {
+
+            selected.classList.add("active");
+
+        }
 
     }
 
+
+    updateSingleStoryCover(year);
+
+    renderStories();
+
+    restartStoryAutoplay();
+
 }
 
 
-function nextPhotoOneByOne() {
+/* =========================================================
+   STORY SLIDER
+========================================================= */
 
-    const memories =
-        storiesData[currentYear] || [];
+function nextPhoto() {
+
+    const currentStories =
+        stories[currentYear] || [];
 
 
-    if (memories.length <= 1) {
+    if (currentStories.length <= 1) {
         return;
     }
 
 
     currentStoryIndex =
-        (
-            currentStoryIndex + 1
-        ) % memories.length;
+        (currentStoryIndex + 1) %
+        currentStories.length;
 
 
     renderStories();
-
-}
-
-
-/* =====================================================
-   SELECT STORY YEAR
-===================================================== */
-
-function selectStory(year, event) {
-
-    currentYear = year;
-
-    currentStoryIndex = 0;
-
-
-    document
-        .querySelectorAll(".story-highlight")
-        .forEach(el => {
-
-            el.classList.remove("active");
-
-        });
-
-
-    if (
-        event &&
-        event.currentTarget
-    ) {
-
-        event.currentTarget.classList.add(
-            "active"
-        );
-
-    }
-
-
-    /*
-       Make sure the selected year's circle
-       always displays its latest story.
-    */
-
-    updateSingleStoryCover(year);
-
-
-    renderStories();
-
-    startStoryAutoPlay();
-
-}
-
-
-/* =====================================================
-   STORY NAVIGATION
-===================================================== */
-
-function nextPhoto() {
-
-    nextPhotoOneByOne();
-
-    startStoryAutoPlay();
 
 }
 
 
 function prevPhoto() {
 
-    const memories =
-        storiesData[currentYear] || [];
+    const currentStories =
+        stories[currentYear] || [];
 
 
-    if (memories.length === 0) {
+    if (currentStories.length <= 1) {
         return;
     }
 
@@ -775,20 +585,64 @@ function prevPhoto() {
         (
             currentStoryIndex -
             1 +
-            memories.length
-        ) % memories.length;
+            currentStories.length
+        ) %
+        currentStories.length;
 
 
     renderStories();
 
-    startStoryAutoPlay();
+}
+
+
+/* =========================================================
+   STORY AUTOPLAY
+========================================================= */
+
+function startStoryAutoplay() {
+
+    clearInterval(
+        storyAutoplayInterval
+    );
+
+
+    storyAutoplayInterval =
+        setInterval(() => {
+
+            nextPhoto();
+
+        }, 4000);
 
 }
 
 
-/* =====================================================
-   STORY GALLERY
-===================================================== */
+function restartStoryAutoplay() {
+
+    clearInterval(
+        storyAutoplayInterval
+    );
+
+    startStoryAutoplay();
+
+}
+
+
+/* =========================================================
+   ADD YEAR MESSAGE
+========================================================= */
+
+function showNewStoryMessage() {
+
+    alert(
+        "Add Year feature coming soon!"
+    );
+
+}
+
+
+/* =========================================================
+   STORY GALLERY MODAL
+========================================================= */
 
 function openStoryGallery() {
 
@@ -797,6 +651,10 @@ function openStoryGallery() {
             "storyGalleryModal"
         );
 
+    const grid =
+        document.getElementById(
+            "storyGalleryGrid"
+        );
 
     const title =
         document.getElementById(
@@ -804,25 +662,19 @@ function openStoryGallery() {
         );
 
 
-    const grid =
-        document.getElementById(
-            "storyGalleryGrid"
-        );
-
-
-    const memories =
-        storiesData[currentYear] || [];
-
-
     if (!modal || !grid) {
         return;
     }
 
 
+    const currentStories =
+        stories[currentYear] || [];
+
+
     if (title) {
 
         title.textContent =
-            `${currentYear} All Memories`;
+            `${currentYear} Memories`;
 
     }
 
@@ -830,36 +682,23 @@ function openStoryGallery() {
     grid.innerHTML = "";
 
 
-    if (memories.length === 0) {
+    currentStories.forEach(
+        (fileName, index) => {
 
-        grid.innerHTML =
-            "<p>No memories found.</p>";
-
-    }
-
-
-    memories.forEach(
-        (item, index) => {
-
-            const thumb =
-                document.createElement("div");
-
-
-            thumb.className =
-                "gallery-thumb";
+            const imageUrl =
+                currentYear === "2026"
+                    ? getStoryUrl(fileName)
+                    : getPhotoUrl(fileName);
 
 
             const img =
                 document.createElement("img");
 
-
             img.src =
-                item.url;
-
+                imageUrl;
 
             img.alt =
-                `Memory ${index + 1}`;
-
+                `${currentYear} Memory ${index + 1}`;
 
             img.loading =
                 "lazy";
@@ -867,45 +706,42 @@ function openStoryGallery() {
 
             img.onerror =
                 function () {
-
                     imageError(this);
-
                 };
 
 
-            thumb.appendChild(img);
-
-
-            thumb.addEventListener(
+            img.addEventListener(
                 "click",
                 () => {
 
                     closeStoryGallery();
 
-
-                    const urls =
-                        memories.map(
-                            memory =>
-                                memory.url
-                        );
-
-
                     openImageModal(
-                        urls,
-                        index
+                        currentStories.map(file =>
+
+                            currentYear === "2026"
+                                ? getStoryUrl(file)
+                                : getPhotoUrl(file)
+
+                        ),
+                        index,
+                        `${currentYear} Memory`
                     );
 
                 }
             );
 
 
-            grid.appendChild(thumb);
+            grid.appendChild(img);
 
         }
     );
 
 
     modal.classList.add("show");
+
+    document.body.style.overflow =
+        "hidden";
 
 }
 
@@ -924,42 +760,30 @@ function closeStoryGallery() {
 
     }
 
-}
 
+    if (
+        !document
+            .getElementById("imageModal")
+            ?.classList.contains("show")
+    ) {
 
-function showNewStoryMessage() {
+        document.body.style.overflow =
+            "";
 
-    alert(
-        "Add Year feature coming soon!"
-    );
-
-}
-
-
-/* =====================================================
-   IMAGE ERROR
-===================================================== */
-
-function imageError(img) {
-
-    img.onerror = null;
-
-
-    img.src =
-        "https://via.placeholder.com/600x400?text=Image+Not+Found";
+    }
 
 }
 
 
-/* =====================================================
-   PHOTO ALBUMS
-===================================================== */
+/* =========================================================
+   PHOTO ALBUM DATA
+========================================================= */
 
 const photoAlbums = [
-      {
-        title: "Album 60-65",
-        cover: "photo60.jpg",
-        images: [
+
+    {
+        title: "Album 60–65",
+        photos: [
             "photo60.jpg",
             "photo61.jpg",
             "photo62.jpg",
@@ -971,142 +795,114 @@ const photoAlbums = [
 
     {
         title: "Photo 58",
-        cover: "photo58.jpg",
-        images: [
+        photos: [
             "photo58.jpg"
         ]
     },
 
-
     {
-        title: "Album 52-57",
-        cover: "photo52.jpg",
-        images:
-            Array.from(
-                { length: 6 },
-                (_, i) =>
-                    `photo${52 + i}.jpg`
-            )
+        title: "Album 52–57",
+        photos: [
+            "photo52.jpg",
+            "photo53.jpg",
+            "photo54.jpg",
+            "photo55.jpg",
+            "photo56.jpg",
+            "photo57.jpg"
+        ]
     },
 
-
     {
-        title: "Album 35-51",
-        cover: "photo35.jpg",
-        images:
-            Array.from(
-                { length: 17 },
-                (_, i) =>
-                    `photo${35 + i}.jpg`
-            )
+        title: "Album 35–51",
+        photos: Array.from(
+            { length: 17 },
+            (_, i) => `photo${35 + i}.jpg`
+        )
     },
 
-
     {
-        title: "Album 33-34",
-        cover: "photo33.jpg",
-        images: [
+        title: "Album 33–34",
+        photos: [
             "photo33.jpg",
             "photo34.jpg"
         ]
     },
 
-
     ...Array.from(
         { length: 12 },
+        (_, i) => {
 
-        (_, i) => ({
+            const number =
+                32 - i;
 
-            title:
-                `Photo ${32 - i}`,
+            return {
+                title: `Photo ${number}`,
+                photos: [
+                    `photo${number}.jpg`
+                ]
+            };
 
-            cover:
-                `photo${32 - i}.jpg`,
-
-            images: [
-                `photo${32 - i}.jpg`
-            ]
-
-        })
+        }
     ),
-
 
     {
         title: "Special Album",
-
-        cover: "photo7.jpg",
-
-        images:
-            Array.from(
-                { length: 14 },
-
-                (_, i) =>
-                    `photo${7 + i}.jpg`
-            )
+        photos: Array.from(
+            { length: 14 },
+            (_, i) => `photo${7 + i}.jpg`
+        )
     },
-
 
     {
         title: "Photo 59",
-
-        cover: "photo59.jpg",
-
-        images: [
+        photos: [
             "photo59.jpg"
         ]
     },
 
-
     ...Array.from(
         { length: 6 },
+        (_, i) => {
 
-        (_, i) => ({
+            const number =
+                6 - i;
 
-            title:
-                `Photo ${6 - i}`,
+            return {
+                title: `Photo ${number}`,
+                photos: [
+                    `photo${number}.jpg`
+                ]
+            };
 
-            cover:
-                `photo${6 - i}.jpg`,
-
-            images: [
-                `photo${6 - i}.jpg`
-            ]
-
-        })
+        }
     )
 
 ];
 
 
+/* =========================================================
+   PHOTO GALLERY STATE
+========================================================= */
+
+let displayCount = 6;
+
 let showingAllPhotos = false;
 
 
-/* =====================================================
+/* =========================================================
    LOAD PHOTOS
-===================================================== */
+========================================================= */
 
 function loadPhotos() {
 
     const gallery =
         document.getElementById("gallery");
 
-
-    const viewMoreBtn =
-        document.getElementById(
-            "viewMoreBtn"
-        );
-
-
     const loading =
-        document.getElementById(
-            "photoLoading"
-        );
-
+        document.getElementById("photoLoading");
 
     const error =
-        document.getElementById(
-            "photoError"
-        );
+        document.getElementById("photoError");
 
 
     if (!gallery) {
@@ -1117,7 +913,7 @@ function loadPhotos() {
     if (loading) {
 
         loading.style.display =
-            "none";
+            "block";
 
     }
 
@@ -1133,167 +929,210 @@ function loadPhotos() {
     gallery.innerHTML = "";
 
 
-    const displayCount =
-        showingAllPhotos
-            ? photoAlbums.length
-            : Math.min(
-                6,
-                photoAlbums.length
-            );
+    try {
+
+        const albumsToShow =
+            showingAllPhotos
+                ? photoAlbums
+                : photoAlbums.slice(
+                    0,
+                    displayCount
+                );
 
 
-    for (
-        let i = 0;
-        i < displayCount;
-        i++
-    ) {
+        albumsToShow.forEach(
+            (album, albumIndex) => {
 
-        const album =
-            photoAlbums[i];
+                const card =
+                    document.createElement("div");
 
-
-        if (!album) {
-            continue;
-        }
+                card.className =
+                    "album-card fade-in visible";
 
 
-        const card =
-            document.createElement("div");
+                const cover =
+                    album.photos[0];
 
 
-        card.className =
-            "photo-card fade-in appear";
+                const imageUrl =
+                    getPhotoUrl(cover);
 
 
-        const imageContainer =
-            document.createElement("div");
+                const coverContainer =
+                    document.createElement("div");
+
+                coverContainer.className =
+                    "album-cover";
 
 
-        imageContainer.className =
-            "photo-image";
+                const img =
+                    document.createElement("img");
+
+                img.src =
+                    imageUrl;
+
+                img.alt =
+                    album.title;
+
+                img.loading =
+                    "lazy";
+
+                img.onerror =
+                    function () {
+                        imageError(this);
+                    };
 
 
-        const img =
-            document.createElement("img");
+                coverContainer.appendChild(img);
 
 
-        img.src =
-            getPhotoUrl(
-                album.cover
-            );
+                if (album.photos.length > 1) {
 
+                    const badge =
+                        document.createElement("span");
 
-        img.alt =
-            album.title;
+                    badge.className =
+                        "album-badge";
 
+                    badge.textContent =
+                        `+${album.photos.length - 1}`;
 
-        img.loading =
-            "lazy";
-
-
-        img.onerror =
-            function () {
-
-                imageError(this);
-
-            };
-
-
-        imageContainer.appendChild(
-            img
-        );
-
-
-        if (
-            album.images.length > 1
-        ) {
-
-            const badge =
-                document.createElement("span");
-
-
-            badge.className =
-                "album-badge";
-
-
-            badge.textContent =
-                `+${album.images.length}`;
-
-
-            imageContainer.appendChild(
-                badge
-            );
-
-        }
-
-
-        imageContainer.addEventListener(
-            "click",
-            () => {
-
-                const fullUrls =
-                    album.images.map(
-                        imageName =>
-                            getPhotoUrl(
-                                imageName
-                            )
+                    coverContainer.appendChild(
+                        badge
                     );
 
+                }
 
-                openImageModal(
-                    fullUrls,
-                    0
+
+                const info =
+                    document.createElement("div");
+
+                info.className =
+                    "album-info";
+
+
+                const title =
+                    document.createElement("h3");
+
+                title.textContent =
+                    album.title;
+
+
+                const description =
+                    document.createElement("p");
+
+                description.textContent =
+                    `${album.photos.length} ${
+                        album.photos.length === 1
+                            ? "photo"
+                            : "photos"
+                    }`;
+
+
+                info.appendChild(title);
+
+                info.appendChild(
+                    description
                 );
+
+
+                card.appendChild(
+                    coverContainer
+                );
+
+                card.appendChild(info);
+
+
+                card.addEventListener(
+                    "click",
+                    () => {
+
+                        const images =
+                            album.photos.map(
+                                file =>
+                                    getPhotoUrl(file)
+                            );
+
+
+                        openImageModal(
+                            images,
+                            0,
+                            album.title
+                        );
+
+                    }
+                );
+
+
+                gallery.appendChild(card);
 
             }
         );
 
 
-        card.appendChild(
-            imageContainer
+        const viewMoreBtn =
+            document.getElementById(
+                "viewMoreBtn"
+            );
+
+
+        if (viewMoreBtn) {
+
+            if (
+                photoAlbums.length <=
+                displayCount
+            ) {
+
+                viewMoreBtn.style.display =
+                    "none";
+
+            } else {
+
+                viewMoreBtn.style.display =
+                    "inline-flex";
+
+                viewMoreBtn.textContent =
+                    showingAllPhotos
+                        ? "View Less"
+                        : "View More";
+
+            }
+
+        }
+
+
+    } catch (errorObject) {
+
+        console.error(
+            "Photo loading error:",
+            errorObject
         );
 
 
-        gallery.appendChild(
-            card
-        );
+        if (error) {
 
-    }
+            error.style.display =
+                "block";
 
+        }
 
-    if (viewMoreBtn) {
+    } finally {
 
-        if (
-            photoAlbums.length <= 6
-        ) {
+        if (loading) {
 
-            viewMoreBtn.style.display =
+            loading.style.display =
                 "none";
-
-        } else {
-
-            viewMoreBtn.style.display =
-                "inline-block";
-
-
-            viewMoreBtn.textContent =
-                showingAllPhotos
-                    ? "Show Less"
-                    : "View More";
 
         }
 
     }
 
-
-    initScrollObserver();
-
 }
 
 
-/* =====================================================
+/* =========================================================
    VIEW MORE PHOTOS
-===================================================== */
+========================================================= */
 
 function toggleViewAllPhotos() {
 
@@ -1303,217 +1142,495 @@ function toggleViewAllPhotos() {
 
     loadPhotos();
 
-
-    setTimeout(
-        () => {
-
-            if (!showingAllPhotos) {
-
-                const photosSection =
-                    document.getElementById(
-                        "photos"
-                    );
+}
 
 
-                if (photosSection) {
+/* =========================================================
+   VIDEOS
+========================================================= */
 
-                    photosSection.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
+/*
+    Videos are loaded from:
 
-                }
+    Supabase Storage
+    videos/
+
+    Example:
+
+    videos/video1.mp4
+    videos/video2.mp4
+    videos/video3.mp4
+
+    Add your video file names below.
+*/
+
+const videos = [
+
+    {
+        title: "Video 1",
+        file: "video1.mp4",
+        description: "A special moment from my journey."
+    },
+
+    {
+        title: "Video 2",
+        file: "video2.mp4",
+        description: "Memories captured in motion."
+    },
+
+    {
+        title: "Video 3",
+        file: "video3.mp4",
+        description: "Another special memory."
+    },
+
+    {
+        title: "Video 4",
+        file: "video4.mp4",
+        description: "Moments worth remembering."
+    },
+
+    {
+        title: "Video 5",
+        file: "video5.mp4",
+        description: "A collection of special moments."
+    },
+
+    {
+        title: "Video 6",
+        file: "video6.mp4",
+        description: "Life captured through video."
+    }
+
+];
+
+
+let displayVideoCount = 6;
+
+let showingAllVideos = false;
+
+
+/* =========================================================
+   LOAD VIDEOS
+========================================================= */
+
+function loadVideos() {
+
+    const gallery =
+        document.getElementById(
+            "videoGallery"
+        );
+
+    const loading =
+        document.getElementById(
+            "videoLoading"
+        );
+
+    const error =
+        document.getElementById(
+            "videoError"
+        );
+
+
+    if (!gallery) {
+        return;
+    }
+
+
+    if (loading) {
+
+        loading.style.display =
+            "block";
+
+    }
+
+
+    if (error) {
+
+        error.style.display =
+            "none";
+
+    }
+
+
+    gallery.innerHTML = "";
+
+
+    try {
+
+        const videosToShow =
+            showingAllVideos
+                ? videos
+                : videos.slice(
+                    0,
+                    displayVideoCount
+                );
+
+
+        if (videosToShow.length === 0) {
+
+            gallery.innerHTML = `
+                <div style="
+                    grid-column: 1 / -1;
+                    padding: 50px 20px;
+                    text-align: center;
+                    color: var(--text-secondary);
+                ">
+                    No videos available yet.
+                </div>
+            `;
+
+        }
+
+
+        videosToShow.forEach(
+            (video, index) => {
+
+                const card =
+                    document.createElement("div");
+
+                card.className =
+                    "video-card fade-in visible";
+
+
+                const wrapper =
+                    document.createElement("div");
+
+                wrapper.className =
+                    "video-wrapper";
+
+
+                const videoElement =
+                    document.createElement("video");
+
+                videoElement.src =
+                    getVideoUrl(video.file);
+
+                videoElement.controls =
+                    true;
+
+                videoElement.preload =
+                    "metadata";
+
+                videoElement.playsInline =
+                    true;
+
+                videoElement.setAttribute(
+                    "playsinline",
+                    ""
+                );
+
+                videoElement.setAttribute(
+                    "webkit-playsinline",
+                    ""
+                );
+
+
+                videoElement.addEventListener(
+                    "error",
+                    () => {
+
+                        console.warn(
+                            `Could not load video: ${video.file}`
+                        );
+
+                    }
+                );
+
+
+                wrapper.appendChild(
+                    videoElement
+                );
+
+
+                const playOverlay =
+                    document.createElement("div");
+
+                playOverlay.className =
+                    "video-play-overlay";
+
+
+                const playIcon =
+                    document.createElement("span");
+
+                playIcon.className =
+                    "video-play-icon";
+
+                playIcon.innerHTML =
+                    "▶";
+
+
+                playOverlay.appendChild(
+                    playIcon
+                );
+
+
+                /*
+                   Hide the decorative play icon
+                   after the user starts playing.
+                */
+
+                videoElement.addEventListener(
+                    "play",
+                    () => {
+
+                        playOverlay.style.opacity =
+                            "0";
+
+                    }
+                );
+
+
+                videoElement.addEventListener(
+                    "pause",
+                    () => {
+
+                        playOverlay.style.opacity =
+                            "1";
+
+                    }
+                );
+
+
+                wrapper.appendChild(
+                    playOverlay
+                );
+
+
+                const info =
+                    document.createElement("div");
+
+                info.className =
+                    "video-info";
+
+
+                const title =
+                    document.createElement("h3");
+
+                title.textContent =
+                    video.title;
+
+
+                const description =
+                    document.createElement("p");
+
+                description.textContent =
+                    video.description;
+
+
+                info.appendChild(title);
+
+                info.appendChild(
+                    description
+                );
+
+
+                card.appendChild(
+                    wrapper
+                );
+
+                card.appendChild(
+                    info
+                );
+
+
+                gallery.appendChild(
+                    card
+                );
+
+            }
+        );
+
+
+        const viewMoreBtn =
+            document.getElementById(
+                "viewMoreVideosBtn"
+            );
+
+
+        if (viewMoreBtn) {
+
+            if (
+                videos.length <=
+                displayVideoCount
+            ) {
+
+                viewMoreBtn.style.display =
+                    "none";
+
+            } else {
+
+                viewMoreBtn.style.display =
+                    "inline-flex";
+
+                viewMoreBtn.textContent =
+                    showingAllVideos
+                        ? "View Less"
+                        : "View More";
 
             }
 
-        },
-        100
-    );
+        }
+
+
+    } catch (errorObject) {
+
+        console.error(
+            "Video loading error:",
+            errorObject
+        );
+
+
+        if (error) {
+
+            error.style.display =
+                "block";
+
+        }
+
+    } finally {
+
+        if (loading) {
+
+            loading.style.display =
+                "none";
+
+        }
+
+    }
 
 }
 
 
-/* =====================================================
-   IMAGE MODAL
-===================================================== */
+/* =========================================================
+   VIEW MORE VIDEOS
+========================================================= */
+
+function toggleViewAllVideos() {
+
+    showingAllVideos =
+        !showingAllVideos;
+
+
+    loadVideos();
+
+}
+
+
+/* =========================================================
+   IMAGE ERROR
+========================================================= */
+
+function imageError(image) {
+
+    if (!image) {
+        return;
+    }
+
+
+    image.onerror =
+        null;
+
+
+    image.src =
+        "https://via.placeholder.com/600x400?text=Image+Not+Found";
+
+}
+
+
+/* =========================================================
+   IMAGE MODAL STATE
+========================================================= */
 
 let currentModalImages = [];
 
 let currentModalIndex = 0;
 
-let slideshowInterval = null;
+let modalAutoplayInterval = null;
 
+
+/* =========================================================
+   OPEN IMAGE MODAL
+========================================================= */
 
 function openImageModal(
     images,
-    index = 0
+    index = 0,
+    caption = ""
 ) {
-
-    if (
-        !images ||
-        images.length === 0
-    ) {
-
-        return;
-
-    }
-
-
-    currentModalImages =
-        images;
-
-
-    currentModalIndex =
-        index;
-
 
     const modal =
         document.getElementById(
             "imageModal"
         );
 
-
-    const fullImg =
+    const fullImage =
         document.getElementById(
             "fullImage"
         );
 
-
-    const captionElement =
+    const storyCaption =
         document.getElementById(
             "storyCaption"
         );
 
 
-    if (captionElement) {
-
-        captionElement.textContent =
-            "";
-
-    }
-
-
     if (
-        modal &&
-        fullImg
+        !modal ||
+        !fullImage
     ) {
-
-        fullImg.src =
-            currentModalImages[
-                currentModalIndex
-            ];
-
-
-        fullImg.onerror =
-            function () {
-
-                imageError(this);
-
-            };
-
-
-        modal.classList.add(
-            "show"
-        );
-
-
-        document.body.style.overflow =
-            "hidden";
-
-
-        preloadNextImage();
-
-        updateLikeDisplay();
-
-        startSlideshow();
-
-    }
-
-}
-
-
-/* =====================================================
-   PRELOAD NEXT IMAGE
-===================================================== */
-
-function preloadNextImage() {
-
-    if (
-        currentModalImages.length <= 1
-    ) {
-
         return;
-
     }
 
 
-    const nextIndex =
-        (
-            currentModalIndex + 1
-        ) %
-        currentModalImages.length;
+    currentModalImages =
+        Array.isArray(images)
+            ? images
+            : [];
 
 
-    const img =
-        new Image();
+    currentModalIndex =
+        index;
 
 
-    img.src =
+    if (
+        currentModalImages.length === 0
+    ) {
+        return;
+    }
+
+
+    fullImage.src =
         currentModalImages[
-            nextIndex
+            currentModalIndex
         ];
 
-}
 
+    if (storyCaption) {
 
-/* =====================================================
-   SLIDESHOW
-===================================================== */
-
-function startSlideshow() {
-
-    stopSlideshow();
-
-
-    if (
-        currentModalImages.length > 1
-    ) {
-
-        slideshowInterval =
-            setInterval(
-                () => {
-
-                    nextModalImage();
-
-                },
-                3500
-            );
+        storyCaption.textContent =
+            caption;
 
     }
 
-}
+
+    updateLikeButton();
 
 
-function stopSlideshow() {
+    modal.classList.add("show");
 
-    if (slideshowInterval) {
-
-        clearInterval(
-            slideshowInterval
-        );
+    document.body.style.overflow =
+        "hidden";
 
 
-        slideshowInterval =
-            null;
-
-    }
+    startModalAutoplay();
 
 }
 
 
-/* =====================================================
+/* =========================================================
    CLOSE IMAGE
-===================================================== */
+========================================================= */
 
 function closeImage() {
 
@@ -1525,34 +1642,97 @@ function closeImage() {
 
     if (modal) {
 
-        modal.classList.remove(
-            "show"
-        );
+        modal.classList.remove("show");
 
     }
 
 
-    document.body.style.overflow =
-        "";
+    stopModalAutoplay();
 
 
-    stopSlideshow();
+    if (
+        !document
+            .getElementById(
+                "storyGalleryModal"
+            )
+            ?.classList.contains("show")
+    ) {
+
+        document.body.style.overflow =
+            "";
+
+    }
 
 }
 
 
-/* =====================================================
-   NEXT MODAL IMAGE
-===================================================== */
+/* =========================================================
+   SHOW MODAL IMAGE
+========================================================= */
+
+function showModalImage() {
+
+    const fullImage =
+        document.getElementById(
+            "fullImage"
+        );
+
+
+    if (
+        !fullImage ||
+        currentModalImages.length === 0
+    ) {
+        return;
+    }
+
+
+    fullImage.src =
+        currentModalImages[
+            currentModalIndex
+        ];
+
+
+    updateLikeButton();
+
+
+    /*
+       Preload next image.
+    */
+
+    if (
+        currentModalImages.length > 1
+    ) {
+
+        const nextIndex =
+            (
+                currentModalIndex + 1
+            ) %
+            currentModalImages.length;
+
+
+        const preload =
+            new Image();
+
+        preload.src =
+            currentModalImages[
+                nextIndex
+            ];
+
+    }
+
+}
+
+
+/* =========================================================
+   NEXT / PREVIOUS MODAL IMAGE
+========================================================= */
 
 function nextModalImage() {
 
     if (
         currentModalImages.length <= 1
     ) {
-
         return;
-
     }
 
 
@@ -1563,41 +1743,17 @@ function nextModalImage() {
         currentModalImages.length;
 
 
-    const fullImage =
-        document.getElementById(
-            "fullImage"
-        );
-
-
-    if (fullImage) {
-
-        fullImage.src =
-            currentModalImages[
-                currentModalIndex
-            ];
-
-    }
-
-
-    preloadNextImage();
-
-    updateLikeDisplay();
+    showModalImage();
 
 }
 
-
-/* =====================================================
-   PREVIOUS MODAL IMAGE
-===================================================== */
 
 function prevModalImage() {
 
     if (
         currentModalImages.length <= 1
     ) {
-
         return;
-
     }
 
 
@@ -1610,40 +1766,90 @@ function prevModalImage() {
         currentModalImages.length;
 
 
-    const fullImage =
-        document.getElementById(
-            "fullImage"
-        );
-
-
-    if (fullImage) {
-
-        fullImage.src =
-            currentModalImages[
-                currentModalIndex
-            ];
-
-    }
-
-
-    updateLikeDisplay();
+    showModalImage();
 
 }
 
 
-/* =====================================================
-   PHOTO LIKE SYSTEM
-===================================================== */
+/* =========================================================
+   MODAL AUTOPLAY
+========================================================= */
 
-const likedPhotos =
-    JSON.parse(
-        localStorage.getItem(
-            "likedPhotos"
-        )
-    ) || {};
+function startModalAutoplay() {
+
+    stopModalAutoplay();
 
 
-function getCurrentPhotoKey() {
+    if (
+        currentModalImages.length <= 1
+    ) {
+        return;
+    }
+
+
+    modalAutoplayInterval =
+        setInterval(() => {
+
+            nextModalImage();
+
+        }, 3500);
+
+}
+
+
+function stopModalAutoplay() {
+
+    clearInterval(
+        modalAutoplayInterval
+    );
+
+    modalAutoplayInterval =
+        null;
+
+}
+
+
+/* =========================================================
+   LIKE SYSTEM
+========================================================= */
+
+function getLikedPhotos() {
+
+    try {
+
+        return JSON.parse(
+            localStorage.getItem(
+                "likedPhotos"
+            ) || "{}"
+        );
+
+    } catch {
+
+        return {};
+
+    }
+
+}
+
+
+function saveLikedPhotos(data) {
+
+    localStorage.setItem(
+        "likedPhotos",
+        JSON.stringify(data)
+    );
+
+}
+
+
+function getCurrentLikeKey() {
+
+    if (
+        currentModalImages.length === 0
+    ) {
+        return null;
+    }
+
 
     return currentModalImages[
         currentModalIndex
@@ -1652,74 +1858,49 @@ function getCurrentPhotoKey() {
 }
 
 
-function toggleLikeCurrentPhoto() {
+function updateLikeButton() {
 
-    const key =
-        getCurrentPhotoKey();
-
-
-    if (!key) {
-        return;
-    }
-
-
-    likedPhotos[key] =
-        !likedPhotos[key];
-
-
-    localStorage.setItem(
-        "likedPhotos",
-        JSON.stringify(
-            likedPhotos
-        )
-    );
-
-
-    updateLikeDisplay();
-
-}
-
-
-function updateLikeDisplay() {
-
-    const key =
-        getCurrentPhotoKey();
-
-
-    const heart =
+    const likeHeart =
         document.getElementById(
             "likeHeart"
         );
 
-
-    const count =
+    const likeCount =
         document.getElementById(
             "likeCount"
         );
 
 
+    const key =
+        getCurrentLikeKey();
+
+
     if (!key) {
         return;
     }
 
 
+    const likedPhotos =
+        getLikedPhotos();
+
+
     const liked =
-        likedPhotos[key] === true;
+        !!likedPhotos[key];
 
 
-    if (heart) {
+    if (likeHeart) {
 
-        heart.textContent =
+        likeHeart.textContent =
             liked
                 ? "❤️"
-                : "🤍";
+                : "♡";
 
     }
 
 
-    if (count) {
+    if (likeCount) {
 
-        count.textContent =
+        likeCount.textContent =
             liked
                 ? "1"
                 : "0";
@@ -1729,268 +1910,87 @@ function updateLikeDisplay() {
 }
 
 
-/* =====================================================
-   TOUCH SWIPE
-===================================================== */
+function toggleLikeCurrentPhoto() {
 
-let touchStartX = 0;
-
-let touchEndX = 0;
+    const key =
+        getCurrentLikeKey();
 
 
-function handleTouchStart(e) {
-
-    touchStartX =
-        e.changedTouches[0].screenX;
-
-}
-
-
-function handleTouchEnd(e) {
-
-    touchEndX =
-        e.changedTouches[0].screenX;
-
-
-    handleSwipe();
-
-}
-
-
-function handleSwipe() {
-
-    const threshold = 50;
-
-
-    if (
-        touchEndX <
-        touchStartX - threshold
-    ) {
-
-        nextModalImage();
-
-        startSlideshow();
-
+    if (!key) {
+        return;
     }
 
 
-    if (
-        touchEndX >
-        touchStartX + threshold
-    ) {
-
-        prevModalImage();
-
-        startSlideshow();
-
-    }
-
-}
+    const likedPhotos =
+        getLikedPhotos();
 
 
-/* =====================================================
-   SCROLL OBSERVER
-===================================================== */
-
-let scrollObserver;
+    likedPhotos[key] =
+        !likedPhotos[key];
 
 
-function initScrollObserver() {
-
-    if (scrollObserver) {
-
-        scrollObserver.disconnect();
-
-    }
-
-
-    const fadeElements =
-        document.querySelectorAll(
-            ".fade-in"
-        );
-
-
-    scrollObserver =
-        new IntersectionObserver(
-            entries => {
-
-                entries.forEach(
-                    entry => {
-
-                        if (
-                            entry.isIntersecting
-                        ) {
-
-                            entry.target.classList.add(
-                                "appear"
-                            );
-
-
-                            scrollObserver.unobserve(
-                                entry.target
-                            );
-
-                        }
-
-                    }
-                );
-
-            },
-
-            {
-                threshold: 0.1
-            }
-        );
-
-
-    fadeElements.forEach(
-        element => {
-
-            if (
-                !element.classList.contains(
-                    "appear"
-                )
-            ) {
-
-                scrollObserver.observe(
-                    element
-                );
-
-            }
-
-        }
+    saveLikedPhotos(
+        likedPhotos
     );
 
-}
 
-
-/* =====================================================
-   CONTACT
-   GMAIL
-===================================================== */
-
-function openGmail() {
-
-    window.open(
-        "https://mail.google.com/mail/?view=cm&fs=1&to=dhanularajakaruna9999@gmail.com",
-        "_blank",
-        "noopener,noreferrer"
-    );
+    updateLikeButton();
 
 }
 
 
-/* =====================================================
-   CONTACT
-   WHATSAPP
-===================================================== */
-
-function openWhatsApp() {
-
-    const message =
-        "Hi Dhanula, I found your personal website and would like to get in touch with you.";
-
-
-    const whatsappUrl =
-        `https://wa.me/94766551179?text=${encodeURIComponent(message)}`;
-
-
-    window.open(
-        whatsappUrl,
-        "_blank",
-        "noopener,noreferrer"
-    );
-
-}
-
-
-/* =====================================================
-   CONTACT
+/* =========================================================
    WECHAT
-===================================================== */
+========================================================= */
 
 function openWeChat() {
 
     const wechatNumber =
-        "+86 166 1161 4319";
+        "+8616611614319";
 
 
     if (
         navigator.clipboard &&
-        window.isSecureContext
+        navigator.clipboard.writeText
     ) {
 
         navigator.clipboard
             .writeText(wechatNumber)
             .catch(() => {});
 
-    } else {
+    }
 
-        const tempInput =
-            document.createElement("textarea");
 
-        tempInput.value =
-            wechatNumber;
+    try {
 
-        tempInput.style.position =
-            "fixed";
+        window.location.href =
+            "weixin://";
 
-        tempInput.style.opacity =
-            "0";
+    } catch {
 
-        document.body.appendChild(
-            tempInput
-        );
-
-        tempInput.select();
-
-        try {
-            document.execCommand("copy");
-        } catch (error) {
-            /* Clipboard fallback failed */
-        }
-
-        document.body.removeChild(
-            tempInput
-        );
+        // Fallback below
 
     }
 
 
-    /*
-       Try to open WeChat app.
-       Browser support depends on device/browser.
-    */
+    setTimeout(() => {
 
-    const wechatAppUrl =
-        "weixin://";
+        alert(
+            `WeChat number: ${wechatNumber}\n\nThe number has been copied.`
+        );
 
-
-    window.location.href =
-        wechatAppUrl;
-
-
-    setTimeout(
-        () => {
-
-            alert(
-                "WeChat number copied: +86 166 1161 4319\n\nOpen WeChat and search for this number to connect."
-            );
-
-        },
-        700
-    );
+    }, 700);
 
 }
 
 
-/* =====================================================
+/* =========================================================
    CONTACT FORM
-===================================================== */
+========================================================= */
 
-function handleContactSubmit(e) {
+function handleContactSubmit(event) {
 
-    e.preventDefault();
+    event.preventDefault();
 
 
     alert(
@@ -1998,14 +1998,148 @@ function handleContactSubmit(e) {
     );
 
 
-    e.target.reset();
+    event.target.reset();
 
 }
 
 
-/* =====================================================
-   CLOSE MODALS WHEN CLICKING BACKGROUND
-===================================================== */
+/* =========================================================
+   SCROLL ANIMATION
+========================================================= */
+
+function initializeScrollObserver() {
+
+    const elements =
+        document.querySelectorAll(
+            ".fade-in"
+        );
+
+
+    if (
+        !("IntersectionObserver" in window)
+    ) {
+
+        elements.forEach(element => {
+
+            element.classList.add(
+                "visible"
+            );
+
+        });
+
+        return;
+
+    }
+
+
+    const observer =
+        new IntersectionObserver(
+            entries => {
+
+                entries.forEach(entry => {
+
+                    if (
+                        entry.isIntersecting
+                    ) {
+
+                        entry.target.classList.add(
+                            "visible"
+                        );
+
+                        observer.unobserve(
+                            entry.target
+                        );
+
+                    }
+
+                });
+
+            },
+            {
+                threshold: 0.12
+            }
+        );
+
+
+    elements.forEach(element => {
+
+        observer.observe(element);
+
+    });
+
+}
+
+
+/* =========================================================
+   KEYBOARD CONTROLS
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        const imageModal =
+            document.getElementById(
+                "imageModal"
+            );
+
+        const storyModal =
+            document.getElementById(
+                "storyGalleryModal"
+            );
+
+
+        if (
+            imageModal &&
+            imageModal.classList.contains("show")
+        ) {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                closeImage();
+
+            }
+
+
+            if (
+                event.key === "ArrowRight"
+            ) {
+
+                nextModalImage();
+
+            }
+
+
+            if (
+                event.key === "ArrowLeft"
+            ) {
+
+                prevModalImage();
+
+            }
+
+        }
+
+
+        if (
+            storyModal &&
+            storyModal.classList.contains("show") &&
+            event.key === "Escape"
+        ) {
+
+            closeStoryGallery();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   BACKGROUND CLICK MODALS
+========================================================= */
 
 document.addEventListener(
     "click",
@@ -2016,7 +2150,6 @@ document.addEventListener(
                 "imageModal"
             );
 
-
         const storyModal =
             document.getElementById(
                 "storyGalleryModal"
@@ -2024,6 +2157,7 @@ document.addEventListener(
 
 
         if (
+            imageModal &&
             event.target === imageModal
         ) {
 
@@ -2033,6 +2167,7 @@ document.addEventListener(
 
 
         if (
+            storyModal &&
             event.target === storyModal
         ) {
 
@@ -2044,96 +2179,132 @@ document.addEventListener(
 );
 
 
-/* =====================================================
-   KEYBOARD CONTROLS
-===================================================== */
+/* =========================================================
+   TOUCH SWIPE
+========================================================= */
 
-document.addEventListener(
-    "keydown",
-    e => {
+let touchStartX = 0;
 
-        const modal =
-            document.getElementById(
-                "imageModal"
-            );
+let touchEndX = 0;
 
 
-        const isModalOpen =
-            modal &&
-            modal.classList.contains(
-                "show"
-            );
+function handleTouchStart(event) {
 
+    if (
+        event.changedTouches &&
+        event.changedTouches.length
+    ) {
 
-        if (
-            e.key === "Escape"
-        ) {
-
-            closeImage();
-
-            closeStoryGallery();
-
-        }
-
-
-        if (
-            e.key === "ArrowRight" &&
-            isModalOpen
-        ) {
-
-            nextModalImage();
-
-            startSlideshow();
-
-        }
-
-
-        if (
-            e.key === "ArrowLeft" &&
-            isModalOpen
-        ) {
-
-            prevModalImage();
-
-            startSlideshow();
-
-        }
+        touchStartX =
+            event.changedTouches[0].screenX;
 
     }
-);
+
+}
 
 
-/* =====================================================
-   INITIALIZATION
-===================================================== */
+function handleTouchEnd(event) {
+
+    if (
+        !event.changedTouches ||
+        !event.changedTouches.length
+    ) {
+        return;
+    }
+
+
+    touchEndX =
+        event.changedTouches[0].screenX;
+
+
+    const difference =
+        touchStartX - touchEndX;
+
+
+    if (
+        Math.abs(difference) < 50
+    ) {
+        return;
+    }
+
+
+    const imageModal =
+        document.getElementById(
+            "imageModal"
+        );
+
+
+    if (
+        !imageModal ||
+        !imageModal.classList.contains("show")
+    ) {
+        return;
+    }
+
+
+    if (difference > 0) {
+
+        nextModalImage();
+
+    } else {
+
+        prevModalImage();
+
+    }
+
+}
+
+
+/* =========================================================
+   DOM CONTENT LOADED
+========================================================= */
 
 document.addEventListener(
     "DOMContentLoaded",
     () => {
 
         /*
-           On page load, automatically use the
-           latest story of every year as its
-           circular cover image.
+           Stories
         */
 
         updateStoryCoverImages();
 
-
         renderStories();
 
+        startStoryAutoplay();
 
-        startStoryAutoPlay();
 
+        /*
+           Photos
+        */
 
         loadPhotos();
 
 
-        initScrollObserver();
+        /*
+           Videos
+        */
 
+        loadVideos();
+
+
+        /*
+           Scroll animations
+        */
+
+        initializeScrollObserver();
+
+
+        /*
+           Active navigation
+        */
 
         updateActiveNav();
 
+
+        /*
+           Image modal touch gestures
+        */
 
         const imageModal =
             document.getElementById(
