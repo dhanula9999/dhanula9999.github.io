@@ -826,6 +826,14 @@ const photoAlbums = [
         ]
     },
 
+      {
+        title: "04/07/2026",
+        photos: [
+            "photo78.jpg",
+            "photo79.jpg"
+        ]
+    },
+
        {
         title: "74-77",
         photos: [
@@ -835,15 +843,6 @@ const photoAlbums = [
             "photo77.jpg"
         ]
     },
-
-          {
-        title: "04/07/2026",
-        photos: [
-            "photo78.jpg",
-            "photo79.jpg"
-        ]
-    },
-
 
     {
         title: "Album 52–57",
