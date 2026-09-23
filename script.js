@@ -178,6 +178,11 @@ window.addEventListener(
 const stories = {
 
     "2026": [
+       "story37.jpg",
+       "story36.jpg",
+       "story35.jpg",
+       "story34.jpg",
+       "story33.jpg",
         "story32.jpg",
         "story31.jpg",
         "story30.jpg",
