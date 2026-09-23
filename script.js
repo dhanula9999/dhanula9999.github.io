@@ -780,6 +780,13 @@ function closeStoryGallery() {
 ========================================================= */
 
 const photoAlbums = [
+       {
+        title: "Jinjie in city",
+        photos: [
+            "photo66.jpg",
+            "photo67.jpg"
+        ]
+    },
 
     {
         title: "Album 60–65",
