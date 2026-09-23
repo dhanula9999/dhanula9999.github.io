@@ -826,6 +826,16 @@ const photoAlbums = [
         ]
     },
 
+       {
+        title: " ",
+        photos: [
+            "photo74.jpg",
+            "photo75.jpg",
+            "photo76.jpg",
+            "photo77.jpg"
+        ]
+    },
+
     {
         title: "Album 52–57",
         photos: [
