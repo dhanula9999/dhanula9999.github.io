@@ -827,7 +827,7 @@ const photoAlbums = [
     },
 
        {
-        title: " ",
+        title: "74-77",
         photos: [
             "photo74.jpg",
             "photo75.jpg",
