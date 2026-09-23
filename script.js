@@ -780,6 +780,18 @@ function closeStoryGallery() {
 ========================================================= */
 
 const photoAlbums = [
+
+          {
+        title: "Nine Classmates Party",
+        photos: [
+            "photo68.jpg",
+            "photo69.jpg",
+            "photo70.jpg",
+            "photo71.jpg",
+            "photo72.jpg"
+        ]
+    },
+   
        {
         title: "Jinjie in city",
         photos: [
