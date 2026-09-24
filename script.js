@@ -830,6 +830,8 @@ const photoAlbums = [
         title: "04/07/2026",
         photos: [
             "photo78.jpg",
+            "photo86.jpg",
+            "photo87.jpg",
             "photo79.jpg"
         ]
     },
