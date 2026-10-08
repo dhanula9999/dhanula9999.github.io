@@ -787,6 +787,37 @@ function closeStoryGallery() {
 
 const photoAlbums = [
 
+             {
+        title: "Wenjin Park - 26/09/2026",
+        photos: [
+            "photo88.jpg",
+            "photo89.jpg",
+            "photo90.jpg",
+            "photo91.jpg",
+            "photo92.jpg",
+            "photo93.jpg",
+            "photo94.jpg",
+            "photo95.jpg",
+            "photo96.jpg",
+            "photo97.jpg",
+            "photo98.jpg",
+            "photo99.jpg",
+            "photo100.jpg",
+            "photo101.jpg",
+            "photo102.jpg",
+            "photo103.jpg",
+            "photo104.jpg",
+            "photo105.jpg",
+            "photo106.jpg",
+            "photo107.jpg",
+            "photo108.jpg",
+            "photo109.jpg",
+            "photo110.jpg",
+            "photo111.jpg",
+            "photo112.jpg"
+        ]
+    },
+
           {
         title: "Nine Classmates Party",
         photos: [
@@ -2393,3 +2424,4 @@ document.addEventListener(
 
     }
 );
+
