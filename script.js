@@ -1313,9 +1313,9 @@ const videos = [
     },
 
     {
-        title: "Video 2",
+        title: "Memories Through Music 🎵✨",
         file: "video2.mp4",
-        description: "Memories captured in motion."
+        description: "Singing a song with my sister and grandma. 🎶❤️"
     },
 
     {
