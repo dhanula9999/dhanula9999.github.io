@@ -788,6 +788,56 @@ function closeStoryGallery() {
 
 const photoAlbums = [
 
+   {
+    title: "Luban Workshop - 2/09/2026",
+    photos: [
+        "photo156.jpg",
+        "photo113.jpg",
+        "photo114.jpg",
+        "photo115.jpg",
+        "photo116.jpg",
+        "photo117.jpg",
+        "photo118.jpg",
+        "photo119.jpg",
+        "photo120.jpg",
+        "photo121.jpg",
+        "photo122.jpg",
+        "photo123.jpg",
+        "photo124.jpg",
+        "photo125.jpg",
+        "photo126.jpg",
+        "photo127.jpg",
+        "photo128.jpg",
+        "photo129.jpg",
+        "photo130.jpg",
+        "photo131.jpg",
+        "photo132.jpg",
+        "photo133.jpg",
+        "photo134.jpg",
+        "photo135.jpg",
+        "photo136.jpg",
+        "photo137.jpg",
+        "photo138.jpg",
+        "photo139.jpg",
+        "photo140.jpg",
+        "photo141.jpg",
+        "photo142.jpg",
+        "photo143.jpg",
+        "photo144.jpg",
+        "photo145.jpg",
+        "photo146.jpg",
+        "photo147.jpg",
+        "photo148.jpg",
+        "photo149.jpg",
+        "photo150.jpg",
+        "photo151.jpg",
+        "photo152.jpg",
+        "photo153.jpg",
+        "photo154.jpg",
+        "photo155.jpg"
+    ]
+},
+
              {
         title: "Wenjin Park - 26/09/2026",
         photos: [
