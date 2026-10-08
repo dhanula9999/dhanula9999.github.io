@@ -179,6 +179,7 @@ const stories = {
 
     "2026": [
        "story40.jpg",
+       "story41.jpg",
        "story38.jpg",
        "story39.jpg",
        "story36.jpg",
