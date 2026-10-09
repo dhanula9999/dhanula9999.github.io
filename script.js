@@ -1316,8 +1316,8 @@ const videos = [
         title: "Memories Through Music 🎵✨",
         file: "video2.mp4",
         description: "Singing a song with my sister and grandma. 🎶❤️"
-    },
-
+    }
+/*
     {
         title: "Video 3",
         file: "video3.mp4",
@@ -1340,8 +1340,8 @@ const videos = [
         title: "Video 6",
         file: "video6.mp4",
         description: "Life captured through video."
-    }
-
+    },
+*/
 ];
 
 
