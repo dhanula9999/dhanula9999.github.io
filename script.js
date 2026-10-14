@@ -793,7 +793,7 @@ const photoAlbums = [
       {
     title: "14/10/2026",
     photos: [
-        "photo165.jpg",
+        "photo191.jpg",
         "photo166.jpg",
         "photo167.jpg",
         "photo168.jpg",
