@@ -790,6 +790,39 @@ function closeStoryGallery() {
 
 const photoAlbums = [
 
+      {
+    title: "14/10/2026",
+    photos: [
+        "photo165.jpg",
+        "photo166.jpg",
+        "photo167.jpg",
+        "photo168.jpg",
+        "photo169.jpg",
+        "photo170.jpg",
+        "photo171.jpg",
+        "photo172.jpg",
+        "photo173.jpg",
+        "photo174.jpg",
+        "photo175.jpg",
+        "photo176.jpg",
+        "photo177.jpg",
+        "photo178.jpg",
+        "photo179.jpg",
+        "photo180.jpg",
+        "photo181.jpg",
+        "photo182.jpg",
+        "photo183.jpg",
+        "photo184.jpg",
+        "photo185.jpg",
+        "photo186.jpg",
+        "photo187.jpg",
+        "photo188.jpg",
+        "photo189.jpg",
+        "photo190.jpg"
+    ]
+},
+
+   
    {
     title: "Luban Workshop - 2/09/2026",
     photos: [
