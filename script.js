@@ -795,7 +795,7 @@ const photoAlbums = [
     photos: [
         "photo191.jpg",
         "photo166.jpg",
-        "photo167.jpg",
+        "photo163.jpg",
         "photo192.jpg",
         "photo169.jpg",
         "photo170.jpg",
