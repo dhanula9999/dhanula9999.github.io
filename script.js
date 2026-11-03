@@ -789,6 +789,14 @@ function closeStoryGallery() {
 ========================================================= */
 
 const photoAlbums = [
+   
+         {
+    title: "2/11/2026",
+    photos: [
+
+        "nov2.jpg"
+    ]
+},
 
       {
     title: "14/10/2026",
@@ -2523,4 +2531,5 @@ document.addEventListener(
 
     }
 );
+
 
