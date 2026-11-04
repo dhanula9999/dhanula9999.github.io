@@ -789,6 +789,14 @@ function closeStoryGallery() {
 ========================================================= */
 
 const photoAlbums = [
+         {
+    title: "With Pamith",
+    photos: [
+
+        "LAWPAM2.jpg",
+	     "LAWPAM1.jpg"
+    ]
+},
    
          {
     title: "2/11/2026",
