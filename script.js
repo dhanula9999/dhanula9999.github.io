@@ -798,6 +798,13 @@ const photoAlbums = [
 		"auto3.jpg"
     ]
 },
+	      {
+    title: "06/11/2026",
+    photos: [
+
+	"sgpek.jpg"
+    ]
+},
          {
     title: "With Pamith",
     photos: [
